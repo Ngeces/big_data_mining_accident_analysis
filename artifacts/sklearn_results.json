@@ -1,0 +1,50 @@
+{
+  "Scikit-Learn Logistic Regression": {
+    "Framework": "Scikit-Learn",
+    "Model Name": "Scikit-Learn Logistic Regression",
+    "Accuracy": 0.7634,
+    "Precision_Class1": 0.7599,
+    "Recall_Class1": 0.927,
+    "F1_Class1": 0.8352,
+    "F1_Macro": 0.708,
+    "ROC_AUC": 0.8146,
+    "PR_AUC": 0.8699,
+    "Fit_Time_Seconds": 0.1702,
+    "Inference_Time_Seconds": 0.0002,
+    "Optimal_Threshold": 0.32,
+    "Confusion_Matrix": [
+      [
+        945,
+        1092
+      ],
+      [
+        272,
+        3456
+      ]
+    ]
+  },
+  "Scikit-Learn Random Forest": {
+    "Framework": "Scikit-Learn",
+    "Model Name": "Scikit-Learn Random Forest",
+    "Accuracy": 0.7606,
+    "Precision_Class1": 0.7463,
+    "Recall_Class1": 0.9541,
+    "F1_Class1": 0.8375,
+    "F1_Macro": 0.6915,
+    "ROC_AUC": 0.8102,
+    "PR_AUC": 0.8719,
+    "Fit_Time_Seconds": 0.9254,
+    "Inference_Time_Seconds": 0.0288,
+    "Optimal_Threshold": 0.37,
+    "Confusion_Matrix": [
+      [
+        828,
+        1209
+      ],
+      [
+        171,
+        3557
+      ]
+    ]
+  }
+}

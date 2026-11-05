@@ -1,0 +1,98 @@
+{
+  "Scikit-Learn Logistic Regression": {
+    "Framework": "Scikit-Learn",
+    "Model Name": "Scikit-Learn Logistic Regression",
+    "Accuracy": 0.7634,
+    "Precision_Class1": 0.7599,
+    "Recall_Class1": 0.927,
+    "F1_Class1": 0.8352,
+    "F1_Macro": 0.708,
+    "ROC_AUC": 0.8146,
+    "PR_AUC": 0.8699,
+    "Fit_Time_Seconds": 0.1702,
+    "Inference_Time_Seconds": 0.0002,
+    "Optimal_Threshold": 0.32,
+    "Confusion_Matrix": [
+      [
+        945,
+        1092
+      ],
+      [
+        272,
+        3456
+      ]
+    ]
+  },
+  "Scikit-Learn Random Forest": {
+    "Framework": "Scikit-Learn",
+    "Model Name": "Scikit-Learn Random Forest",
+    "Accuracy": 0.7606,
+    "Precision_Class1": 0.7463,
+    "Recall_Class1": 0.9541,
+    "F1_Class1": 0.8375,
+    "F1_Macro": 0.6915,
+    "ROC_AUC": 0.8102,
+    "PR_AUC": 0.8719,
+    "Fit_Time_Seconds": 0.9254,
+    "Inference_Time_Seconds": 0.0288,
+    "Optimal_Threshold": 0.37,
+    "Confusion_Matrix": [
+      [
+        828,
+        1209
+      ],
+      [
+        171,
+        3557
+      ]
+    ]
+  },
+  "Spark MLlib Logistic Regression": {
+    "Framework": "Apache Spark MLlib",
+    "Model Name": "Spark MLlib Logistic Regression",
+    "Accuracy": 0.7292,
+    "Precision_Class1": 0.8389,
+    "Recall_Class1": 0.7194,
+    "F1_Class1": 0.7746,
+    "F1_Macro": 0.7345,
+    "ROC_AUC": 0.8151,
+    "PR_AUC": 0.8696,
+    "Fit_Time_Seconds": 3.9284,
+    "Inference_Time_Seconds": 0.3428,
+    "Optimal_Threshold": 0.5,
+    "Confusion_Matrix": [
+      [
+        1522,
+        515
+      ],
+      [
+        1046,
+        2682
+      ]
+    ]
+  },
+  "Spark MLlib Random Forest": {
+    "Framework": "Apache Spark MLlib",
+    "Model Name": "Spark MLlib Random Forest",
+    "Accuracy": 0.7554,
+    "Precision_Class1": 0.7838,
+    "Recall_Class1": 0.8586,
+    "F1_Class1": 0.8195,
+    "F1_Macro": 0.7493,
+    "ROC_AUC": 0.8124,
+    "PR_AUC": 0.8715,
+    "Fit_Time_Seconds": 11.4977,
+    "Inference_Time_Seconds": 0.7882,
+    "Optimal_Threshold": 0.5,
+    "Confusion_Matrix": [
+      [
+        1154,
+        883
+      ],
+      [
+        527,
+        3201
+      ]
+    ]
+  }
+}

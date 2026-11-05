@@ -1,0 +1,49 @@
+{
+  "storage_technology": "Hadoop Distributed File System (HDFS) / Parquet Warehouse",
+  "compression_codec": "Snappy Columnar",
+  "raw_csv_size_mb": 218.58,
+  "hadoop_parquet_size_mb": 23.94,
+  "storage_savings_pct": 89.05,
+  "write_time_seconds": 5.33,
+  "olap_query_time_seconds": 0.148,
+  "num_partitions": 14,
+  "partition_scheme": "CAL_YR=YYYY",
+  "sample_query_results": [
+    {
+      "Tahun": 2023,
+      "Total_Insiden": 6093,
+      "Insiden_Lost_Time_Severe": 3728,
+      "Rata_Rata_Pengalaman_Tahun": 8.11
+    },
+    {
+      "Tahun": 2022,
+      "Total_Insiden": 5980,
+      "Insiden_Lost_Time_Severe": 3582,
+      "Rata_Rata_Pengalaman_Tahun": 8.1
+    },
+    {
+      "Tahun": 2021,
+      "Total_Insiden": 5676,
+      "Insiden_Lost_Time_Severe": 3539,
+      "Rata_Rata_Pengalaman_Tahun": 8.96
+    },
+    {
+      "Tahun": 2020,
+      "Total_Insiden": 5391,
+      "Insiden_Lost_Time_Severe": 3281,
+      "Rata_Rata_Pengalaman_Tahun": 9.08
+    },
+    {
+      "Tahun": 2019,
+      "Total_Insiden": 6824,
+      "Insiden_Lost_Time_Severe": 4017,
+      "Rata_Rata_Pengalaman_Tahun": 9.26
+    },
+    {
+      "Tahun": 2018,
+      "Total_Insiden": 6863,
+      "Insiden_Lost_Time_Severe": 4038,
+      "Rata_Rata_Pengalaman_Tahun": 9.33
+    }
+  ]
+}
