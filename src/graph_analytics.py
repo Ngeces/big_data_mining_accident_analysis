@@ -22,6 +22,7 @@ from config import (
 MIN_ACCIDENTS_FOR_AFFINITY = 3   # tambang dengan < 3 insiden tidak dihitung afinitas/lift-nya
 TOP_MINES_FOR_PROJECTION = 300   # proyeksi mine-to-mine hanya untuk 300 tambang dengan weighted degree tertinggi
 JACCARD_THRESHOLD = 0.20         # sisi proyeksi dibuat jika Jaccard(tetangga) >= 0.20 (tanpa bobot)
+EXPLORER_EDGES_PER_TYPE = 300    # jumlah edge terberat per tipe yang diekspor untuk explorer dashboard
 
 
 def run_graph_analytics(
@@ -228,6 +229,19 @@ def run_graph_analytics(
         {"source": u, "target": v, "weight": d.get("weight", 1), "edge_type": d.get("edge_type", "")}
         for u, v, d in sorted_edges
     ]
+
+    # Edge terberat PER TIPE agar explorer dashboard memuat kedua relasi
+    # (top edges global hampir seluruhnya CITED_FOR karena bobot pelanggaran jauh lebih besar).
+    explorer_rows = []
+    for etype in ("CITED_FOR", "REPORTED_ACCIDENT"):
+        typed = [(u, v, d["weight"]) for u, v, d in G.edges(data=True) if d.get("edge_type") == etype]
+        typed.sort(key=lambda x: x[2], reverse=True)
+        for u, v, w in typed[:EXPLORER_EDGES_PER_TYPE]:
+            src, dst = (u, v) if u.startswith("mine::") else (v, u)  # source selalu tambang
+            explorer_rows.append({"source": src, "target": dst, "weight": int(w), "edge_type": etype})
+    explorer_path = os.path.join(artifacts_dir, "graph_explorer_edges.csv")
+    pd.DataFrame(explorer_rows).to_csv(explorer_path, index=False)
+    print(f"[✓] Menyimpan edge explorer ({len(explorer_rows)} edge) ke: {explorer_path}")
 
     graph_viz_path = os.path.join(artifacts_dir, "graph_top_edges.json")
     with open(graph_viz_path, "w") as f:
