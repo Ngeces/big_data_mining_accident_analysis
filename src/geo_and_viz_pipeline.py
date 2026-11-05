@@ -8,16 +8,43 @@ Modul untuk:
 import os
 import json
 import pandas as pd
-import numpy as np
 import networkx as nx
+
+from config import (
+    MINES_FILE, ACCIDENTS_FILE, ARTIFACTS_DIR, HIGH_SEVERITY_CODES, LOW_SEVERITY_CODES,
+    GRAPH_START_YR, GRAPH_END_YR, RANDOM_SEED,
+)
+
+TREND_START_YR, TREND_END_YR = 2010, 2023
+
+
+def build_annual_trend(df_acc, artifacts_dir):
+    """Tren tahunan untuk Tab Overview. 'other' = kode 07/08/09/kosong yang dieksklusi dari model."""
+    df = df_acc[df_acc["CAL_YR"].between(TREND_START_YR, TREND_END_YR)].copy()
+    df["is_severe"] = df["DEGREE_INJURY_CD"].isin(HIGH_SEVERITY_CODES)
+    df["is_minor"] = df["DEGREE_INJURY_CD"].isin(LOW_SEVERITY_CODES)
+    trend = df.groupby("CAL_YR").agg(
+        total_accidents=("DEGREE_INJURY_CD", "size"),
+        severe_accidents=("is_severe", "sum"),
+        minor_accidents=("is_minor", "sum"),
+        coal_accidents=("COAL_METAL_IND", lambda s: (s == "C").sum()),
+        metal_accidents=("COAL_METAL_IND", lambda s: (s == "M").sum()),
+    ).reset_index()
+    trend["other_accidents"] = trend["total_accidents"] - trend["severe_accidents"] - trend["minor_accidents"]
+    trend["severe_pct"] = (trend["severe_accidents"] / trend["total_accidents"] * 100).round(2)
+    trend["CAL_YR"] = trend["CAL_YR"].astype(int)
+    path = os.path.join(artifacts_dir, "accident_annual_trend.csv")
+    trend.to_csv(path, index=False)
+    print(f"[✓] Menyimpan tren tahunan ke: {path}")
+    return trend
 
 
 def generate_geo_and_network_artifacts(
-    mines_file="data/Mines.txt",
-    accidents_file="data/Accidents.txt",
-    graph_nodes_file="artifacts/graph_nodes_summary.csv",
-    graph_edges_file="artifacts/graph_top_edges.json",
-    artifacts_dir="artifacts"
+    mines_file=MINES_FILE,
+    accidents_file=ACCIDENTS_FILE,
+    graph_nodes_file=os.path.join(ARTIFACTS_DIR, "graph_nodes_summary.csv"),
+    graph_edges_file=os.path.join(ARTIFACTS_DIR, "graph_top_edges.json"),
+    artifacts_dir=ARTIFACTS_DIR,
 ):
     print("=" * 60)
     print("[*] MEMULAI ENRICHMENT GEOGRAFIS & VISUAL NETWORK GRAPH LAYOUT")
@@ -49,27 +76,32 @@ def generate_geo_and_network_artifacts(
 
     # 2. Gabungkan dengan Metrik Graph Analytics (Weighted Degree, PageRank, Community)
     print(f"[*] Menggabungkan dengan metrik graf dari {graph_nodes_file}...")
-    df_nodes = pd.read_csv(graph_nodes_file)
+    # MINE_ID dibaca sebagai string agar leading zero cocok dengan Mines.txt
+    df_nodes = pd.read_csv(graph_nodes_file, dtype={"node_id": str, "label": str})
     mine_nodes = df_nodes[df_nodes["node_type"] == "mine"].copy()
-    mine_nodes["MINE_ID"] = mine_nodes["label"].astype(str)
+    mine_nodes["MINE_ID"] = mine_nodes["label"]
 
-    # Hitung total kecelakaan per tambang dari Accidents.txt (2018-2023)
     df_acc = pd.read_csv(
         accidents_file,
         sep="|",
-        usecols=["MINE_ID", "CAL_YR", "DEGREE_INJURY_CD", "ACCIDENT_TYPE"],
+        usecols=["MINE_ID", "CAL_YR", "DEGREE_INJURY_CD", "ACCIDENT_TYPE", "COAL_METAL_IND"],
         dtype=str,
-        encoding="latin1"
+        encoding="latin1",
+        quotechar='"',
     )
     for c in df_acc.columns:
         df_acc[c] = df_acc[c].str.strip().str.replace('"', '')
     df_acc["CAL_YR"] = pd.to_numeric(df_acc["CAL_YR"], errors="coerce")
-    df_acc_win = df_acc[df_acc["CAL_YR"].between(2018, 2023)].copy()
+
+    build_annual_trend(df_acc, artifacts_dir)
+
+    # Statistik per tambang memakai jendela yang SAMA dengan graph analytics
+    df_acc_win = df_acc[df_acc["CAL_YR"].between(GRAPH_START_YR, GRAPH_END_YR)].copy()
 
     acc_stats = df_acc_win.groupby("MINE_ID").agg(
-        total_accidents=("DEGREE_INJURY_CD", "count"),
-        severe_accidents=("DEGREE_INJURY_CD", lambda s: s.isin(["01", "02", "03", "04", "05"]).sum()),
-        top_hazard=("ACCIDENT_TYPE", lambda s: s.value_counts().index[0] if len(s) > 0 else "None")
+        total_accidents=("DEGREE_INJURY_CD", "size"),
+        severe_accidents=("DEGREE_INJURY_CD", lambda s: s.isin(HIGH_SEVERITY_CODES).sum()),
+        top_hazard=("ACCIDENT_TYPE", lambda s: s.value_counts().index[0] if s.notna().any() else "None")
     ).reset_index()
 
     # Merge Geo + Graph + Accidents
@@ -105,7 +137,7 @@ def generate_geo_and_network_artifacts(
         sub_G.nodes[n]["community"] = attr.get("community_id", -1)
 
     # Hitung posisi 2D Spring Layout
-    pos = nx.spring_layout(sub_G, k=0.45, iterations=60, seed=42)
+    pos = nx.spring_layout(sub_G, k=0.45, iterations=60, seed=RANDOM_SEED)
 
     # Siapkan data koordinat untuk Plotly
     nodes_viz = []

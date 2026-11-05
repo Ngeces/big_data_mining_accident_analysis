@@ -1,18 +1,37 @@
 """
 app.py
 Dashboard Streamlit Interaktif: Monitoring K3, Peta Geografis Tambang,
-Arsitektur Hadoop HDFS, Simulasi Prediksi Keparahan Cedera, Benchmark Model,
+Penyimpanan Parquet (format Hadoop), Simulasi Prediksi Keparahan Cedera, Benchmark Model,
 serta Visual Network Graph Analytics & Mine-Accident Closeness.
 """
 
 import os
+import sys
 import json
 import joblib
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
+import pydeck as pdk
 import streamlit as st
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
+from config import GRAPH_START_YR, GRAPH_END_YR, TRAIN_YEARS, VAL_YEAR, TEST_YEAR  # noqa: E402
+
+ARTIFACTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "artifacts")
+
+
+def artifact(name):
+    return os.path.join(ARTIFACTS, name)
+
+
+def read_json(name):
+    path = artifact(name)
+    if os.path.exists(path):
+        with open(path) as f:
+            return json.load(f)
+    return {}
 
 # 1. Konfigurasi Halaman & Tema
 st.set_page_config(
@@ -54,85 +73,55 @@ st.warning(
 st.title("⛏️ MSHA Big Data Analytics & Mine Safety Platform")
 st.markdown(
     "**Course:** COMP8035041 Big Data Analytics | **Program:** Magister Teknik Informatika BINUS University  \n"
-    "*Integrasi Hadoop HDFS Storage, Pemodelan Machine Learning (Scikit-Learn vs Spark MLlib), Peta Geografis, & Graph Analytics*"
+    "*Integrasi Parquet Storage (format Hadoop), Pemodelan Machine Learning (Scikit-Learn vs Spark MLlib), Peta Geografis, & Graph Analytics*"
 )
 
 # 2. Fungsi Pemuatan Artifak (Cached)
 @st.cache_resource
 def load_ml_artifacts():
-    model_path = "artifacts/best_model.joblib"
-    preproc_path = "artifacts/preprocessor.joblib"
+    model_path, preproc_path = artifact("best_model.joblib"), artifact("preprocessor.joblib")
     if os.path.exists(model_path) and os.path.exists(preproc_path):
         return joblib.load(model_path), joblib.load(preproc_path)
     return None, None
 
-@st.cache_data
-def load_benchmark_data():
-    p = "artifacts/benchmark_results.json"
-    if os.path.exists(p):
-        with open(p, "r") as f:
-            return json.load(f)
-    return {}
 
 @st.cache_data
-def load_hadoop_data():
-    p = "artifacts/hadoop_storage_summary.json"
-    if os.path.exists(p):
-        with open(p, "r") as f:
-            return json.load(f)
-    return {}
+def load_json_cached(name):
+    return read_json(name)
+
 
 @st.cache_data
-def load_graph_data():
-    nodes_path = "artifacts/graph_nodes_summary.csv"
-    edges_path = "artifacts/graph_top_edges.json"
-    close_path = "artifacts/mine_accident_closeness.json"
-    layout_path = "artifacts/graph_network_layout.json"
+def load_csv_cached(name, **kwargs):
+    path = artifact(name)
+    return pd.read_csv(path, **kwargs) if os.path.exists(path) else pd.DataFrame()
 
-    df_nodes = pd.read_csv(nodes_path) if os.path.exists(nodes_path) else pd.DataFrame()
-    edges_data = {}
-    if os.path.exists(edges_path):
-        with open(edges_path, "r") as f:
-            edges_data = json.load(f)
 
-    closeness_data = {}
-    if os.path.exists(close_path):
-        with open(close_path, "r") as f:
-            closeness_data = json.load(f)
+def model_categories(preproc):
+    """Kategori yang benar-benar dilihat model saat training (dari OneHotEncoder yang sudah di-fit)."""
+    try:
+        ohe = preproc.named_transformers_["cat"]
+        cols = preproc.transformers_[0][2]
+        return {col: [str(c) for c in cats] for col, cats in zip(cols, ohe.categories_)}
+    except (AttributeError, KeyError, IndexError):
+        return {}
 
-    network_layout = {}
-    if os.path.exists(layout_path):
-        with open(layout_path, "r") as f:
-            network_layout = json.load(f)
-
-    return df_nodes, edges_data, closeness_data, network_layout
-
-@st.cache_data
-def load_trend_data():
-    trend_path = "artifacts/accident_annual_trend.csv"
-    if os.path.exists(trend_path):
-        return pd.read_csv(trend_path)
-    return pd.DataFrame()
-
-@st.cache_data
-def load_geo_data():
-    geo_path = "artifacts/mine_geo_accidents.csv"
-    if os.path.exists(geo_path):
-        return pd.read_csv(geo_path)
-    return pd.DataFrame()
 
 best_model, preprocessor = load_ml_artifacts()
-benchmarks = load_benchmark_data()
-hadoop_summary = load_hadoop_data()
-df_nodes, edges_data, closeness_data, network_layout = load_graph_data()
-df_geo = load_geo_data()
-df_trend = load_trend_data()
+benchmarks = load_json_cached("benchmark_results.json")
+hadoop_summary = load_json_cached("hadoop_storage_summary.json")
+prep_meta = load_json_cached("preprocessing_metadata.json")
+model_meta = load_json_cached("model_metadata.json")
+closeness_data = load_json_cached("mine_accident_closeness.json")
+network_layout = load_json_cached("graph_network_layout.json")
+df_nodes = load_csv_cached("graph_nodes_summary.csv", dtype={"node_id": str, "label": str})
+df_geo = load_csv_cached("mine_geo_accidents.csv", dtype={"MINE_ID": str})
+df_trend = load_csv_cached("accident_annual_trend.csv")
 
 # 3. Struktur Tab Antarmuka
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "📊 1. Overview K3 & Tren",
     "🗺️ 2. Peta Geografis Tambang",
-    "🗄️ 3. Hadoop HDFS Warehouse",
+    "🗄️ 3. Parquet Data Warehouse",
     "🎯 4. Simulasi Prediksi Keparahan",
     "⚡ 5. Benchmark Model ML",
     "🕸️ 6. Graph Analytics & Visual Network"
@@ -145,11 +134,21 @@ with tab1:
     st.header("Ringkasan Eksekutif Analisis Data Keselamatan Kerja MSHA (2018–2023)")
     st.markdown("Statistik deskriptif insiden kecelakaan tambang setelah pembersihan dan penyaringan temporal.")
 
+    split = prep_meta.get("split", {})
+    n_train, n_val, n_test = split.get("train_rows"), split.get("val_rows"), split.get("test_rows")
+    n_total = sum(x for x in (n_train, n_val, n_test) if x) or None
+    ratios = split.get("class1_ratio", {})
+    class1_pct = None
+    if n_total and ratios:
+        class1_pct = 100 * sum(ratios[k] * n for k, n in (("train", n_train), ("val", n_val), ("test", n_test))) / n_total
+
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Total Insiden (2018-2023)", "34,931", "Dataset Tervalidasi")
-    col2.metric("Lost-Time / Severe Ratio", "63.3%", "Target Class 1")
-    col3.metric("Simpul Graf Heterogen", f"{len(df_nodes):,}" if not df_nodes.empty else "16,463", "Mines, Standards, Types")
-    col4.metric("Tambang Terpetakan di Peta", f"{len(df_geo):,}" if not df_geo.empty else "12,869", "Koordinat GPS Valid")
+    col1.metric(f"Insiden Berlabel ({TRAIN_YEARS[0]}-{TEST_YEAR})", f"{n_total:,}" if n_total else "n/a", "Setelah eksklusi kode 07/08/09")
+    col2.metric("Rasio Lost-Time / Severe", f"{class1_pct:.1f}%" if class1_pct is not None else "n/a", "Target Class 1")
+    col3.metric("Simpul Graf Heterogen", f"{len(df_nodes):,}" if not df_nodes.empty else "n/a", "Mines, Standards, Types")
+    col4.metric("Tambang Terpetakan di Peta", f"{len(df_geo):,}" if not df_geo.empty else "n/a", "Koordinat valid")
+    if not prep_meta:
+        st.info("Jalankan `src/data_pipeline.py` untuk membuat `artifacts/preprocessing_metadata.json`.")
 
     st.markdown("---")
     st.subheader("Distribusi Insiden Berdasarkan Periode Waktu & Komoditas")
@@ -157,19 +156,23 @@ with tab1:
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("**Insiden Berdasarkan Komoditas Tambang (Coal vs Metal):**")
-        df_pie = pd.DataFrame({
-            "Komoditas": ["Coal (Batubara)", "Metal / Non-Metal"],
-            "Jumlah": [13240, 21691]
-        })
-        fig_pie = px.pie(df_pie, names="Komoditas", values="Jumlah", hole=0.4, color_discrete_sequence=["#1f77b4", "#ff7f0e"])
-        st.plotly_chart(fig_pie, use_container_width=True)
+        commodity = prep_meta.get("commodity_counts", {})
+        if commodity:
+            names = {"C": "Coal (Batubara)", "M": "Metal / Non-Metal"}
+            df_pie = pd.DataFrame({
+                "Komoditas": [names.get(k, k) for k in commodity],
+                "Jumlah": list(commodity.values()),
+            })
+            fig_pie = px.pie(df_pie, names="Komoditas", values="Jumlah", hole=0.4)
+            st.plotly_chart(fig_pie, use_container_width=True)
 
     with c2:
         st.markdown("**Pembagian Partisi Dataset Temporal untuk Pemodelan:**")
         df_part = pd.DataFrame({
-            "Partisi": ["Training Set (2018-2021)", "Validation Set (2022)", "Test Set (2023)"],
-            "Jumlah Baris": [23484, 5682, 5765],
-            "Tujuan Metodologi": ["Fitting Preprocessor & Model", "Hyperparameter & Threshold Tuning", "Final Unbiased Evaluation"]
+            "Partisi": [f"Training Set ({TRAIN_YEARS[0]}-{TRAIN_YEARS[1]})", f"Validation Set ({VAL_YEAR})", f"Test Set ({TEST_YEAR})"],
+            "Jumlah Baris": [n_train, n_val, n_test],
+            "Rasio Class 1": [ratios.get("train"), ratios.get("val"), ratios.get("test")],
+            "Tujuan Metodologi": ["Fitting Preprocessor & Model", "Pemilihan Model & Threshold", "Evaluasi Akhir (sekali)"],
         })
         st.dataframe(df_part, use_container_width=True)
 
@@ -237,12 +240,12 @@ with tab1:
                 line=dict(color="#d93025", width=2.5, dash="dash"),
                 marker=dict(size=7)
             ))
-            # Garis Insiden Ringan (Minor / First Aid)
+            # Garis Insiden No Lost-Time (kode 00, 06, 10)
             fig_trend.add_trace(go.Scatter(
                 x=filtered_trend["CAL_YR"],
                 y=filtered_trend["minor_accidents"],
                 mode="lines+markers",
-                name="Cedera Ringan (No Lost-Time)",
+                name="No Lost-Time (kode 00, 06, 10)",
                 line=dict(color="#1e8e3e", width=2.5, dash="dot"),
                 marker=dict(size=7)
             ))
@@ -291,12 +294,7 @@ with tab1:
 
 # ==============================================================================
 # TAB 2: PETA GEOGRAFIS LOKASI TAMBANG (INTERACTIVE MAP)
-# =============================================================================import pydeck as pdk
-import numpy as np
-import pydeck as pdk
-
-
-
+# ==============================================================================
 with tab2:
     st.header("🗺️ Peta Interaktif Sebaran Lokasi Tambang Amerika Serikat")
     st.markdown(
@@ -381,21 +379,22 @@ with tab2:
             )
 
             # Render PyDeck Chart menggunakan tema peta CARTO Positron (Light) atau Dark Matter
+            # Basemap CARTO tidak memerlukan API key. Jangan menulis kunci API di kode;
+            # jika suatu saat diperlukan, baca dari variabel lingkungan atau st.secrets.
             st.pydeck_chart(
                 pdk.Deck(
                     layers=[layer],
                     initial_view_state=view_state,
-                    # Menggunakan gaya peta CARTO gratis tanpa perlu API key khusus untuk visualisasi dasar
-                    # map_style=pdk.map_styles.CARTO_POSITRON, 
-                    api_keys={"carto": "cb1_50zx_1_9146970dd9d4d2a29ed51020"}, 
+                    map_provider="carto",
+                    map_style="light",
                     tooltip={
                         "html": """
                             <b>Nama Tambang:</b> {CURRENT_MINE_NAME} <br/>
-                            <b>ID Tamb Bahaya:</b> {MINE_ID} <br/>
+                            <b>MINE_ID:</b> {MINE_ID} <br/>
                             <b>Negara Bagian:</b> {STATE} <br/>
                             <b>Tipe Tambang:</b> {CURRENT_MINE_TYPE} <br/>
                             <b>Operator:</b> {CURRENT_OPERATOR_NAME} <br/>
-                            <b>Total Kecelakaan:</b> {total_accidents} <br/>
+                            <b>Total Kecelakaan (jendela graf):</b> {total_accidents} <br/>
                             <b>Bahaya Dominan:</b> {top_hazard} <br/>
                             <b>ID Komunitas Louvain:</b> {community_id}
                         """,
@@ -418,22 +417,23 @@ with tab2:
 
 
 # ==============================================================================
-# TAB 3: HADOOP HDFS STORAGE LAYER
+# TAB 3: PARQUET STORAGE LAYER
 # ==============================================================================
 with tab3:
-    st.header("🗄️ Arsitektur Penyimpanan Big Data: Hadoop HDFS & Apache Parquet Warehouse")
+    st.header("🗄️ Penyimpanan Big Data: Apache Parquet dengan Partisi Hive-style")
     st.markdown(
         "Memenuhi capaian pembelajaran **LO 2 & LO 3 (Driving Big Data with Hadoop Tools and Technologies)**.  \n"
-        "Data mentah teks MSHA dikonversi ke dalam hierarki penyimpanan terdistribusi berbasis **Hadoop HDFS** "
-        "menggunakan format kolom **Apache Parquet (Snappy Compression)** dan partisi temporal Hive (`CAL_YR=YYYY`)."
+        "Data mentah teks MSHA dikonversi oleh Spark ke format kolom **Apache Parquet (Snappy)** dengan partisi "
+        "temporal Hive-style (`CAL_YR=YYYY`). Pada prototipe ini data disimpan di filesystem lokal; "
+        "format dan tata letak direktorinya sama dengan yang dipakai di HDFS."
     )
 
     if hadoop_summary:
         h1, h2, h3, h4 = st.columns(4)
-        h1.metric("Ukuran Data Mentah (CSV)", f"{hadoop_summary.get('raw_csv_size_mb', 218.58)} MB", "Uncompressed Text")
-        h2.metric("Ukuran Hadoop Parquet", f"{hadoop_summary.get('hadoop_parquet_size_mb', 23.94)} MB", "Snappy Columnar")
-        h3.metric("Efisiensi Kompresi", f"{hadoop_summary.get('storage_savings_pct', 89.05)}%", "Penghematan Disk")
-        h4.metric("Kecepatan Kueri SQL", f"{hadoop_summary.get('olap_query_time_seconds', 0.148)} s", "Spark SQL OLAP")
+        h1.metric("Ukuran Data Mentah (TXT)", f"{hadoop_summary.get('raw_csv_size_mb', 'n/a')} MB", "Uncompressed Text")
+        h2.metric("Ukuran Parquet", f"{hadoop_summary.get('hadoop_parquet_size_mb', 'n/a')} MB", "Snappy Columnar")
+        h3.metric("Efisiensi Kompresi", f"{hadoop_summary.get('storage_savings_pct', 'n/a')}%", "Penghematan Disk")
+        h4.metric("Waktu Kueri SQL", f"{hadoop_summary.get('olap_query_time_seconds', 'n/a')} s", "Spark SQL")
 
         st.markdown("---")
         h_col_a, h_col_b = st.columns(2)
@@ -441,14 +441,14 @@ with tab3:
         with h_col_a:
             st.subheader("Perbandingan Ukuran Penyimpanan (MB)")
             df_storage = pd.DataFrame({
-                "Format Penyimpanan": ["Raw CSV / TXT", "Hadoop Snappy Parquet"],
-                "Ukuran Disk (MB)": [hadoop_summary.get('raw_csv_size_mb', 218.58), hadoop_summary.get('hadoop_parquet_size_mb', 23.94)]
+                "Format Penyimpanan": ["Raw TXT (pipe-delimited)", "Snappy Parquet"],
+                "Ukuran Disk (MB)": [hadoop_summary.get('raw_csv_size_mb'), hadoop_summary.get('hadoop_parquet_size_mb')]
             })
             fig_bar = px.bar(df_storage, x="Format Penyimpanan", y="Ukuran Disk (MB)", color="Format Penyimpanan", text_auto=True)
             st.plotly_chart(fig_bar, use_container_width=True)
 
         with h_col_b:
-            st.subheader("Struktur Partisi Direktori HDFS Warehouse")
+            st.subheader("Struktur Partisi Direktori Warehouse")
             st.code(
                 "data/hdfs_warehouse/msha_accidents/\n"
                 "├── CAL_YR=2018/\n"
@@ -465,11 +465,11 @@ with tab3:
             st.caption("📌 *Hierarki partisi standar Apache Hive / HDFS memungkinkan kueri analitik melakukan partition pruning.*")
 
         st.markdown("---")
-        st.subheader("Hasil Kueri Analitik Spark SQL di atas Hadoop Warehouse:")
+        st.subheader("Hasil Kueri Analitik Spark SQL di atas Parquet Warehouse:")
         st.code(
             "SELECT CAL_YR AS Tahun, COUNT(*) AS Total_Insiden,\n"
             "       SUM(CASE WHEN DEGREE_INJURY_CD IN ('01','02','03','04','05') THEN 1 ELSE 0 END) AS Insiden_Lost_Time_Severe,\n"
-            "       ROUND(AVG(COALESCE(TOT_EXPER, 0)), 2) AS Rata_Rata_Pengalaman_Tahun\n"
+            "       ROUND(AVG(TOT_EXPER), 2) AS Rata_Rata_Pengalaman_Tahun\n"
             "FROM msha_accidents WHERE CAL_YR BETWEEN 2018 AND 2023\n"
             "GROUP BY CAL_YR ORDER BY CAL_YR DESC;",
             language="sql"
@@ -492,59 +492,41 @@ with tab4:
     if best_model is None or preprocessor is None:
         st.error("Artifak model belum ditemukan di folder `artifacts/`. Harap jalankan pipeline pemodelan terlebih dahulu.")
     else:
+        # Pilihan input = kategori yang dipelajari OneHotEncoder saat training.
+        # Nilai di luar daftar ini akan menjadi vektor nol (diabaikan), jadi tidak boleh diketik bebas.
+        cats = model_categories(preprocessor) or model_meta.get("categories", {})
+        if not cats:
+            st.error("Kategori model tidak dapat dibaca dari preprocessor. Jalankan ulang `src/models_baseline.py`.")
+            st.stop()
+
+        threshold = model_meta.get("threshold")
+        if threshold is None:
+            st.warning("`model_metadata.json` belum ada; memakai ambang 0.5. Jalankan ulang `src/models_baseline.py`.")
+            threshold = 0.5
+        st.caption(
+            f"Model: **{model_meta.get('model_name', 'tidak diketahui')}** | "
+            f"Ambang klasifikasi (dipilih pada validation set): **{threshold:.2f}**"
+        )
+
+        def pick(label, col, preferred=None):
+            options = cats.get(col, [])
+            index = options.index(preferred) if preferred in options else 0
+            return st.selectbox(label, options, index=index)
+
         with st.form("scenario_form"):
             col_a, col_b, col_c = st.columns(3)
 
             with col_a:
-                subunit = st.selectbox(
-                    "Lokasi Kerja (Subunit):",
-                    ["STRIP, QUARY, OPEN PIT", "UNDERGROUND", "MILL OPERATION/PREPARATION PLANT", "SURFACE AT UNDERGROUND", "INDEPENDENT SHOPS OR YARDS", "OTHER"]
-                )
-                commodity = st.selectbox("Komoditas Tambang:", ["C (Coal)", "M (Metal/Non-Metal)"])
-                commodity_val = "C" if "C" in commodity else "M"
-                shift = st.selectbox("Waktu Shift Kerja:", ["DAY", "EVENING", "NIGHT", "UNKNOWN"])
+                subunit = pick("Lokasi Kerja (Subunit):", "SUBUNIT")
+                commodity_val = pick("Komoditas Tambang (C = Coal, M = Metal/Non-Metal):", "COAL_METAL_IND")
+                shift = pick("Waktu Shift Kerja:", "SHIFT_PERIOD", "DAY")
 
             with col_b:
-                accident_type = st.selectbox(
-                    "Tipe Insiden Kecelakaan:",
-                    [
-                        "Over-exertion NEC",
-                        "Caught in, under or between a moving and a stationary object",
-                        "Struck by... NEC",
-                        "Struck by falling object",
-                        "Fall to the walkway or running board",
-                        "Fall from... NEC",
-                        "Struck against stationary object",
-                        "Handling material",
-                        "Accident type, without injuries"
-                    ]
-                )
-                mining_equip = st.selectbox(
-                    "Peralatan Tambang yang Terlibat:",
-                    [
-                        "NO VALUE FOUND",
-                        "Hand tools (not powered)",
-                        "Belt conveyor",
-                        "Forklift",
-                        "Front end loader, Tractor shovel, Payloader",
-                        "Haulage truck (off highway)",
-                        "Continuous miner",
-                        "OTHER"
-                    ]
-                )
+                accident_type = pick("Tipe Insiden Kecelakaan:", "ACCIDENT_TYPE")
+                mining_equip = pick("Peralatan Tambang yang Terlibat:", "MINING_EQUIP")
 
             with col_c:
-                activity = st.selectbox(
-                    "Aktivitas Pekerja Saat Insiden:",
-                    [
-                        "Handling supplies or material",
-                        "Machine maintenance",
-                        "Walking, running",
-                        "Operating equipment",
-                        "Inspect equipment or work area",
-                        "OTHER"
-                    ]
-                )
+                activity = pick("Aktivitas Pekerja Saat Insiden:", "ACTIVITY")
                 tot_exper = st.slider("Total Pengalaman Tambang (Tahun):", 0.0, 40.0, 5.0, 0.5)
                 mine_exper = st.slider("Pengalaman di Tambang Ini (Tahun):", 0.0, 30.0, 2.0, 0.5)
                 job_exper = st.slider("Pengalaman di Posisi Ini (Tahun):", 0.0, 30.0, 2.0, 0.5)
@@ -571,16 +553,18 @@ with tab4:
             st.subheader("Hasil Estimasi Model:")
             r_col1, r_col2 = st.columns([1, 2])
 
+            is_positive = prob_high >= threshold
             with r_col1:
                 st.metric(
-                    label="Estimasi Probabilitas Lost-Time / Severe",
+                    label="Skor Model untuk Lost-Time / Severe",
                     value=f"{prob_high * 100:.1f}%",
-                    delta="High Risk Outcome" if prob_high >= 0.5 else "Low Risk Outcome",
-                    delta_color="inverse" if prob_high >= 0.5 else "normal"
+                    delta=f"≥ ambang {threshold:.2f}" if is_positive else f"< ambang {threshold:.2f}",
+                    delta_color="inverse" if is_positive else "normal"
                 )
+                st.caption("Skor ini belum dikalibrasi; perlakukan sebagai peringkat risiko, bukan peluang pasti.")
 
             with r_col2:
-                if prob_high >= 0.5:
+                if is_positive:
                     st.error(
                         f"🚨 **Klasifikasi: LOST-TIME OR SEVERE INJURY OUTCOME**  \n"
                         f"Skenario ini memiliki indikasi korelasi tinggi terhadap cedera yang menimbulkan hari kerja hilang "
@@ -588,9 +572,9 @@ with tab4:
                     )
                 else:
                     st.success(
-                        f"✅ **Klasifikasi: MINOR / NO LOST-TIME OUTCOME**  \n"
-                        f"Skenario ini memiliki probabilitas cedera berat lebih rendah; cenderung merupakan pertolongan pertama "
-                        f"atau insiden tanpa hari kerja hilang."
+                        f"✅ **Klasifikasi: NO LOST-TIME OUTCOME**  \n"
+                        f"Skor skenario ini berada di bawah ambang model untuk kategori Lost-Time / Severe "
+                        f"(kode 01-05) berdasarkan data historis."
                     )
 
 # ==============================================================================
@@ -617,10 +601,17 @@ with tab5:
                 "F1-Score (C1)": metrics.get("F1_Class1", 0.0),
                 "ROC-AUC": metrics.get("ROC_AUC", 0.0),
                 "PR-AUC": metrics.get("PR_AUC", 0.0),
-                "Fit Time (s)": metrics.get("Fit_Time_Seconds", 0.0),
-                "Inf Time (s)": metrics.get("Inference_Time_Seconds", 0.0),
+                "Val F1 (C1)": metrics.get("Val_F1_Class1"),
+                "Threshold": metrics.get("Optimal_Threshold"),
+                "Fit Time (s)": metrics.get("Fit_Time_Seconds"),
+                "Inf Time (s)": metrics.get("Inference_Time_Seconds"),
             })
         df_bench = pd.DataFrame(table_rows)
+        st.caption(
+            "Semua model memakai partisi, fitur, dan class weight yang sama; threshold setiap model dipilih "
+            "pada validation set. Baris *Majority Class Baseline* adalah pembanding minimum: model yang berguna "
+            "harus mengunggulinya. Fit time Spark tidak termasuk waktu start SparkSession."
+        )
         st.dataframe(df_bench.style.highlight_max(subset=["F1-Score (C1)", "ROC-AUC", "PR-AUC"], color="#90EE90"), use_container_width=True)
 
         st.markdown("---")
@@ -759,7 +750,7 @@ with tab6:
         tot_acc = mine_info.get("total_accidents", 0)
         top_hazards = mine_info.get("top_hazards", [])
 
-        st.markdown(f"**Total Insiden Tercatat di Tambang `{selected_mine}` (2020–2023):** `{tot_acc:,}` kejadian")
+        st.markdown(f"**Total Insiden Tercatat di Tambang `{selected_mine}` ({GRAPH_START_YR}–{GRAPH_END_YR}):** `{tot_acc:,}` kejadian")
 
         m_col1, m_col2 = st.columns(2)
 
