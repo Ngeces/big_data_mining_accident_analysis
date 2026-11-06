@@ -312,7 +312,7 @@ def page_overview():
                                      textposition="outside"))
                 fig.update_layout(yaxis_title="% dari total laporan", yaxis_range=[0, 100])
             fig.update_layout(hovermode="x unified", xaxis=dict(dtick=1))
-            st.plotly_chart(style_fig(fig, 400), use_container_width=True)
+            st.plotly_chart(style_fig(fig, 400), width='stretch')
 
             total_period = int(trend["total_accidents"].sum())
             severe_period = int(trend["severe_accidents"].sum())
@@ -343,7 +343,7 @@ def page_overview():
                 fig = px.pie(dfp, names="Komoditas", values="Jumlah", hole=0.55, color="Komoditas",
                              color_discrete_map={"Coal": COLORS["coal"], "Metal / Non-Metal": COLORS["metal"]})
                 fig.update_traces(textinfo="percent+label", textposition="outside")
-                st.plotly_chart(style_fig(fig, 260, legend=False), use_container_width=True)
+                st.plotly_chart(style_fig(fig, 260, legend=False), width='stretch')
             else:
                 st.caption("Belum ada data komoditas.")
 
@@ -359,7 +359,7 @@ def page_overview():
                 fig = px.bar(pd.DataFrame(rows), y="Partisi", x="Jumlah", color="Kelas", orientation="h",
                              color_discrete_map={"Class 1": COLORS["severe"], "Class 0": COLORS["minor"]})
                 fig.update_yaxes(categoryorder="array", categoryarray=[r["Partisi"] for r in rows[::-2]])
-                st.plotly_chart(style_fig(fig, 220), use_container_width=True)
+                st.plotly_chart(style_fig(fig, 220), width='stretch')
                 st.caption("Train: fit preprocessing & model · Validation: pilih model & threshold · Test: evaluasi akhir.")
             else:
                 st.caption("Belum ada metadata partisi.")
@@ -468,21 +468,21 @@ def page_map():
             fig = px.bar(by_state.reset_index(), x="total_accidents", y="STATE", orientation="h",
                          labels={"total_accidents": "Kecelakaan", "STATE": ""}, color_discrete_sequence=[COLORS["metal"]])
             fig.update_yaxes(autorange="reversed")
-            st.plotly_chart(style_fig(fig, 260, legend=False), use_container_width=True)
+            st.plotly_chart(style_fig(fig, 260, legend=False), width='stretch')
         with st.container(border=True):
             st.markdown("#### Bahaya dominan")
             hz = data[data["total_accidents"] > 0]["top_hazard"].value_counts().head(8).reset_index()
             hz.columns = ["Tipe", "Tambang"]
             fig = px.bar(hz, x="Tambang", y="Tipe", orientation="h", color_discrete_sequence=[COLORS["accident_type"]])
             fig.update_yaxes(autorange="reversed", title="")
-            st.plotly_chart(style_fig(fig, 260, legend=False), use_container_width=True)
+            st.plotly_chart(style_fig(fig, 260, legend=False), width='stretch')
 
     with st.expander(f"📋 Tabel tambang ({len(data):,} baris)"):
         cols = ["MINE_ID", "CURRENT_MINE_NAME", "STATE", "CURRENT_MINE_TYPE", "CURRENT_OPERATOR_NAME",
                 "total_accidents", "severe_accidents", "top_hazard", "weighted_degree", "community_id"]
         table = data[cols].sort_values("total_accidents", ascending=False)
         st.dataframe(
-            table, hide_index=True, use_container_width=True, height=360,
+            table, hide_index=True, width='stretch', height=360,
             column_config={
                 "CURRENT_MINE_NAME": "Nama tambang", "CURRENT_MINE_TYPE": "Tipe",
                 "CURRENT_OPERATOR_NAME": "Operator", "top_hazard": "Bahaya dominan",
@@ -537,7 +537,7 @@ def page_storage():
         fig = px.bar(dfs, x="MB", y="Format", orientation="h", text="MB", color="Format",
                      color_discrete_map={"Raw TXT": COLORS["other"], "Parquet (Snappy)": COLORS["primary"]})
         fig.update_traces(texttemplate="%{text:.1f} MB", textposition="outside")
-        st.plotly_chart(style_fig(fig, 230, legend=False), use_container_width=True)
+        st.plotly_chart(style_fig(fig, 230, legend=False), width='stretch')
         if "rows_written" in storage:
             st.caption(f"Baris ditulis: {storage['rows_written']:,} · tanpa CAL_YR valid: {storage.get('rows_dropped_null_year', 0):,}")
 
@@ -578,9 +578,9 @@ def page_storage():
                                      yaxis="y2", mode="lines+markers", line=dict(color=COLORS["coal"], width=2)))
             fig.update_layout(barmode="group", xaxis=dict(dtick=1),
                               yaxis2=dict(overlaying="y", side="right", showgrid=False, title="Tahun"))
-            q2.plotly_chart(style_fig(fig, 300), use_container_width=True)
+            q2.plotly_chart(style_fig(fig, 300), width='stretch')
             with st.expander("Lihat hasil kueri"):
-                st.dataframe(res, hide_index=True, use_container_width=True)
+                st.dataframe(res, hide_index=True, width='stretch')
 
 
 # ==============================================================================
@@ -651,7 +651,7 @@ def page_predictor():
                 median = 5.0 if median is None or pd.isna(median) else round(float(median), 1)
                 default = float(np.clip(st.session_state.get("scenario", {}).get(col, median), 0.0, 60.0))
                 values[col] = nc[i].number_input(num_labels[col], 0.0, 60.0, default, 0.5)
-            submitted = st.form_submit_button("🔍 Hitung skor", type="primary", use_container_width=True)
+            submitted = st.form_submit_button("🔍 Hitung skor", type="primary", width='stretch')
 
     if submitted:
         st.session_state["scenario"] = values
@@ -670,7 +670,7 @@ def page_predictor():
             st.info("Isi skenario lalu klik **Hitung skor**.")
         else:
             s = st.session_state["score"]
-            st.plotly_chart(gauge(s, threshold), use_container_width=True)
+            st.plotly_chart(gauge(s, threshold), width='stretch')
             positive = s >= threshold
             st.markdown(
                 f'<div class="verdict {"pos" if positive else "neg"}"><b>'
@@ -702,7 +702,7 @@ def page_predictor():
                           annotation_text="ambang", annotation_position="top left")
             fig.add_vline(x=float(base[num_var]), line_dash="dot", line_color=COLORS["muted"])
             fig.update_layout(xaxis_title=num_labels[num_var], yaxis_title="Skor (%)", yaxis_range=[0, 100])
-            st.plotly_chart(style_fig(fig, 330, legend=False), use_container_width=True)
+            st.plotly_chart(style_fig(fig, 330, legend=False), width='stretch')
         with w2:
             cat_var = st.selectbox("Variabel kategorikal", CAT_COLS, index=CAT_COLS.index("ACCIDENT_TYPE"),
                                    format_func=lambda c: labels.get(c, c))
@@ -716,13 +716,13 @@ def page_predictor():
             fig.add_vline(x=threshold * 100, line_dash="dash", line_color=COLORS["severe"])
             fig.update_layout(xaxis_title="Skor (%)", yaxis_title="", xaxis_range=[0, 100])
             fig.update_yaxes(tickfont=dict(size=10))
-            st.plotly_chart(style_fig(fig, max(330, 18 * len(options))), use_container_width=True)
+            st.plotly_chart(style_fig(fig, max(330, 18 * len(options))), width='stretch')
 
     history = st.session_state.get("history", [])
     if history:
         with st.expander(f"🕘 Riwayat skenario ({len(history)})"):
             st.dataframe(
-                pd.DataFrame(history), hide_index=True, use_container_width=True,
+                pd.DataFrame(history), hide_index=True, width='stretch',
                 column_config={"Skor": st.column_config.ProgressColumn("Skor", format="%.3f", min_value=0, max_value=1)},
             )
             if st.button("Hapus riwayat"):
@@ -788,7 +788,7 @@ def page_benchmark():
                          text_auto=".3f")
             fig.update_traces(textfont_size=9, textangle=0)
             fig.update_layout(yaxis_range=[0, 1.05])
-            c1.plotly_chart(style_fig(fig, 420), use_container_width=True)
+            c1.plotly_chart(style_fig(fig, 420), width='stretch')
 
             radar = go.Figure()
             for _, row in view.iterrows():
@@ -796,7 +796,7 @@ def page_benchmark():
                 radar.add_trace(go.Scatterpolar(r=vals + vals[:1], theta=chosen + chosen[:1], name=row["Model"],
                                                 fill="toself", opacity=0.45, line=dict(color=model_colors[row["Model"]])))
             radar.update_layout(polar=dict(radialaxis=dict(range=[0, 1], tickfont_size=9)))
-            c2.plotly_chart(style_fig(radar, 420), use_container_width=True)
+            c2.plotly_chart(style_fig(radar, 420), width='stretch')
 
     with t2:
         c1, c2 = st.columns([1, 2])
@@ -810,7 +810,7 @@ def page_benchmark():
         fig = px.imshow(z, x=["Prediksi 0", "Prediksi 1"], y=["Aktual 0", "Aktual 1"],
                         color_continuous_scale="Blues", text_auto=fmt, aspect="auto")
         fig.update_traces(textfont_size=18)
-        c2.plotly_chart(style_fig(fig, 340, legend=False), use_container_width=True)
+        c2.plotly_chart(style_fig(fig, 340, legend=False), width='stretch')
         tn, fp, fn, tp = cm.ravel()
         c1.markdown(f"- **TP** (severe terdeteksi): {tp:,}\n- **FN** (severe terlewat): {fn:,}\n"
                     f"- **FP** (alarm palsu): {fp:,}\n- **TN**: {tn:,}")
@@ -824,7 +824,7 @@ def page_benchmark():
         fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
         fig.update_yaxes(matches=None, type="log" if log else "linear")
         fig.update_xaxes(title="", tickangle=-20)
-        st.plotly_chart(style_fig(fig, 420), use_container_width=True)
+        st.plotly_chart(style_fig(fig, 420), width='stretch')
         st.caption("Fit Spark tidak termasuk waktu start SparkSession. Pada satu mesin dan data berukuran sedang, "
                    "overhead penjadwalan Spark membuat waktunya lebih lama; keunggulan Spark muncul saat data dibagi ke banyak node.")
 
@@ -833,7 +833,7 @@ def page_benchmark():
         st.dataframe(
             table.style.highlight_max(subset=[c for c in ["F1 (C1)", "ROC-AUC", "PR-AUC"] if c in table], color="#c8e6c9")
                        .format(precision=4, na_rep="—"),
-            hide_index=True, use_container_width=True,
+            hide_index=True, width='stretch',
         )
         st.download_button("⬇️ Unduh CSV", table.to_csv(index=False).encode("utf-8"), "benchmark.csv", "text/csv")
 
@@ -924,7 +924,7 @@ def network_tab(nodes_idx):
         ))
     fig.update_layout(xaxis=dict(visible=False), yaxis=dict(visible=False), hovermode="closest",
                       plot_bgcolor="#fbfcfe")
-    st.plotly_chart(style_fig(fig, 640), use_container_width=True)
+    st.plotly_chart(style_fig(fig, 640), width='stretch')
     st.caption("Klik item legenda untuk menyembunyikan/menampilkan tipe simpul atau relasi. "
                "Ukuran simpul = jumlah bobot edge yang tampil. Bobot = frekuensi laporan, bukan risiko ternormalisasi.")
 
@@ -957,10 +957,10 @@ def inspector_tab():
                          color_discrete_map={"Tambang ini": COLORS["metal"], "Rata-rata tambang aktif": "#c4c7c5"})
             fig.update_yaxes(autorange="reversed", title="", tickfont=dict(size=10))
             fig.update_xaxes(title="% dari kecelakaan")
-            st.plotly_chart(style_fig(fig, 340), use_container_width=True)
+            st.plotly_chart(style_fig(fig, 340), width='stretch')
             lift = hz[["accident_type", "count", "risk_lift_ratio"]].rename(
                 columns={"accident_type": "Tipe kecelakaan", "count": "Kasus", "risk_lift_ratio": "Lift"})
-            st.dataframe(lift, hide_index=True, use_container_width=True,
+            st.dataframe(lift, hide_index=True, width='stretch',
                          column_config={"Lift": st.column_config.NumberColumn(format="%.2f×")})
             st.caption("Lift = proporsi di tambang ini ÷ proporsi rata-rata. Lift > 1 berarti tipe ini lebih sering "
                        "muncul di tambang ini. Pada tambang dengan sedikit kasus, lift mudah bernilai ekstrem.")
@@ -975,7 +975,7 @@ def inspector_tab():
             fig.update_traces(texttemplate="%{text:.1f}%", textposition="inside")
             fig.update_yaxes(autorange="reversed", title="", tickfont=dict(size=10))
             fig.update_xaxes(title="Cosine similarity (%)", range=[0, 100])
-            st.plotly_chart(style_fig(fig, 340, legend=False), use_container_width=True)
+            st.plotly_chart(style_fig(fig, 340, legend=False), width='stretch')
             st.caption("Cosine similarity antar vektor jumlah tipe kecelakaan per tambang.")
 
 
@@ -992,7 +992,7 @@ def centrality_tab(nodes_idx):
                  hover_data={"weighted_degree": ":,", "pagerank": ":.5f", "Nama": False})
     fig.update_yaxes(autorange="reversed", title="", tickfont=dict(size=10))
     fig.update_xaxes(title="Weighted degree" if metric == "weighted_degree" else "PageRank")
-    st.plotly_chart(style_fig(fig, max(360, 24 * top_n), legend=False), use_container_width=True)
+    st.plotly_chart(style_fig(fig, max(360, 24 * top_n), legend=False), width='stretch')
     st.caption("Weighted degree tinggi = banyak laporan/pelanggaran (high-frequency hub). Tanpa normalisasi jam kerja, "
                "tambang besar cenderung berada di atas.")
 
@@ -1009,7 +1009,7 @@ def community_tab():
                      color=sizes["community_id"].astype(str),
                      color_discrete_map={str(i): community_hex(i) for i in sizes["community_id"]})
         fig.update_xaxes(title="Komunitas", type="category")
-        st.plotly_chart(style_fig(fig, 280, legend=False), use_container_width=True)
+        st.plotly_chart(style_fig(fig, 280, legend=False), width='stretch')
         cid = st.selectbox("Lihat komunitas", sizes["community_id"].tolist(), format_func=lambda i: f"Komunitas {i}")
     members = df_geo[df_geo["community_id"] == cid] if not df_geo.empty else pd.DataFrame()
     with right:
@@ -1027,19 +1027,19 @@ def community_tab():
             fig = px.bar(st_counts, x="Tambang", y="Negara bagian", orientation="h",
                          color_discrete_sequence=[community_hex(cid)])
             fig.update_yaxes(autorange="reversed")
-            m1.plotly_chart(style_fig(fig, 260, legend=False), use_container_width=True)
+            m1.plotly_chart(style_fig(fig, 260, legend=False), width='stretch')
             mt = members["CURRENT_MINE_TYPE"].value_counts().reset_index()
             mt.columns = ["Tipe", "Tambang"]
             fig = px.pie(mt, names="Tipe", values="Tambang", hole=0.5, color="Tipe",
                          color_discrete_map={t: "#%02x%02x%02x" % tuple(rgb) for t, rgb in MINE_TYPE_RGB.items()})
-            m2.plotly_chart(style_fig(fig, 260), use_container_width=True)
+            m2.plotly_chart(style_fig(fig, 260), width='stretch')
 
     if not members.empty:
         with st.expander(f"📋 Anggota komunitas {cid}"):
             st.dataframe(
                 members[["MINE_ID", "CURRENT_MINE_NAME", "STATE", "CURRENT_MINE_TYPE", "total_accidents",
                          "weighted_degree", "top_hazard"]].sort_values("weighted_degree", ascending=False),
-                hide_index=True, use_container_width=True,
+                hide_index=True, width='stretch',
             )
     st.caption("Komunitas Louvain pada proyeksi mine-to-mine (Jaccard tetangga ≥ 0.20) untuk 300 tambang "
                "dengan weighted degree tertinggi; tambang lain tidak memiliki komunitas.")
