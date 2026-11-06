@@ -3,50 +3,50 @@
   "total_edges": 165982,
   "top_edges": [
     {
-      "source": "standard::75.1403",
-      "target": "mine::4601433",
+      "source": "mine::4601433",
+      "target": "standard::75.1403",
       "weight": 404,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::4601437",
+      "source": "mine::4601437",
+      "target": "standard::75.1403",
       "weight": 378,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4601437",
+      "source": "mine::4601437",
+      "target": "standard::75.400",
       "weight": 363,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::4601433",
+      "source": "mine::4601433",
+      "target": "standard::75.202(a)",
       "weight": 357,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::0101401",
+      "source": "mine::0101401",
+      "target": "standard::75.400",
       "weight": 316,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4601433",
+      "source": "mine::4601433",
+      "target": "standard::75.400",
       "weight": 310,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::1519374",
+      "source": "mine::1519374",
+      "target": "standard::75.400",
       "weight": 292,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::3607230",
+      "source": "mine::3607230",
+      "target": "standard::75.400",
       "weight": 266,
       "edge_type": "CITED_FOR"
     },
@@ -57,374 +57,374 @@
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4604168",
+      "source": "mine::4604168",
+      "target": "standard::75.400",
       "weight": 250,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::3605018",
+      "source": "mine::3605018",
+      "target": "standard::75.400",
       "weight": 246,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4601436",
+      "source": "mine::4601436",
+      "target": "standard::75.400",
       "weight": 241,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::4601436",
+      "source": "mine::1519374",
+      "target": "standard::75.517",
       "weight": 236,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.517",
-      "target": "mine::1519374",
+      "source": "mine::4601436",
+      "target": "standard::75.1403",
       "weight": 236,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::0101247",
+      "source": "mine::0101247",
+      "target": "standard::75.400",
       "weight": 235,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::1517216",
+      "source": "mine::1517216",
+      "target": "standard::75.370(a)(1)",
       "weight": 216,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::0102901",
+      "source": "mine::0102901",
+      "target": "standard::75.400",
       "weight": 212,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4609261",
+      "source": "mine::4609261",
+      "target": "standard::75.400",
       "weight": 207,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::77.1606(c)",
-      "target": "mine::4609377",
+      "source": "mine::4609377",
+      "target": "standard::77.1606(c)",
       "weight": 206,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::1519374",
+      "source": "mine::1519374",
+      "target": "standard::75.370(a)(1)",
       "weight": 196,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.220(a)(1)",
-      "target": "mine::1517216",
+      "source": "mine::1517216",
+      "target": "standard::75.220(a)(1)",
       "weight": 190,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4601318",
+      "source": "mine::4601318",
+      "target": "standard::75.400",
       "weight": 179,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::3605018",
+      "source": "mine::3605018",
+      "target": "standard::75.1403",
       "weight": 177,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.604(b)",
-      "target": "mine::1519374",
+      "source": "mine::1519374",
+      "target": "standard::75.604(b)",
       "weight": 173,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(b)",
-      "target": "mine::2100820",
+      "source": "mine::2100820",
+      "target": "standard::56.20003(b)",
       "weight": 169,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::4600007",
+      "source": "mine::1518565",
+      "target": "standard::75.400",
       "weight": 168,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::1518565",
+      "source": "mine::4600007",
+      "target": "standard::56.20003(a)",
       "weight": 168,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4604168",
+      "source": "mine::4604168",
+      "target": "standard::75.370(a)(1)",
       "weight": 166,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::1517216",
+      "source": "mine::1517216",
+      "target": "standard::75.400",
       "weight": 159,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4608656",
+      "source": "mine::4608656",
+      "target": "standard::75.400",
       "weight": 158,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::0101401",
+      "source": "mine::0101401",
+      "target": "standard::75.202(a)",
       "weight": 157,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::1103235",
+      "source": "mine::1103235",
+      "target": "standard::75.400",
       "weight": 157,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::0102901",
+      "source": "mine::0101401",
+      "target": "standard::75.220(a)(1)",
       "weight": 152,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.220(a)(1)",
-      "target": "mine::0101401",
+      "source": "mine::0102901",
+      "target": "standard::75.202(a)",
       "weight": 152,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4609522",
+      "source": "mine::4609522",
+      "target": "standard::75.400",
       "weight": 148,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4604236",
+      "source": "mine::4604236",
+      "target": "standard::75.400",
       "weight": 147,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::3607230",
+      "source": "mine::1509636",
+      "target": "standard::75.400",
       "weight": 146,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::1509636",
+      "source": "mine::3607230",
+      "target": "standard::75.1403",
       "weight": 146,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::4601436",
+      "source": "mine::4201566",
+      "target": "standard::75.400",
       "weight": 144,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4201566",
+      "source": "mine::4601436",
+      "target": "standard::75.202(a)",
       "weight": 144,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::2100820",
+      "source": "mine::2100820",
+      "target": "standard::56.20003(a)",
       "weight": 137,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::4601437",
+      "source": "mine::4601437",
+      "target": "standard::75.202(a)",
       "weight": 137,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4609550",
+      "source": "mine::4609550",
+      "target": "standard::75.400",
       "weight": 137,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::4604168",
+      "source": "mine::1103147",
+      "target": "standard::75.400",
       "weight": 131,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::1103147",
+      "source": "mine::4604168",
+      "target": "standard::75.202(a)",
       "weight": 131,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4609522",
+      "source": "mine::4609522",
+      "target": "standard::75.370(a)(1)",
       "weight": 128,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::4604236",
+      "source": "mine::4604236",
+      "target": "standard::75.1403",
       "weight": 127,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::0500037",
+      "source": "mine::0101247",
+      "target": "standard::75.202(a)",
       "weight": 126,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::0101247",
+      "source": "mine::0500037",
+      "target": "standard::56.20003(a)",
       "weight": 126,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::57.20003(a)",
-      "target": "mine::2302434",
+      "source": "mine::2302434",
+      "target": "standard::57.20003(a)",
       "weight": 125,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::77.1606(c)",
-      "target": "mine::4609075",
+      "source": "mine::4609075",
+      "target": "standard::77.1606(c)",
       "weight": 125,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4609222",
+      "source": "mine::4609222",
+      "target": "standard::75.400",
       "weight": 124,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1731(a)",
-      "target": "mine::1519374",
+      "source": "mine::1519374",
+      "target": "standard::75.1731(a)",
       "weight": 123,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::1519374",
+      "source": "mine::1519374",
+      "target": "standard::75.202(a)",
       "weight": 123,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.333(h)",
-      "target": "mine::3607230",
+      "source": "mine::3607230",
+      "target": "standard::75.333(h)",
       "weight": 123,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::77.1606(c)",
-      "target": "mine::4608984",
+      "source": "mine::2100282",
+      "target": "standard::56.20003(b)",
       "weight": 122,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(b)",
-      "target": "mine::2100282",
+      "source": "mine::3607416",
+      "target": "standard::75.400",
       "weight": 122,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4404856",
+      "source": "mine::4404856",
+      "target": "standard::75.370(a)(1)",
       "weight": 122,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::3607416",
+      "source": "mine::4608984",
+      "target": "standard::77.1606(c)",
       "weight": 122,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::1700022",
+      "source": "mine::1700022",
+      "target": "standard::56.20003(a)",
       "weight": 121,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4609029",
+      "source": "mine::4609029",
+      "target": "standard::75.400",
       "weight": 121,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4609192",
+      "source": "mine::4609192",
+      "target": "standard::75.400",
       "weight": 120,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4605437",
+      "source": "mine::4605437",
+      "target": "standard::75.400",
       "weight": 119,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(b)",
-      "target": "mine::1600352",
+      "source": "mine::1517216",
+      "target": "standard::75.1731(a)",
       "weight": 118,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1731(a)",
-      "target": "mine::1517216",
+      "source": "mine::1600352",
+      "target": "standard::56.20003(b)",
       "weight": 118,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::2000422",
+      "source": "mine::2000422",
+      "target": "standard::56.20003(a)",
       "weight": 117,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4609550",
+      "source": "mine::4609550",
+      "target": "standard::75.370(a)(1)",
       "weight": 117,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::57.3200",
-      "target": "mine::2602286",
+      "source": "mine::2602286",
+      "target": "standard::57.3200",
       "weight": 116,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::4604168",
+      "source": "mine::4604168",
+      "target": "standard::75.1403",
       "weight": 115,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4604236",
+      "source": "mine::4604236",
+      "target": "standard::75.370(a)(1)",
       "weight": 115,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::57.3200",
-      "target": "mine::1600970",
+      "source": "mine::1600970",
+      "target": "standard::57.3200",
       "weight": 114,
       "edge_type": "CITED_FOR"
     },
@@ -435,116 +435,116 @@
       "edge_type": "REPORTED_ACCIDENT"
     },
     {
-      "source": "standard::77.1606(c)",
-      "target": "mine::4608930",
+      "source": "mine::1519374",
+      "target": "standard::75.342(a)(4)",
       "weight": 110,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::4609550",
+      "source": "mine::4200089",
+      "target": "standard::75.400",
       "weight": 110,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.342(a)(4)",
-      "target": "mine::1519374",
+      "source": "mine::4608930",
+      "target": "standard::77.1606(c)",
       "weight": 110,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4200089",
+      "source": "mine::4609550",
+      "target": "standard::75.1403",
       "weight": 110,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::1103189",
+      "source": "mine::1103189",
+      "target": "standard::75.400",
       "weight": 109,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.403",
-      "target": "mine::3607230",
+      "source": "mine::3607230",
+      "target": "standard::75.403",
       "weight": 109,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::57.20003(a)",
-      "target": "mine::4800152",
+      "source": "mine::4800152",
+      "target": "standard::57.20003(a)",
       "weight": 108,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4609091",
+      "source": "mine::4609091",
+      "target": "standard::75.400",
       "weight": 107,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::4601318",
+      "source": "mine::3605018",
+      "target": "standard::75.370(a)(1)",
       "weight": 105,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::3605018",
+      "source": "mine::4200079",
+      "target": "standard::75.400",
       "weight": 105,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4609221",
+      "source": "mine::4601318",
+      "target": "standard::75.1403",
       "weight": 105,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4200079",
+      "source": "mine::4609221",
+      "target": "standard::75.370(a)(1)",
       "weight": 105,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4609029",
+      "source": "mine::4609029",
+      "target": "standard::75.370(a)(1)",
       "weight": 104,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.333(c)(3)",
-      "target": "mine::4601437",
+      "source": "mine::4601437",
+      "target": "standard::75.333(c)(3)",
       "weight": 103,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.342(a)(4)",
-      "target": "mine::4609522",
+      "source": "mine::4605252",
+      "target": "standard::75.370(a)(1)",
       "weight": 103,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4605252",
+      "source": "mine::4609522",
+      "target": "standard::75.342(a)(4)",
       "weight": 103,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.517",
-      "target": "mine::1517216",
+      "source": "mine::1517216",
+      "target": "standard::75.517",
       "weight": 102,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.220(a)(1)",
-      "target": "mine::4609522",
+      "source": "mine::2602512",
+      "target": "standard::57.3200",
       "weight": 100,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::57.3200",
-      "target": "mine::2602512",
+      "source": "mine::4609522",
+      "target": "standard::75.220(a)(1)",
       "weight": 100,
       "edge_type": "CITED_FOR"
     },
@@ -555,80 +555,80 @@
       "edge_type": "REPORTED_ACCIDENT"
     },
     {
-      "source": "standard::75.512",
-      "target": "mine::4609427",
+      "source": "mine::4609427",
+      "target": "standard::75.512",
       "weight": 98,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::3000006",
+      "source": "mine::0101401",
+      "target": "standard::75.503",
       "weight": 97,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::4609261",
+      "source": "mine::3000006",
+      "target": "standard::56.20003(a)",
       "weight": 97,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4601433",
+      "source": "mine::4601433",
+      "target": "standard::75.370(a)(1)",
       "weight": 97,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.503",
-      "target": "mine::0101401",
+      "source": "mine::4609261",
+      "target": "standard::75.202(a)",
       "weight": 97,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::4601968",
+      "source": "mine::4601437",
+      "target": "standard::75.333(h)",
       "weight": 96,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.333(h)",
-      "target": "mine::4601437",
+      "source": "mine::4601968",
+      "target": "standard::75.202(a)",
       "weight": 96,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::3300968",
+      "source": "mine::3300968",
+      "target": "standard::75.400",
       "weight": 95,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::4601968",
+      "source": "mine::0503836",
+      "target": "standard::75.400",
       "weight": 94,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::3605018",
+      "source": "mine::3605018",
+      "target": "standard::75.202(a)",
       "weight": 94,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::0503836",
+      "source": "mine::3607230",
+      "target": "standard::75.512",
       "weight": 94,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4404856",
+      "source": "mine::4404856",
+      "target": "standard::75.400",
       "weight": 94,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.512",
-      "target": "mine::3607230",
+      "source": "mine::4601968",
+      "target": "standard::75.1403",
       "weight": 94,
       "edge_type": "CITED_FOR"
     },
@@ -639,75 +639,69 @@
       "edge_type": "REPORTED_ACCIDENT"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4609261",
+      "source": "mine::4609261",
+      "target": "standard::75.370(a)(1)",
       "weight": 93,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::0101401",
+      "source": "mine::0101401",
+      "target": "standard::75.1403",
       "weight": 92,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1731(a)",
-      "target": "mine::3607230",
+      "source": "mine::1519374",
+      "target": "standard::75.403",
       "weight": 92,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.403",
-      "target": "mine::1519374",
+      "source": "mine::1519374",
+      "target": "standard::75.503",
       "weight": 92,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.503",
-      "target": "mine::1519374",
+      "source": "mine::3607230",
+      "target": "standard::75.1731(a)",
       "weight": 92,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::2000038",
+      "source": "mine::2000038",
+      "target": "standard::56.20003(a)",
       "weight": 91,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4609221",
+      "source": "mine::4609221",
+      "target": "standard::75.400",
       "weight": 91,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.333(h)",
-      "target": "mine::4201566",
+      "source": "mine::0101401",
+      "target": "standard::75.370(a)(1)",
       "weight": 90,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::0101401",
+      "source": "mine::1519744",
+      "target": "standard::75.370(a)(1)",
       "weight": 90,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::1519744",
+      "source": "mine::4201566",
+      "target": "standard::75.333(h)",
       "weight": 90,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::4605437",
+      "source": "mine::4605437",
+      "target": "standard::75.370(a)(1)",
       "weight": 90,
-      "edge_type": "CITED_FOR"
-    },
-    {
-      "source": "standard::56.20003(a)",
-      "target": "mine::0801287",
-      "weight": 89,
       "edge_type": "CITED_FOR"
     },
     {
@@ -717,39 +711,39 @@
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::57.3360",
-      "target": "mine::2602512",
+      "source": "mine::0801287",
+      "target": "standard::56.20003(a)",
       "weight": 89,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.14112(b)",
-      "target": "mine::2000422",
+      "source": "mine::2602512",
+      "target": "standard::57.3360",
+      "weight": 89,
+      "edge_type": "CITED_FOR"
+    },
+    {
+      "source": "mine::0101401",
+      "target": "standard::75.512",
       "weight": 88,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::77.1606(c)",
-      "target": "mine::4609062",
+      "source": "mine::2000422",
+      "target": "standard::56.14112(b)",
       "weight": 88,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1403",
-      "target": "mine::4605437",
+      "source": "mine::4605437",
+      "target": "standard::75.1403",
       "weight": 88,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.512",
-      "target": "mine::0101401",
+      "source": "mine::4609062",
+      "target": "standard::77.1606(c)",
       "weight": 88,
-      "edge_type": "CITED_FOR"
-    },
-    {
-      "source": "standard::56.14100(c)",
-      "target": "mine::2000422",
-      "weight": 87,
       "edge_type": "CITED_FOR"
     },
     {
@@ -759,14 +753,20 @@
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::4609550",
+      "source": "mine::1519374",
+      "target": "standard::75.512",
       "weight": 87,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.512",
-      "target": "mine::1519374",
+      "source": "mine::2000422",
+      "target": "standard::56.14100(c)",
+      "weight": 87,
+      "edge_type": "CITED_FOR"
+    },
+    {
+      "source": "mine::4609550",
+      "target": "standard::75.202(a)",
       "weight": 87,
       "edge_type": "CITED_FOR"
     },
@@ -777,128 +777,128 @@
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::1519744",
+      "source": "mine::1519744",
+      "target": "standard::75.400",
       "weight": 86,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1731(a)",
-      "target": "mine::3605018",
+      "source": "mine::3605018",
+      "target": "standard::75.1731(a)",
       "weight": 85,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.202(a)",
-      "target": "mine::4601318",
+      "source": "mine::4601318",
+      "target": "standard::75.202(a)",
       "weight": 85,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4608759",
+      "source": "mine::4608759",
+      "target": "standard::75.400",
       "weight": 85,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::3800014",
+      "source": "mine::0101247",
+      "target": "standard::75.220(a)(1)",
       "weight": 84,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.220(a)(1)",
-      "target": "mine::0101247",
+      "source": "mine::1518565",
+      "target": "standard::75.370(a)(1)",
       "weight": 84,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.370(a)(1)",
-      "target": "mine::1518565",
+      "source": "mine::3800014",
+      "target": "standard::56.20003(a)",
       "weight": 84,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4407137",
+      "source": "mine::4404856",
+      "target": "standard::75.503",
       "weight": 84,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4606265",
+      "source": "mine::4407137",
+      "target": "standard::75.400",
       "weight": 84,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4609496",
+      "source": "mine::4606265",
+      "target": "standard::75.400",
       "weight": 84,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.503",
-      "target": "mine::4404856",
+      "source": "mine::4609496",
+      "target": "standard::75.400",
       "weight": 84,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::2000044",
+      "source": "mine::1519838",
+      "target": "standard::75.403",
       "weight": 82,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::2100282",
+      "source": "mine::2000044",
+      "target": "standard::56.20003(a)",
       "weight": 82,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.403",
-      "target": "mine::1519838",
+      "source": "mine::2100282",
+      "target": "standard::56.20003(a)",
       "weight": 82,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::56.20003(a)",
-      "target": "mine::3600271",
+      "source": "mine::1517216",
+      "target": "standard::75.512",
       "weight": 81,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1100-3",
-      "target": "mine::1519374",
+      "source": "mine::1517216",
+      "target": "standard::75.604(b)",
       "weight": 81,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.1731(a)",
-      "target": "mine::4601433",
+      "source": "mine::1519374",
+      "target": "standard::75.1100-3",
       "weight": 81,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4407223",
+      "source": "mine::3600271",
+      "target": "standard::56.20003(a)",
       "weight": 81,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.400",
-      "target": "mine::4605252",
+      "source": "mine::4407223",
+      "target": "standard::75.400",
       "weight": 81,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.512",
-      "target": "mine::1517216",
+      "source": "mine::4601433",
+      "target": "standard::75.1731(a)",
       "weight": 81,
       "edge_type": "CITED_FOR"
     },
     {
-      "source": "standard::75.604(b)",
-      "target": "mine::1517216",
+      "source": "mine::4605252",
+      "target": "standard::75.400",
       "weight": 81,
       "edge_type": "CITED_FOR"
     }

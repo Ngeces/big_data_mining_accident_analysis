@@ -1,0 +1,601 @@
+source,target,weight,edge_type
+mine::4601433,standard::75.1403,404,CITED_FOR
+mine::4601437,standard::75.1403,378,CITED_FOR
+mine::4601437,standard::75.400,363,CITED_FOR
+mine::4601433,standard::75.202(a),357,CITED_FOR
+mine::0101401,standard::75.400,316,CITED_FOR
+mine::4601433,standard::75.400,310,CITED_FOR
+mine::1519374,standard::75.400,292,CITED_FOR
+mine::3607230,standard::75.400,266,CITED_FOR
+mine::0100851,standard::75.400,258,CITED_FOR
+mine::4604168,standard::75.400,250,CITED_FOR
+mine::3605018,standard::75.400,246,CITED_FOR
+mine::4601436,standard::75.400,241,CITED_FOR
+mine::1519374,standard::75.517,236,CITED_FOR
+mine::4601436,standard::75.1403,236,CITED_FOR
+mine::0101247,standard::75.400,235,CITED_FOR
+mine::1517216,standard::75.370(a)(1),216,CITED_FOR
+mine::0102901,standard::75.400,212,CITED_FOR
+mine::4609261,standard::75.400,207,CITED_FOR
+mine::4609377,standard::77.1606(c),206,CITED_FOR
+mine::1519374,standard::75.370(a)(1),196,CITED_FOR
+mine::1517216,standard::75.220(a)(1),190,CITED_FOR
+mine::4601318,standard::75.400,179,CITED_FOR
+mine::3605018,standard::75.1403,177,CITED_FOR
+mine::1519374,standard::75.604(b),173,CITED_FOR
+mine::2100820,standard::56.20003(b),169,CITED_FOR
+mine::1518565,standard::75.400,168,CITED_FOR
+mine::4600007,standard::56.20003(a),168,CITED_FOR
+mine::4604168,standard::75.370(a)(1),166,CITED_FOR
+mine::1517216,standard::75.400,159,CITED_FOR
+mine::4608656,standard::75.400,158,CITED_FOR
+mine::0101401,standard::75.202(a),157,CITED_FOR
+mine::1103235,standard::75.400,157,CITED_FOR
+mine::0101401,standard::75.220(a)(1),152,CITED_FOR
+mine::0102901,standard::75.202(a),152,CITED_FOR
+mine::4609522,standard::75.400,148,CITED_FOR
+mine::4604236,standard::75.400,147,CITED_FOR
+mine::1509636,standard::75.400,146,CITED_FOR
+mine::3607230,standard::75.1403,146,CITED_FOR
+mine::4201566,standard::75.400,144,CITED_FOR
+mine::4601436,standard::75.202(a),144,CITED_FOR
+mine::2100820,standard::56.20003(a),137,CITED_FOR
+mine::4601437,standard::75.202(a),137,CITED_FOR
+mine::4609550,standard::75.400,137,CITED_FOR
+mine::1103147,standard::75.400,131,CITED_FOR
+mine::4604168,standard::75.202(a),131,CITED_FOR
+mine::4609522,standard::75.370(a)(1),128,CITED_FOR
+mine::4604236,standard::75.1403,127,CITED_FOR
+mine::0101247,standard::75.202(a),126,CITED_FOR
+mine::0500037,standard::56.20003(a),126,CITED_FOR
+mine::2302434,standard::57.20003(a),125,CITED_FOR
+mine::4609075,standard::77.1606(c),125,CITED_FOR
+mine::4609222,standard::75.400,124,CITED_FOR
+mine::1519374,standard::75.1731(a),123,CITED_FOR
+mine::1519374,standard::75.202(a),123,CITED_FOR
+mine::3607230,standard::75.333(h),123,CITED_FOR
+mine::2100282,standard::56.20003(b),122,CITED_FOR
+mine::3607416,standard::75.400,122,CITED_FOR
+mine::4404856,standard::75.370(a)(1),122,CITED_FOR
+mine::4608984,standard::77.1606(c),122,CITED_FOR
+mine::1700022,standard::56.20003(a),121,CITED_FOR
+mine::4609029,standard::75.400,121,CITED_FOR
+mine::4609192,standard::75.400,120,CITED_FOR
+mine::4605437,standard::75.400,119,CITED_FOR
+mine::1517216,standard::75.1731(a),118,CITED_FOR
+mine::1600352,standard::56.20003(b),118,CITED_FOR
+mine::2000422,standard::56.20003(a),117,CITED_FOR
+mine::4609550,standard::75.370(a)(1),117,CITED_FOR
+mine::2602286,standard::57.3200,116,CITED_FOR
+mine::4604168,standard::75.1403,115,CITED_FOR
+mine::4604236,standard::75.370(a)(1),115,CITED_FOR
+mine::1600970,standard::57.3200,114,CITED_FOR
+mine::1519374,standard::75.342(a)(4),110,CITED_FOR
+mine::4200089,standard::75.400,110,CITED_FOR
+mine::4608930,standard::77.1606(c),110,CITED_FOR
+mine::4609550,standard::75.1403,110,CITED_FOR
+mine::1103189,standard::75.400,109,CITED_FOR
+mine::3607230,standard::75.403,109,CITED_FOR
+mine::4800152,standard::57.20003(a),108,CITED_FOR
+mine::4609091,standard::75.400,107,CITED_FOR
+mine::3605018,standard::75.370(a)(1),105,CITED_FOR
+mine::4200079,standard::75.400,105,CITED_FOR
+mine::4601318,standard::75.1403,105,CITED_FOR
+mine::4609221,standard::75.370(a)(1),105,CITED_FOR
+mine::4609029,standard::75.370(a)(1),104,CITED_FOR
+mine::4601437,standard::75.333(c)(3),103,CITED_FOR
+mine::4605252,standard::75.370(a)(1),103,CITED_FOR
+mine::4609522,standard::75.342(a)(4),103,CITED_FOR
+mine::1517216,standard::75.517,102,CITED_FOR
+mine::2602512,standard::57.3200,100,CITED_FOR
+mine::4609522,standard::75.220(a)(1),100,CITED_FOR
+mine::4609427,standard::75.512,98,CITED_FOR
+mine::0101401,standard::75.503,97,CITED_FOR
+mine::3000006,standard::56.20003(a),97,CITED_FOR
+mine::4601433,standard::75.370(a)(1),97,CITED_FOR
+mine::4609261,standard::75.202(a),97,CITED_FOR
+mine::4601437,standard::75.333(h),96,CITED_FOR
+mine::4601968,standard::75.202(a),96,CITED_FOR
+mine::3300968,standard::75.400,95,CITED_FOR
+mine::0503836,standard::75.400,94,CITED_FOR
+mine::3605018,standard::75.202(a),94,CITED_FOR
+mine::3607230,standard::75.512,94,CITED_FOR
+mine::4404856,standard::75.400,94,CITED_FOR
+mine::4601968,standard::75.1403,94,CITED_FOR
+mine::4609261,standard::75.370(a)(1),93,CITED_FOR
+mine::0101401,standard::75.1403,92,CITED_FOR
+mine::1519374,standard::75.403,92,CITED_FOR
+mine::1519374,standard::75.503,92,CITED_FOR
+mine::3607230,standard::75.1731(a),92,CITED_FOR
+mine::2000038,standard::56.20003(a),91,CITED_FOR
+mine::4609221,standard::75.400,91,CITED_FOR
+mine::0101401,standard::75.370(a)(1),90,CITED_FOR
+mine::1519744,standard::75.370(a)(1),90,CITED_FOR
+mine::4201566,standard::75.333(h),90,CITED_FOR
+mine::4605437,standard::75.370(a)(1),90,CITED_FOR
+mine::0100851,standard::75.512,89,CITED_FOR
+mine::0801287,standard::56.20003(a),89,CITED_FOR
+mine::2602512,standard::57.3360,89,CITED_FOR
+mine::0101401,standard::75.512,88,CITED_FOR
+mine::2000422,standard::56.14112(b),88,CITED_FOR
+mine::4605437,standard::75.1403,88,CITED_FOR
+mine::4609062,standard::77.1606(c),88,CITED_FOR
+mine::0100851,standard::75.370(a)(1),87,CITED_FOR
+mine::1519374,standard::75.512,87,CITED_FOR
+mine::2000422,standard::56.14100(c),87,CITED_FOR
+mine::4609550,standard::75.202(a),87,CITED_FOR
+mine::0100851,standard::75.202(a),86,CITED_FOR
+mine::1519744,standard::75.400,86,CITED_FOR
+mine::3605018,standard::75.1731(a),85,CITED_FOR
+mine::4601318,standard::75.202(a),85,CITED_FOR
+mine::4608759,standard::75.400,85,CITED_FOR
+mine::0101247,standard::75.220(a)(1),84,CITED_FOR
+mine::1518565,standard::75.370(a)(1),84,CITED_FOR
+mine::3800014,standard::56.20003(a),84,CITED_FOR
+mine::4404856,standard::75.503,84,CITED_FOR
+mine::4407137,standard::75.400,84,CITED_FOR
+mine::4606265,standard::75.400,84,CITED_FOR
+mine::4609496,standard::75.400,84,CITED_FOR
+mine::1519838,standard::75.403,82,CITED_FOR
+mine::2000044,standard::56.20003(a),82,CITED_FOR
+mine::2100282,standard::56.20003(a),82,CITED_FOR
+mine::1517216,standard::75.512,81,CITED_FOR
+mine::1517216,standard::75.604(b),81,CITED_FOR
+mine::1519374,standard::75.1100-3,81,CITED_FOR
+mine::3600271,standard::56.20003(a),81,CITED_FOR
+mine::4407223,standard::75.400,81,CITED_FOR
+mine::4601433,standard::75.1731(a),81,CITED_FOR
+mine::4605252,standard::75.400,81,CITED_FOR
+mine::1517216,standard::75.342(a)(4),80,CITED_FOR
+mine::2602246,standard::57.3360,80,CITED_FOR
+mine::4608787,standard::75.400,80,CITED_FOR
+mine::4609550,standard::75.220(a)(1),80,CITED_FOR
+mine::2002434,standard::56.20003(a),79,CITED_FOR
+mine::2602286,standard::57.3360,79,CITED_FOR
+mine::4609522,standard::75.202(a),79,CITED_FOR
+mine::0100851,standard::75.503,78,CITED_FOR
+mine::1518911,standard::75.400,78,CITED_FOR
+mine::1519374,standard::75.1725(a),78,CITED_FOR
+mine::4604168,standard::75.517,78,CITED_FOR
+mine::4609345,standard::77.1606(c),78,CITED_FOR
+mine::1519838,standard::75.503,77,CITED_FOR
+mine::4609575,standard::75.400,77,CITED_FOR
+mine::0100851,standard::75.403,76,CITED_FOR
+mine::1103193,standard::75.400,76,CITED_FOR
+mine::1103193,standard::75.503,76,CITED_FOR
+mine::4609029,standard::75.220(a)(1),76,CITED_FOR
+mine::4609029,standard::75.512,76,CITED_FOR
+mine::4609427,standard::75.1403,76,CITED_FOR
+mine::4609427,standard::75.503,76,CITED_FOR
+mine::0200024,standard::56.20003(a),75,CITED_FOR
+mine::1103235,standard::75.503,75,CITED_FOR
+mine::1519842,standard::75.503,75,CITED_FOR
+mine::3607416,standard::75.512,75,CITED_FOR
+mine::4608932,standard::75.503,75,CITED_FOR
+mine::4609261,standard::75.1731(a),75,CITED_FOR
+mine::4609261,standard::75.220(a)(1),75,CITED_FOR
+mine::1103182,standard::75.400,74,CITED_FOR
+mine::1518966,standard::77.1606(c),74,CITED_FOR
+mine::2300542,standard::57.20003(a),74,CITED_FOR
+mine::3800007,standard::56.20003(a),74,CITED_FOR
+mine::0100851,standard::75.1725(a),73,CITED_FOR
+mine::1103203,standard::75.400,73,CITED_FOR
+mine::1103235,standard::75.202(a),73,CITED_FOR
+mine::1517216,standard::75.202(a),73,CITED_FOR
+mine::2103404,standard::56.20003(a),73,CITED_FOR
+mine::4200079,standard::75.333(h),73,CITED_FOR
+mine::4202263,standard::75.400,73,CITED_FOR
+mine::4606618,standard::75.400,73,CITED_FOR
+mine::0503672,standard::75.1731(a),72,CITED_FOR
+mine::1103189,standard::75.342(a)(4),72,CITED_FOR
+mine::2000422,standard::56.14107(a),72,CITED_FOR
+mine::4407308,standard::75.400,72,CITED_FOR
+mine::4609222,standard::75.220(a)(1),72,CITED_FOR
+mine::1103189,standard::75.503,71,CITED_FOR
+mine::2000422,standard::56.12004,71,CITED_FOR
+mine::2100820,standard::56.12004,71,CITED_FOR
+mine::4201566,standard::75.370(a)(1),71,CITED_FOR
+mine::4606736,standard::77.404(a),71,CITED_FOR
+mine::1103141,standard::75.400,70,CITED_FOR
+mine::1103189,standard::75.370(a)(1),70,CITED_FOR
+mine::1202295,standard::75.400,70,CITED_FOR
+mine::1519744,standard::75.342(a)(4),70,CITED_FOR
+mine::1800019,standard::56.20003(a),70,CITED_FOR
+mine::4605437,standard::75.220(a)(1),70,CITED_FOR
+mine::4608932,standard::75.512,70,CITED_FOR
+mine::4609091,standard::75.1731(a),70,CITED_FOR
+mine::4609091,standard::75.202(a),70,CITED_FOR
+mine::4609522,standard::75.517,70,CITED_FOR
+mine::0100851,standard::75.1403,69,CITED_FOR
+mine::1103147,standard::75.342(a)(4),69,CITED_FOR
+mine::4200079,standard::75.202(a),69,CITED_FOR
+mine::4202241,standard::75.400,69,CITED_FOR
+mine::4601968,standard::75.400,69,CITED_FOR
+mine::4608656,standard::75.202(a),69,CITED_FOR
+mine::4608878,standard::75.370(a)(1),69,CITED_FOR
+mine::4609029,standard::75.503,69,CITED_FOR
+mine::4609427,standard::75.370(a)(1),69,CITED_FOR
+mine::4801295,standard::57.14100(b),69,CITED_FOR
+mine::0101247,standard::75.1731(a),68,CITED_FOR
+mine::1202394,standard::75.370(a)(1),68,CITED_FOR
+mine::1512753,standard::75.400,68,CITED_FOR
+mine::3607230,standard::75.202(a),68,CITED_FOR
+mine::4200079,standard::75.370(a)(1),68,CITED_FOR
+mine::4601433,standard::75.333(h),68,CITED_FOR
+mine::4608864,standard::75.400,68,CITED_FOR
+mine::4609028,standard::75.400,68,CITED_FOR
+mine::1103147,standard::75.370(a)(1),67,CITED_FOR
+mine::1517216,standard::75.403,67,CITED_FOR
+mine::1519744,standard::75.220(a)(1),67,CITED_FOR
+mine::4604168,standard::75.220(a)(1),67,CITED_FOR
+mine::4605252,standard::75.503,67,CITED_FOR
+mine::4608249,standard::77.1606(c),67,CITED_FOR
+mine::4608878,standard::75.1403,67,CITED_FOR
+mine::4609091,standard::75.1403,67,CITED_FOR
+mine::4601437,standard::75.370(a)(1),66,CITED_FOR
+mine::4609091,standard::75.512,66,CITED_FOR
+mine::4609192,standard::75.370(a)(1),66,CITED_FOR
+mine::4609261,standard::75.1403,66,CITED_FOR
+mine::4609471,standard::75.400,66,CITED_FOR
+mine::0101247,standard::75.1725(a),65,CITED_FOR
+mine::0101401,standard::75.1725(a),65,CITED_FOR
+mine::0102901,standard::75.220(a)(1),65,CITED_FOR
+mine::1202295,standard::75.370(a)(1),65,CITED_FOR
+mine::1518565,standard::75.503,65,CITED_FOR
+mine::1519374,standard::75.606,65,CITED_FOR
+mine::2103404,standard::56.20003(b),65,CITED_FOR
+mine::4800155,standard::57.20003(a),65,CITED_FOR
+mine::1518565,standard::75.1403,64,CITED_FOR
+mine::1519374,standard::75.1731(b),64,CITED_FOR
+mine::2602286,standard::57.11001,64,CITED_FOR
+mine::4404856,standard::75.403,64,CITED_FOR
+mine::4608759,standard::75.1403,64,CITED_FOR
+mine::4609427,standard::75.400,64,CITED_FOR
+mine::0101401,standard::75.403,63,CITED_FOR
+mine::1102664,standard::75.220(a)(1),63,CITED_FOR
+mine::1200426,standard::56.20003(a),63,CITED_FOR
+mine::2100282,standard::56.12004,63,CITED_FOR
+mine::2602246,standard::57.3200,63,CITED_FOR
+mine::3000585,standard::56.20003(a),63,CITED_FOR
+mine::4604168,standard::75.1731(b),63,CITED_FOR
+mine::4608656,standard::75.220(a)(1),63,CITED_FOR
+mine::1103147,standard::75.503,62,CITED_FOR
+mine::4601318,standard::75.517,62,CITED_FOR
+mine::4605437,standard::75.503,62,CITED_FOR
+mine::4609192,standard::75.1403,62,CITED_FOR
+mine::4609222,standard::75.512,62,CITED_FOR
+mine::0101401,standard::75.333(h),61,CITED_FOR
+mine::3401289,standard::56.20003(a),61,CITED_FOR
+mine::3607230,standard::75.1731(b),61,CITED_FOR
+mine::3610045,standard::75.400,61,CITED_FOR
+mine::4609261,standard::75.517,61,CITED_FOR
+mine::0102901,standard::75.370(a)(1),60,CITED_FOR
+mine::1202394,standard::75.400,60,CITED_FOR
+mine::3000006,standard::56.12032,60,CITED_FOR
+mine::3600190,standard::56.20003(a),60,CITED_FOR
+mine::3607230,standard::75.220(a)(1),60,CITED_FOR
+mine::3607416,standard::75.333(h),60,CITED_FOR
+mine::3610045,standard::75.333(h),60,CITED_FOR
+mine::4609029,standard::75.517,60,CITED_FOR
+mine::4609297,standard::75.370(a)(1),60,CITED_FOR
+mine::4609550,standard::75.503,60,CITED_FOR
+mine::4609550,standard::75.512,60,CITED_FOR
+mine::0500037,standard::56.12028,59,CITED_FOR
+mine::3607230,standard::75.370(a)(1),59,CITED_FOR
+mine::4609217,standard::75.400,59,CITED_FOR
+mine::4609522,standard::75.604(b),59,CITED_FOR
+mine::4609575,standard::75.512,59,CITED_FOR
+mine::0102343,standard::56.20003(a),58,CITED_FOR
+mine::1202394,standard::75.503,58,CITED_FOR
+mine::1202418,standard::75.400,58,CITED_FOR
+mine::1518966,standard::77.1104,58,CITED_FOR
+mine::4201566,standard::75.1731(a),58,CITED_FOR
+mine::4404856,standard::75.512,58,CITED_FOR
+mine::4601318,standard::75.370(a)(1),58,CITED_FOR
+mine::4601318,standard::77.1104,58,CITED_FOR
+mine::4601436,standard::75.333(h),58,CITED_FOR
+mine::4605437,standard::75.1725(a),58,CITED_FOR
+mine::1200064,standard::56.20003(a),57,CITED_FOR
+mine::2300542,standard::57.12028,57,CITED_FOR
+mine::4200079,standard::75.220(a)(1),57,CITED_FOR
+mine::4202241,standard::75.403,57,CITED_FOR
+mine::0200024,accident_type::Struck against a moving object,113,REPORTED_ACCIDENT
+mine::0200024,accident_type::Over-exertion NEC,99,REPORTED_ACCIDENT
+mine::0100851,"accident_type::Accident type, without injuries",93,REPORTED_ACCIDENT
+mine::4601437,accident_type::Struck by falling object,69,REPORTED_ACCIDENT
+mine::3301994,"accident_type::Accident type, without injuries",56,REPORTED_ACCIDENT
+mine::4601433,"accident_type::Accident type, without injuries",56,REPORTED_ACCIDENT
+mine::2602286,"accident_type::Accident type, without injuries",54,REPORTED_ACCIDENT
+mine::4601437,accident_type::Over-exertion in lifting objects,54,REPORTED_ACCIDENT
+mine::4601437,"accident_type::Accident type, without injuries",50,REPORTED_ACCIDENT
+mine::4601437,accident_type::Struck by... NEC,50,REPORTED_ACCIDENT
+mine::0200024,"accident_type::Caught in, under or between a moving and a stationary object",48,REPORTED_ACCIDENT
+mine::4601437,accident_type::Over-exertion NEC,48,REPORTED_ACCIDENT
+mine::1517216,"accident_type::Accident type, without injuries",47,REPORTED_ACCIDENT
+mine::0200024,accident_type::Struck by... NEC,46,REPORTED_ACCIDENT
+mine::0200024,accident_type::Fall to the walkway or working surface,44,REPORTED_ACCIDENT
+mine::0200137,accident_type::Struck against a moving object,44,REPORTED_ACCIDENT
+mine::4601437,"accident_type::Caught in, under or between a moving and a stationary object",44,REPORTED_ACCIDENT
+mine::1519374,accident_type::Struck by... NEC,43,REPORTED_ACCIDENT
+mine::3607230,"accident_type::Accident type, without injuries",43,REPORTED_ACCIDENT
+mine::3605018,"accident_type::Accident type, without injuries",41,REPORTED_ACCIDENT
+mine::4601433,accident_type::Struck by falling object,41,REPORTED_ACCIDENT
+mine::0100851,accident_type::Over-exertion NEC,38,REPORTED_ACCIDENT
+mine::0102901,"accident_type::Accident type, without injuries",37,REPORTED_ACCIDENT
+mine::1519374,accident_type::Struck by falling object,36,REPORTED_ACCIDENT
+mine::4604168,"accident_type::Accident type, without injuries",36,REPORTED_ACCIDENT
+mine::0200024,accident_type::Struck against stationary object,35,REPORTED_ACCIDENT
+mine::3605018,accident_type::Struck by falling object,35,REPORTED_ACCIDENT
+mine::0200024,accident_type::Struck by falling object,33,REPORTED_ACCIDENT
+mine::1519374,accident_type::Over-exertion in lifting objects,33,REPORTED_ACCIDENT
+mine::1103193,accident_type::Over-exertion NEC,31,REPORTED_ACCIDENT
+mine::1519374,accident_type::Over-exertion NEC,31,REPORTED_ACCIDENT
+mine::0200024,accident_type::Over-exertion in lifting objects,30,REPORTED_ACCIDENT
+mine::4601436,accident_type::Struck by falling object,30,REPORTED_ACCIDENT
+mine::3000663,"accident_type::Accident type, without injuries",29,REPORTED_ACCIDENT
+mine::3301993,"accident_type::Accident type, without injuries",29,REPORTED_ACCIDENT
+mine::3605018,accident_type::Over-exertion NEC,29,REPORTED_ACCIDENT
+mine::3607230,"accident_type::Caught in, under or between a moving and a stationary object",29,REPORTED_ACCIDENT
+mine::4601433,accident_type::Over-exertion NEC,29,REPORTED_ACCIDENT
+mine::3610045,"accident_type::Accident type, without injuries",28,REPORTED_ACCIDENT
+mine::4601437,accident_type::Struck against stationary object,28,REPORTED_ACCIDENT
+mine::1000082,"accident_type::Accident type, without injuries",27,REPORTED_ACCIDENT
+mine::1000088,"accident_type::Accident type, without injuries",27,REPORTED_ACCIDENT
+mine::0203131,accident_type::Over-exertion NEC,26,REPORTED_ACCIDENT
+mine::4601437,accident_type::Struck by flying object,26,REPORTED_ACCIDENT
+mine::0100851,accident_type::Struck by falling object,25,REPORTED_ACCIDENT
+mine::0200024,"accident_type::Bodily reaction, NEC",25,REPORTED_ACCIDENT
+mine::1600358,"accident_type::Accident type, without injuries",25,REPORTED_ACCIDENT
+mine::3605018,accident_type::Over-exertion in lifting objects,25,REPORTED_ACCIDENT
+mine::4201566,"accident_type::Accident type, without injuries",25,REPORTED_ACCIDENT
+mine::0200024,"accident_type::Absorption of radiations, caustics, toxic and noxious substances",24,REPORTED_ACCIDENT
+mine::0200024,accident_type::Struck by flying object,24,REPORTED_ACCIDENT
+mine::1519744,"accident_type::Accident type, without injuries",24,REPORTED_ACCIDENT
+mine::4800155,"accident_type::Accident type, without injuries",24,REPORTED_ACCIDENT
+mine::1519744,accident_type::Struck by falling object,23,REPORTED_ACCIDENT
+mine::3607416,"accident_type::Accident type, without injuries",23,REPORTED_ACCIDENT
+mine::4608878,"accident_type::Accident type, without injuries",23,REPORTED_ACCIDENT
+mine::0100851,accident_type::Over-exertion in lifting objects,22,REPORTED_ACCIDENT
+mine::0200137,accident_type::Over-exertion NEC,22,REPORTED_ACCIDENT
+mine::0203131,"accident_type::Caught in, under or between a moving and a stationary object",22,REPORTED_ACCIDENT
+mine::4601436,"accident_type::Caught in, under or between a moving and a stationary object",22,REPORTED_ACCIDENT
+mine::4608864,"accident_type::Caught in, under or between a moving and a stationary object",22,REPORTED_ACCIDENT
+mine::0200024,accident_type::Fall onto or against objects,21,REPORTED_ACCIDENT
+mine::1519374,"accident_type::Caught in, under or between a moving and a stationary object",21,REPORTED_ACCIDENT
+mine::1519374,accident_type::Over-exertion in pulling or pushing objects,21,REPORTED_ACCIDENT
+mine::4601433,accident_type::Over-exertion in lifting objects,21,REPORTED_ACCIDENT
+mine::4601436,"accident_type::Accident type, without injuries",21,REPORTED_ACCIDENT
+mine::1519374,accident_type::Struck by flying object,20,REPORTED_ACCIDENT
+mine::1519838,accident_type::Struck by falling object,20,REPORTED_ACCIDENT
+mine::2401490,accident_type::Struck by falling object,20,REPORTED_ACCIDENT
+mine::4200079,"accident_type::Accident type, without injuries",20,REPORTED_ACCIDENT
+mine::4404856,accident_type::Struck by falling object,20,REPORTED_ACCIDENT
+mine::0200024,accident_type::Over-exertion in pulling or pushing objects,19,REPORTED_ACCIDENT
+mine::0203131,accident_type::Struck against a moving object,19,REPORTED_ACCIDENT
+mine::1517216,accident_type::Struck by falling object,19,REPORTED_ACCIDENT
+mine::1517216,accident_type::Struck by... NEC,19,REPORTED_ACCIDENT
+mine::4601318,accident_type::Over-exertion in lifting objects,19,REPORTED_ACCIDENT
+mine::4609028,"accident_type::Accident type, without injuries",19,REPORTED_ACCIDENT
+mine::1103147,accident_type::Over-exertion in lifting objects,18,REPORTED_ACCIDENT
+mine::1103147,accident_type::Struck by falling object,18,REPORTED_ACCIDENT
+mine::1202394,accident_type::Over-exertion in lifting objects,18,REPORTED_ACCIDENT
+mine::2300409,accident_type::Over-exertion NEC,18,REPORTED_ACCIDENT
+mine::4601318,accident_type::Over-exertion NEC,18,REPORTED_ACCIDENT
+mine::4601436,accident_type::Over-exertion in lifting objects,18,REPORTED_ACCIDENT
+mine::5001545,"accident_type::Caught in, under or between a moving and a stationary object",18,REPORTED_ACCIDENT
+mine::0200144,accident_type::Over-exertion NEC,17,REPORTED_ACCIDENT
+mine::1103193,accident_type::Over-exertion in lifting objects,17,REPORTED_ACCIDENT
+mine::1202418,"accident_type::Accident type, without injuries",17,REPORTED_ACCIDENT
+mine::1517216,"accident_type::Caught in, under or between a moving and a stationary object",17,REPORTED_ACCIDENT
+mine::1519374,accident_type::Struck against stationary object,17,REPORTED_ACCIDENT
+mine::1600352,"accident_type::Absorption of radiations, caustics, toxic and noxious substances",17,REPORTED_ACCIDENT
+mine::3607230,accident_type::Struck by... NEC,17,REPORTED_ACCIDENT
+mine::4601436,accident_type::Struck by... NEC,17,REPORTED_ACCIDENT
+mine::4601968,"accident_type::Accident type, without injuries",17,REPORTED_ACCIDENT
+mine::5001642,accident_type::Over-exertion NEC,17,REPORTED_ACCIDENT
+mine::0101401,accident_type::Struck by falling object,16,REPORTED_ACCIDENT
+mine::1000082,accident_type::Struck by falling object,16,REPORTED_ACCIDENT
+mine::1103141,accident_type::Over-exertion NEC,16,REPORTED_ACCIDENT
+mine::1103141,accident_type::Struck by falling object,16,REPORTED_ACCIDENT
+mine::1202388,accident_type::Struck by falling object,16,REPORTED_ACCIDENT
+mine::1202394,"accident_type::Accident type, without injuries",16,REPORTED_ACCIDENT
+mine::1202418,accident_type::Struck by... NEC,16,REPORTED_ACCIDENT
+mine::1507101,"accident_type::Accident type, without injuries",16,REPORTED_ACCIDENT
+mine::2300458,accident_type::Over-exertion NEC,16,REPORTED_ACCIDENT
+mine::2401490,accident_type::Struck by... NEC,16,REPORTED_ACCIDENT
+mine::2900708,accident_type::Over-exertion NEC,16,REPORTED_ACCIDENT
+mine::3605018,accident_type::Struck against stationary object,16,REPORTED_ACCIDENT
+mine::4601318,accident_type::Struck by falling object,16,REPORTED_ACCIDENT
+mine::4601437,accident_type::Fall to the walkway or working surface,16,REPORTED_ACCIDENT
+mine::4601437,accident_type::Over-exertion in pulling or pushing objects,16,REPORTED_ACCIDENT
+mine::4608656,"accident_type::Accident type, without injuries",16,REPORTED_ACCIDENT
+mine::4608864,accident_type::Struck by... NEC,16,REPORTED_ACCIDENT
+mine::0100851,accident_type::Struck by... NEC,15,REPORTED_ACCIDENT
+mine::0800798,accident_type::Over-exertion NEC,15,REPORTED_ACCIDENT
+mine::1103141,"accident_type::Accident type, without injuries",15,REPORTED_ACCIDENT
+mine::1103147,"accident_type::Accident type, without injuries",15,REPORTED_ACCIDENT
+mine::1103182,accident_type::Struck by falling object,15,REPORTED_ACCIDENT
+mine::1202388,accident_type::Struck by... NEC,15,REPORTED_ACCIDENT
+mine::2401490,"accident_type::Caught in, under or between a moving and a stationary object",15,REPORTED_ACCIDENT
+mine::3607416,accident_type::Struck by falling object,15,REPORTED_ACCIDENT
+mine::4404856,"accident_type::Inhalation of radiations, caustics, toxic and noxious substances",15,REPORTED_ACCIDENT
+mine::4601433,accident_type::Fall to the walkway or working surface,15,REPORTED_ACCIDENT
+mine::4601433,accident_type::Struck by... NEC,15,REPORTED_ACCIDENT
+mine::4601436,accident_type::Over-exertion NEC,15,REPORTED_ACCIDENT
+mine::4609563,"accident_type::Accident type, without injuries",15,REPORTED_ACCIDENT
+mine::4800977,"accident_type::Accident type, without injuries",15,REPORTED_ACCIDENT
+mine::0200024,accident_type::Fall from machine,14,REPORTED_ACCIDENT
+mine::1103141,accident_type::Over-exertion in lifting objects,14,REPORTED_ACCIDENT
+mine::1103182,accident_type::Struck by flying object,14,REPORTED_ACCIDENT
+mine::1202418,accident_type::Over-exertion in lifting objects,14,REPORTED_ACCIDENT
+mine::1517216,accident_type::Over-exertion NEC,14,REPORTED_ACCIDENT
+mine::1517216,accident_type::Over-exertion in lifting objects,14,REPORTED_ACCIDENT
+mine::1517216,accident_type::Struck against stationary object,14,REPORTED_ACCIDENT
+mine::2401879,"accident_type::Caught in, under or between a moving and a stationary object",14,REPORTED_ACCIDENT
+mine::3605018,accident_type::Struck by... NEC,14,REPORTED_ACCIDENT
+mine::3610045,accident_type::Struck by falling object,14,REPORTED_ACCIDENT
+mine::4404856,"accident_type::Accident type, without injuries",14,REPORTED_ACCIDENT
+mine::4601318,accident_type::Struck by... NEC,14,REPORTED_ACCIDENT
+mine::4608864,accident_type::Struck by falling object,14,REPORTED_ACCIDENT
+mine::4608878,accident_type::Struck by falling object,14,REPORTED_ACCIDENT
+mine::0100851,"accident_type::Caught in, under or between a moving and a stationary object",13,REPORTED_ACCIDENT
+mine::0102901,accident_type::Struck by falling object,13,REPORTED_ACCIDENT
+mine::0200144,accident_type::Fall to the walkway or working surface,13,REPORTED_ACCIDENT
+mine::0200144,accident_type::Struck against a moving object,13,REPORTED_ACCIDENT
+mine::1103141,accident_type::Struck by... NEC,13,REPORTED_ACCIDENT
+mine::1103182,accident_type::Over-exertion NEC,13,REPORTED_ACCIDENT
+mine::1103193,"accident_type::Accident type, without injuries",13,REPORTED_ACCIDENT
+mine::1103193,accident_type::Struck by falling object,13,REPORTED_ACCIDENT
+mine::1519405,"accident_type::Accident type, without injuries",13,REPORTED_ACCIDENT
+mine::2000422,"accident_type::Caught in, under or between a moving and a stationary object",13,REPORTED_ACCIDENT
+mine::2401490,accident_type::Struck against a moving object,13,REPORTED_ACCIDENT
+mine::2401879,"accident_type::Inhalation of radiations, caustics, toxic and noxious substances",13,REPORTED_ACCIDENT
+mine::3607230,accident_type::Struck by falling object,13,REPORTED_ACCIDENT
+mine::4407308,"accident_type::Accident type, without injuries",13,REPORTED_ACCIDENT
+mine::4601433,"accident_type::Caught in, under or between a moving and a stationary object",13,REPORTED_ACCIDENT
+mine::4601437,accident_type::Struck against a moving object,13,REPORTED_ACCIDENT
+mine::4608864,accident_type::Over-exertion in lifting objects,13,REPORTED_ACCIDENT
+mine::4800152,"accident_type::Accident type, without injuries",13,REPORTED_ACCIDENT
+mine::0101401,"accident_type::Accident type, without injuries",12,REPORTED_ACCIDENT
+mine::0200144,accident_type::Struck against stationary object,12,REPORTED_ACCIDENT
+mine::1103141,accident_type::Struck against stationary object,12,REPORTED_ACCIDENT
+mine::1103189,accident_type::Struck by falling object,12,REPORTED_ACCIDENT
+mine::1103203,accident_type::Over-exertion NEC,12,REPORTED_ACCIDENT
+mine::1103235,accident_type::Struck by falling object,12,REPORTED_ACCIDENT
+mine::1519374,accident_type::Struck against a moving object,12,REPORTED_ACCIDENT
+mine::1600352,"accident_type::Caught in, under or between a moving and a stationary object",12,REPORTED_ACCIDENT
+mine::2602711,"accident_type::Accident type, without injuries",12,REPORTED_ACCIDENT
+mine::3605018,"accident_type::Caught in, under or between a moving and a stationary object",12,REPORTED_ACCIDENT
+mine::3607230,accident_type::Over-exertion NEC,12,REPORTED_ACCIDENT
+mine::3607416,accident_type::Struck by... NEC,12,REPORTED_ACCIDENT
+mine::4404856,"accident_type::Caught in, under or between a moving and a stationary object",12,REPORTED_ACCIDENT
+mine::4404856,accident_type::Struck by... NEC,12,REPORTED_ACCIDENT
+mine::4407223,"accident_type::Inhalation of radiations, caustics, toxic and noxious substances",12,REPORTED_ACCIDENT
+mine::4407223,accident_type::Struck by falling object,12,REPORTED_ACCIDENT
+mine::4601433,"accident_type::Inhalation of radiations, caustics, toxic and noxious substances",12,REPORTED_ACCIDENT
+mine::4609550,accident_type::Struck by falling object,12,REPORTED_ACCIDENT
+mine::4800888,accident_type::Struck against a moving object,12,REPORTED_ACCIDENT
+mine::4801200,"accident_type::Accident type, without injuries",12,REPORTED_ACCIDENT
+mine::4801353,"accident_type::Accident type, without injuries",12,REPORTED_ACCIDENT
+mine::0100851,accident_type::Struck against a moving object,11,REPORTED_ACCIDENT
+mine::0101247,"accident_type::Accident type, without injuries",11,REPORTED_ACCIDENT
+mine::0101401,accident_type::Fall to the walkway or working surface,11,REPORTED_ACCIDENT
+mine::0102901,accident_type::Struck by... NEC,11,REPORTED_ACCIDENT
+mine::0200144,accident_type::Struck by... NEC,11,REPORTED_ACCIDENT
+mine::0203131,accident_type::Struck against stationary object,11,REPORTED_ACCIDENT
+mine::0502256,accident_type::Over-exertion NEC,11,REPORTED_ACCIDENT
+mine::1103141,"accident_type::Caught in, under or between a moving and a stationary object",11,REPORTED_ACCIDENT
+mine::1103182,accident_type::Struck by... NEC,11,REPORTED_ACCIDENT
+mine::1103189,"accident_type::Accident type, without injuries",11,REPORTED_ACCIDENT
+mine::1103189,accident_type::Over-exertion NEC,11,REPORTED_ACCIDENT
+mine::1103189,accident_type::Struck by... NEC,11,REPORTED_ACCIDENT
+mine::1202394,accident_type::Struck by falling object,11,REPORTED_ACCIDENT
+mine::1202418,accident_type::Over-exertion NEC,11,REPORTED_ACCIDENT
+mine::2100282,accident_type::Struck against a moving object,11,REPORTED_ACCIDENT
+mine::2300499,accident_type::Over-exertion NEC,11,REPORTED_ACCIDENT
+mine::2300542,accident_type::Over-exertion NEC,11,REPORTED_ACCIDENT
+mine::2401490,"accident_type::Accident type, without injuries",11,REPORTED_ACCIDENT
+mine::2401490,accident_type::Fall to the walkway or working surface,11,REPORTED_ACCIDENT
+mine::2401490,accident_type::Struck by flying object,11,REPORTED_ACCIDENT
+mine::2900708,accident_type::Struck against a moving object,11,REPORTED_ACCIDENT
+mine::3300968,"accident_type::Accident type, without injuries",11,REPORTED_ACCIDENT
+mine::3607230,accident_type::Fall to the walkway or working surface,11,REPORTED_ACCIDENT
+mine::3607230,accident_type::Over-exertion in lifting objects,11,REPORTED_ACCIDENT
+mine::4601433,accident_type::Fall onto or against objects,11,REPORTED_ACCIDENT
+mine::4604168,"accident_type::Caught in, under or between a moving and a stationary object",11,REPORTED_ACCIDENT
+mine::4608864,"accident_type::Accident type, without injuries",11,REPORTED_ACCIDENT
+mine::4609029,accident_type::Struck by falling object,11,REPORTED_ACCIDENT
+mine::4609514,"accident_type::Accident type, without injuries",11,REPORTED_ACCIDENT
+mine::4609522,"accident_type::Inhalation of radiations, caustics, toxic and noxious substances",11,REPORTED_ACCIDENT
+mine::4800152,accident_type::Struck by... NEC,11,REPORTED_ACCIDENT
+mine::4801034,"accident_type::Accident type, without injuries",11,REPORTED_ACCIDENT
+mine::5001642,accident_type::Struck against stationary object,11,REPORTED_ACCIDENT
+mine::0200024,accident_type::Contact with heat,10,REPORTED_ACCIDENT
+mine::0200135,"accident_type::Caught in, under or between a moving and a stationary object",10,REPORTED_ACCIDENT
+mine::0200137,accident_type::Fall to the walkway or working surface,10,REPORTED_ACCIDENT
+mine::0200137,accident_type::Over-exertion in lifting objects,10,REPORTED_ACCIDENT
+mine::0200144,"accident_type::Caught in, under or between a moving and a stationary object",10,REPORTED_ACCIDENT
+mine::0405701,"accident_type::Accident type, without injuries",10,REPORTED_ACCIDENT
+mine::0503695,accident_type::Over-exertion NEC,10,REPORTED_ACCIDENT
+mine::1103143,"accident_type::Accident type, without injuries",10,REPORTED_ACCIDENT
+mine::1103182,"accident_type::Caught in, under or between a moving and a stationary object",10,REPORTED_ACCIDENT
+mine::1103189,accident_type::Struck by flying object,10,REPORTED_ACCIDENT
+mine::1103235,accident_type::Over-exertion NEC,10,REPORTED_ACCIDENT
+mine::1202418,"accident_type::Caught in, under or between a moving and a stationary object",10,REPORTED_ACCIDENT
+mine::1519374,accident_type::Fall to the walkway or working surface,10,REPORTED_ACCIDENT
+mine::2000422,accident_type::Struck by... NEC,10,REPORTED_ACCIDENT
+mine::2900708,accident_type::Fall to the walkway or working surface,10,REPORTED_ACCIDENT
+mine::3605018,accident_type::Fall onto or against objects,10,REPORTED_ACCIDENT
+mine::3605018,accident_type::Fall to the walkway or working surface,10,REPORTED_ACCIDENT
+mine::3607416,"accident_type::Caught in, under or between a moving and a stationary object",10,REPORTED_ACCIDENT
+mine::4601318,accident_type::Fall to the walkway or working surface,10,REPORTED_ACCIDENT
+mine::4601318,accident_type::Struck against stationary object,10,REPORTED_ACCIDENT
+mine::4601433,accident_type::Struck by flying object,10,REPORTED_ACCIDENT
+mine::4601436,accident_type::Fall to the walkway or working surface,10,REPORTED_ACCIDENT
+mine::4608864,accident_type::Fall onto or against objects,10,REPORTED_ACCIDENT
+mine::4608864,accident_type::Over-exertion NEC,10,REPORTED_ACCIDENT
+mine::4608864,accident_type::Struck against stationary object,10,REPORTED_ACCIDENT
+mine::4609495,"accident_type::Accident type, without injuries",10,REPORTED_ACCIDENT
+mine::5001616,"accident_type::Caught in, under or between a moving and a stationary object",10,REPORTED_ACCIDENT
+mine::5001642,"accident_type::Caught in, under or between a moving and a stationary object",10,REPORTED_ACCIDENT
+mine::5001642,accident_type::Struck by... NEC,10,REPORTED_ACCIDENT
+mine::0100027,accident_type::Over-exertion NEC,9,REPORTED_ACCIDENT
+mine::0100851,accident_type::Fall to the walkway or working surface,9,REPORTED_ACCIDENT
+mine::0100851,accident_type::Over-exertion in pulling or pushing objects,9,REPORTED_ACCIDENT
+mine::0100851,accident_type::Struck by flying object,9,REPORTED_ACCIDENT
+mine::0101247,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::0101401,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::0801117,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::1103193,accident_type::Fall to the walkway or working surface,9,REPORTED_ACCIDENT
+mine::1103203,"accident_type::Accident type, without injuries",9,REPORTED_ACCIDENT
+mine::1103203,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::1202394,accident_type::Over-exertion NEC,9,REPORTED_ACCIDENT
+mine::1202418,accident_type::Struck by falling object,9,REPORTED_ACCIDENT
+mine::1502263,"accident_type::Accident type, without injuries",9,REPORTED_ACCIDENT
+mine::1517216,accident_type::Fall to the walkway or working surface,9,REPORTED_ACCIDENT
+mine::1519744,accident_type::Over-exertion in lifting objects,9,REPORTED_ACCIDENT
+mine::1519827,"accident_type::Accident type, without injuries",9,REPORTED_ACCIDENT
+mine::1519838,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::1519838,accident_type::Struck against stationary object,9,REPORTED_ACCIDENT
+mine::2000422,accident_type::Struck by flying object,9,REPORTED_ACCIDENT
+mine::2300284,accident_type::Over-exertion NEC,9,REPORTED_ACCIDENT
+mine::2401950,accident_type::Struck by falling object,9,REPORTED_ACCIDENT
+mine::2600500,accident_type::Over-exertion NEC,9,REPORTED_ACCIDENT
+mine::2600594,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::3607230,accident_type::Struck against a moving object,9,REPORTED_ACCIDENT
+mine::3607230,accident_type::Struck against stationary object,9,REPORTED_ACCIDENT
+mine::4201566,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::4202241,accident_type::Struck by falling object,9,REPORTED_ACCIDENT
+mine::4407223,accident_type::Struck by... NEC,9,REPORTED_ACCIDENT
+mine::4601433,accident_type::NEC,9,REPORTED_ACCIDENT
+mine::4601436,accident_type::Over-exertion in pulling or pushing objects,9,REPORTED_ACCIDENT
+mine::4601436,accident_type::Struck against stationary object,9,REPORTED_ACCIDENT
+mine::4605437,"accident_type::Accident type, without injuries",9,REPORTED_ACCIDENT
+mine::4609522,accident_type::Struck by falling object,9,REPORTED_ACCIDENT
+mine::4609575,accident_type::Struck by falling object,9,REPORTED_ACCIDENT
+mine::4800152,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::4800977,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::4801295,"accident_type::Accident type, without injuries",9,REPORTED_ACCIDENT
+mine::4801353,"accident_type::Caught in, under or between a moving and a stationary object",9,REPORTED_ACCIDENT
+mine::0100851,accident_type::Struck against stationary object,8,REPORTED_ACCIDENT
+mine::0101247,accident_type::Struck by... NEC,8,REPORTED_ACCIDENT
+mine::0101401,accident_type::Struck by flying object,8,REPORTED_ACCIDENT
+mine::0101401,accident_type::Struck by... NEC,8,REPORTED_ACCIDENT
+mine::0102901,"accident_type::Caught in, under or between a moving and a stationary object",8,REPORTED_ACCIDENT
+mine::0200024,accident_type::Fall down stairs,8,REPORTED_ACCIDENT
+mine::0200137,accident_type::Struck by... NEC,8,REPORTED_ACCIDENT
+mine::0200144,accident_type::Contact with heat,8,REPORTED_ACCIDENT
+mine::0400036,accident_type::Struck against a moving object,8,REPORTED_ACCIDENT
+mine::0402542,accident_type::Fall to the walkway or working surface,8,REPORTED_ACCIDENT
+mine::0500344,"accident_type::Accident type, without injuries",8,REPORTED_ACCIDENT
+mine::0502256,accident_type::Struck against a moving object,8,REPORTED_ACCIDENT
+mine::0502838,accident_type::Over-exertion NEC,8,REPORTED_ACCIDENT
+mine::0800798,accident_type::Struck by... NEC,8,REPORTED_ACCIDENT
+mine::0900337,accident_type::NEC,8,REPORTED_ACCIDENT
+mine::1000088,accident_type::Struck by falling object,8,REPORTED_ACCIDENT
+mine::1102664,"accident_type::Accident type, without injuries",8,REPORTED_ACCIDENT
+mine::1103147,accident_type::Over-exertion NEC,8,REPORTED_ACCIDENT
+mine::1103189,"accident_type::Caught in, under or between a moving and a stationary object",8,REPORTED_ACCIDENT
+mine::1200427,"accident_type::Accident type, without injuries",8,REPORTED_ACCIDENT
+mine::1202388,"accident_type::Accident type, without injuries",8,REPORTED_ACCIDENT
+mine::1512753,"accident_type::Accident type, without injuries",8,REPORTED_ACCIDENT
