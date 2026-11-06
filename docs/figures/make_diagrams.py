@@ -88,75 +88,80 @@ def legend(s, x, y, items):
 # Gambar 2.1 Arsitektur
 # ----------------------------------------------------------------------------
 def architecture():
-    s = SVG(1900, 640)
-    s.text(950, 40, "Arsitektur Solusi Big Data – Prototipe Data Keselamatan Tambang MSHA", 22, "bold")
+    s = SVG(1900, 720)
+    s.text(950, 36, "Arsitektur Solusi Big Data Lokal: Hadoop HDFS + Apache Spark – Data Keselamatan Tambang MSHA", 22, "bold")
 
     # Sumber data
     srcs = [("Accidents.txt", "218 MB"), ("Violations.txt", "1.375 MB"), ("Mines.txt", "38 MB"),
             ("Inspections.txt", "332 MB")]
     for i, (t, sz) in enumerate(srcs):
-        y = 150 + 85 * i
-        s.box(30, y, 175, 62, "muted" if t == "Inspections.txt" else "source", t, [sz],
-              dash="5 4" if t == "Inspections.txt" else None)
-    s.text(117, 490, "Inspections: eksplorasi Assignment I", 11.5, color=SUB, italic=True)
-    s.text(117, 135, "MSHA Open Government Data", 12, "bold", SUB)
-    # bus sumber -> ingestion
+        y = 230 + 85 * i
+        insp = t == "Inspections.txt"
+        s.box(30, y, 175, 62, "muted" if insp else "source", t, [sz], dash="5 4" if insp else None)
+    s.text(117, 570, "Inspections: eksplorasi Assignment I", 11.5, color=SUB, italic=True)
+    s.text(117, 215, "MSHA Open Government Data", 12, "bold", SUB)
     for i in range(3):
-        y = 181 + 85 * i
+        y = 261 + 85 * i
         s.path([(205, y), (228, y)], arrow=False)
-    s.path([(228, 181), (228, 351)], arrow=False)
-    s.path([(228, 300), (258, 300)])
+    s.path([(228, 261), (228, 431)], arrow=False)
+    s.path([(228, 400), (258, 400)])
 
-    s.box(260, 240, 185, 120, "ingest", "Ingestion", ["Python downloader", "unduh .zip MSHA",
+    s.box(260, 340, 185, 120, "ingest", "Ingestion", ["Python downloader", "unduh .zip MSHA",
                                                       "batch mingguan", "full refresh"])
-    s.path([(445, 300), (488, 300)])
-    s.box(490, 245, 170, 110, "storage", "Raw Zone", ["data/*.txt", "berkas asli,", "tidak diubah"])
+    s.path([(445, 400), (488, 400)])
+    s.box(490, 345, 170, 110, "storage", "Landing Zone", ["disk lokal", "data/*.txt"])
 
-    # cabang dari raw zone
-    s.path([(660, 300), (695, 300)], arrow=False)
-    s.path([(695, 125), (695, 475)], arrow=False)
-    s.path([(695, 125), (728, 125)])
-    s.path([(695, 300), (728, 300)])
-    s.path([(695, 475), (728, 475)])
+    # cabang dari landing zone
+    s.path([(660, 400), (695, 400)], arrow=False)
+    s.path([(695, 142), (695, 575)], arrow=False)
+    s.path([(695, 142), (748, 142)])
+    s.text(688, 138, "upload ke HDFS", 11.5, color=SUB, anchor="end", italic=True)
+    s.path([(695, 400), (728, 400)])
+    s.path([(695, 575), (728, 575)])
 
-    # Baris A: storage
-    s.box(730, 90, 200, 70, "process", "Spark SQL", ["konversi & kueri"])
-    s.path([(930, 125), (978, 125)])
-    s.box(980, 85, 220, 80, "storage", "Curated Zone", ["Parquet + Snappy", "partisi CAL_YR=YYYY"])
+    # HDFS
+    s.rect(722, 50, 246, 255, "#f6fbf7", "#188038", rx=14, sw=2, dash="7 5")
+    s.text(845, 72, "HDFS (single-node)", 14, "bold", "#188038")
+    s.text(845, 90, "hdfs://localhost:9000 · NameNode + DataNode", 10.5, color=SUB)
+    s.box(750, 105, 190, 75, "storage", "Raw Zone", ["/user/msha/raw", "berkas asli, tidak diubah"], 14, 11.5)
+    s.box(750, 205, 190, 85, "storage", "Curated Zone", ["/user/msha/warehouse", "Parquet + Snappy",
+                                                         "partisi CAL_YR=YYYY"], 14, 11.5)
+    s.box(1020, 150, 180, 80, "process", "Spark SQL", ["baca raw, tulis Parquet", "kueri agregasi"], 14.5, 12)
+    s.path([(940, 142), (985, 142), (985, 175), (1018, 175)])
+    s.path([(1110, 230), (1110, 262), (942, 262)])
 
-    # Baris B: machine learning
-    s.box(730, 255, 200, 90, "process", "Preprocessing", ["pandas", "label · partisi temporal",
+    # Baris machine learning
+    s.box(730, 355, 200, 90, "process", "Preprocessing", ["pandas", "label · partisi temporal",
                                                           "fit hanya pada train"])
-    s.path([(930, 300), (978, 300)])
-    s.box(980, 260, 220, 80, "storage", "Processed Zone", ["train 2018–21 · val 2022", "test 2023"])
-    s.path([(1200, 300), (1225, 300)], arrow=False)
-    s.path([(1225, 252), (1225, 327)], arrow=False)
-    s.path([(1225, 252), (1248, 252)])
-    s.path([(1225, 327), (1248, 327)])
-    s.box(1250, 225, 185, 55, "process", "Scikit-Learn", ["LR · Random Forest"], 14, 12)
-    s.box(1250, 300, 185, 55, "process", "Spark MLlib", ["LR · Random Forest"], 14, 12)
+    s.path([(930, 400), (978, 400)])
+    s.box(980, 360, 220, 80, "storage", "Processed Zone", ["train 2018–21 · val 2022", "test 2023"])
+    s.path([(1200, 400), (1225, 400)], arrow=False)
+    s.path([(1225, 352), (1225, 427)], arrow=False)
+    s.path([(1225, 352), (1248, 352)])
+    s.path([(1225, 427), (1248, 427)])
+    s.box(1250, 325, 185, 55, "process", "Scikit-Learn", ["LR · Random Forest"], 14, 12)
+    s.box(1250, 400, 185, 55, "process", "Spark MLlib", ["LR · Random Forest"], 14, 12)
 
-    # Baris C: graph
-    s.box(730, 440, 200, 70, "process", "Graph Analytics", ["NetworkX + Accidents/Violations"], 15, 11.5)
+    # Baris graph
+    s.box(730, 540, 200, 70, "process", "Graph Analytics", ["NetworkX + Accidents/Violations"], 15, 11.5)
 
     # Artifacts & dashboard
-    s.box(1485, 230, 190, 120, "storage", "Artifacts", ["model & preprocessor", "metrik benchmark",
-                                                        "metrik graf", "ringkasan storage"])
-    s.path([(1435, 252), (1483, 252)])
-    s.path([(1435, 327), (1483, 327)])
-    s.path([(1200, 125), (1580, 125), (1580, 228)], dash="6 4")
-    s.path([(930, 475), (1580, 475), (1580, 352)])
-    s.path([(1675, 290), (1708, 290)])
-    s.box(1710, 235, 170, 110, "viz", "Streamlit", ["dashboard 6 halaman", "hanya membaca", "artifacts"])
+    s.box(1485, 330, 190, 120, "storage", "Artifacts", ["model & preprocessor", "metrik benchmark",
+                                                        "metrik graf", "ringkasan HDFS"])
+    s.path([(1435, 352), (1483, 352)])
+    s.path([(1435, 427), (1483, 427)])
+    s.path([(1200, 190), (1580, 190), (1580, 328)], dash="6 4")
+    s.text(1390, 180, "ukuran, block size, replication, hasil kueri", 11.5, color=SUB, italic=True)
+    s.path([(930, 575), (1580, 575), (1580, 452)])
+    s.path([(1675, 390), (1708, 390)])
+    s.box(1710, 335, 170, 110, "viz", "Streamlit", ["dashboard 6 halaman", "hanya membaca", "artifacts"])
 
-    s.text(1390, 115, "ringkasan ukuran & kueri", 11.5, color=SUB, italic=True)
-
-    legend(s, 30, 580, [("Sumber data", "source"), ("Ingestion", "ingest"), ("Storage", "storage"),
+    legend(s, 30, 665, [("Sumber data", "source"), ("Ingestion", "ingest"), ("Storage", "storage"),
                         ("Processing", "process"), ("Visualisasi", "viz")])
-    s.text(1870, 585, "Padanan cloud (Assignment I): Ingestion = EventBridge + Lambda · Raw/Curated = Amazon S3 · "
-                      "Processing = AWS Glue Spark · Spark SQL = Redshift", 12, color=SUB, anchor="end")
-    s.text(1870, 610, "Prototipe: Apache Spark local[*] pada satu mesin (laptop / Google Colab)", 12,
-           color=SUB, anchor="end")
+    s.text(1870, 660, "Semua komponen berjalan di satu mesin: Hadoop HDFS pseudo-distributed + Apache Spark local[*]",
+           12, color=SUB, anchor="end")
+    s.text(1870, 684, "Spark membaca dan menulis HDFS; pandas, Scikit-Learn, dan NetworkX membaca salinan di landing zone",
+           12, color=SUB, anchor="end")
     s.save("gambar_2_1_arsitektur.svg")
 
 
