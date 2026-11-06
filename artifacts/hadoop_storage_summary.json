@@ -1,49 +1,64 @@
 {
-  "storage_technology": "Hadoop Distributed File System (HDFS) / Parquet Warehouse",
-  "compression_codec": "Snappy Columnar",
+  "storage_technology": "HDFS",
+  "filesystem_uri": "hdfs://localhost:9000",
+  "raw_zone_path": "hdfs://localhost:9000/user/msha/raw",
+  "curated_zone_path": "hdfs://localhost:9000/user/msha/warehouse/msha_accidents",
+  "raw_files": {
+    "Accidents.txt": "hdfs://localhost:9000/user/msha/raw/Accidents.txt",
+    "Violations.txt": "hdfs://localhost:9000/user/msha/raw/Violations.txt",
+    "Mines.txt": "hdfs://localhost:9000/user/msha/raw/Mines.txt"
+  },
+  "block_size_mb": 128.0,
+  "replication_factor": 3,
+  "compression_codec": "Snappy (Parquet)",
+  "raw_zone_total_mb": 1634.74,
   "raw_csv_size_mb": 218.58,
-  "hadoop_parquet_size_mb": 23.94,
-  "storage_savings_pct": 89.05,
-  "write_time_seconds": 5.33,
-  "olap_query_time_seconds": 0.148,
-  "num_partitions": 14,
+  "hadoop_parquet_size_mb": 56.05,
+  "storage_savings_pct": 74.36,
+  "upload_time_seconds": 4.48,
+  "read_time_seconds": 3.63,
+  "write_time_seconds": 15.64,
+  "olap_query_time_seconds": 5.003,
+  "num_partitions": 27,
   "partition_scheme": "CAL_YR=YYYY",
+  "rows_written": 275673,
+  "rows_dropped_null_year": 0,
   "sample_query_results": [
     {
       "Tahun": 2023,
       "Total_Insiden": 6093,
       "Insiden_Lost_Time_Severe": 3728,
-      "Rata_Rata_Pengalaman_Tahun": 8.11
+      "Rata_Rata_Pengalaman_Tahun": 8.95
     },
     {
       "Tahun": 2022,
       "Total_Insiden": 5980,
       "Insiden_Lost_Time_Severe": 3582,
-      "Rata_Rata_Pengalaman_Tahun": 8.1
+      "Rata_Rata_Pengalaman_Tahun": 8.99
     },
     {
       "Tahun": 2021,
       "Total_Insiden": 5676,
       "Insiden_Lost_Time_Severe": 3539,
-      "Rata_Rata_Pengalaman_Tahun": 8.96
+      "Rata_Rata_Pengalaman_Tahun": 9.9
     },
     {
       "Tahun": 2020,
       "Total_Insiden": 5391,
       "Insiden_Lost_Time_Severe": 3281,
-      "Rata_Rata_Pengalaman_Tahun": 9.08
+      "Rata_Rata_Pengalaman_Tahun": 10.06
     },
     {
       "Tahun": 2019,
       "Total_Insiden": 6824,
       "Insiden_Lost_Time_Severe": 4017,
-      "Rata_Rata_Pengalaman_Tahun": 9.26
+      "Rata_Rata_Pengalaman_Tahun": 10.22
     },
     {
       "Tahun": 2018,
       "Total_Insiden": 6863,
       "Insiden_Lost_Time_Severe": 4038,
-      "Rata_Rata_Pengalaman_Tahun": 9.33
+      "Rata_Rata_Pengalaman_Tahun": 10.35
     }
   ]
 }
