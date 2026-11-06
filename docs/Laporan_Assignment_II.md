@@ -583,15 +583,15 @@ Graph analytics diimplementasikan di `src/graph_analytics.py` dengan NetworkX (H
 
 ## 6.2 Analisis dan Insight yang Diperoleh
 
-*Tabel 6.3 Simpul dengan weighted degree tertinggi (sumber: halaman Graph Analytics, tab Sentralitas)*
+*Tabel 6.3 Simpul dengan weighted degree tertinggi, 2020–2023 (sumber: `graph_nodes_summary.csv`; nama dan negara bagian tambang dari `mine_geo_accidents.csv`)*
 
 | Peringkat | Tambang | Weighted degree | Standar 30 CFR | Weighted degree | Tipe kecelakaan | Weighted degree |
 |---|---|---|---|---|---|---|
-| 1 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| 2 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| 3 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| 4 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| 5 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
+| 1 | 1519374 (RIVER VIEW MINE, KY) | 3.212 | 75.400 | 11.202 | Over-exertion NEC | 2.414 |
+| 2 | 0101401 (No 7 Mine, AL) | 2.770 | 56.14107(a) | 10.786 | Caught in, under or between a moving and a stationary object | 2.399 |
+| 3 | 4601437 (MARSHALL COUNTY MINE, WV) | 2.593 | 56.12004 | 10.153 | Struck by... NEC | 2.142 |
+| 4 | 4601433 (Marion County Mine, WV) | 2.578 | 56.20003(a) | 9.790 | Accident type, without injuries | 2.054 |
+| 5 | 3607230 (Bailey Mine, PA) | 2.399 | 50.30(a) | 8.796 | Struck by falling object | 1.980 |
 
 ⟦ISI: tangkapan layar tab Jaringan⟧
 
