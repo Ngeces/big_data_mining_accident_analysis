@@ -153,8 +153,8 @@ def architecture():
 
     legend(s, 30, 580, [("Sumber data", "source"), ("Ingestion", "ingest"), ("Storage", "storage"),
                         ("Processing", "process"), ("Visualisasi", "viz")])
-    s.text(1870, 585, "Padanan cloud (Assignment I): Ingestion → EventBridge + Lambda · Raw/Curated → Amazon S3 · "
-                      "Processing → AWS Glue Spark · Spark SQL → Redshift", 12, color=SUB, anchor="end")
+    s.text(1870, 585, "Padanan cloud (Assignment I): Ingestion = EventBridge + Lambda · Raw/Curated = Amazon S3 · "
+                      "Processing = AWS Glue Spark · Spark SQL = Redshift", 12, color=SUB, anchor="end")
     s.text(1870, 610, "Prototipe: Apache Spark local[*] pada satu mesin (laptop / Google Colab)", 12,
            color=SUB, anchor="end")
     s.save("gambar_2_1_arsitektur.svg")
@@ -250,7 +250,7 @@ def data_model():
 # ----------------------------------------------------------------------------
 def ml_pipeline():
     W = 1000
-    s = SVG(W, 1160)
+    s = SVG(W, 1230)
     s.text(W / 2, 38, "Alur Machine Learning Pipeline", 22, "bold")
     x0, w = 150, 700
     cx = x0 + w / 2
@@ -273,10 +273,10 @@ def ml_pipeline():
     down(y, y + 26)
     y = step(y + 26, 78, "process", "Pembacaan & normalisasi",
              ["semua kolom dibaca sebagai teks (MINE_ID, kode tetap utuh)",
-              "kode cedera dinormalisasi 2 digit · kategori kosong → MISSING"], 2)
+              "kode cedera dinormalisasi 2 digit · kategori kosong menjadi MISSING"], 2)
     down(y, y + 26)
     y = step(y + 26, 78, "process", "Pemetaan label IS_LOST_TIME_OR_SEVERE",
-             ["DEGREE_INJURY_CD 01–05 → 1 · 00, 06, 10 → 0",
+             ["DEGREE_INJURY_CD 01–05 = 1 · 00, 06, 10 = 0",
               "07, 08, 09, dan kosong dieksklusi"], 3)
     down(y, y + 26)
     y = step(y + 26, 62, "process", "Filter CAL_YR 2018–2023 & rekayasa fitur",
@@ -316,17 +316,18 @@ def ml_pipeline():
     s.box(x0, my, half, 110, "viz", "Tanpa Spark: Scikit-Learn",
           ["ColumnTransformer + OneHotEncoder", "LogisticRegression", "RandomForestClassifier"], 14.5)
     s.box(x0 + half + 30, my, half, 110, "viz", "Dengan Spark: Spark MLlib",
-          ["StringIndexer → OneHotEncoder → VectorAssembler", "LogisticRegression",
+          ["StringIndexer » OneHotEncoder » VectorAssembler", "LogisticRegression",
            "RandomForestClassifier"], 14.5)
-    s.text(cx, my + 132, "label, fitur, partisi, class weight (balanced), dan hyperparameter sama",
-           12, color=SUB, italic=True)
     y = my + 110
+    s.text(cx, y + 52, "label, fitur, partisi, class weight (balanced), dan hyperparameter sama",
+           12, color=SUB, italic=True)
 
-    jy = y + 44
+    jy = y + 64
     s.path([(x0 + half / 2, y), (x0 + half / 2, y + 30)], arrow=False)
     s.path([(x0 + w - half / 2, y), (x0 + w - half / 2, y + 30)], arrow=False)
     s.path([(x0 + half / 2, y + 30), (x0 + w - half / 2, y + 30)], arrow=False)
-    s.path([(cx, y + 30), (cx, jy + 18)])
+    s.path([(cx, y + 30), (cx, y + 38)], arrow=False)
+    s.path([(cx, y + 60), (cx, jy + 18)])
     y = step(jy + 20, 62, "process", "Tuning threshold",
              ["threshold dengan F1 kelas 1 tertinggi · pemilihan model untuk dashboard"], 8,
              "Validation", "#e37400")
@@ -378,19 +379,25 @@ def graph_schema():
     # Panel A: skema
     s.rect(30, 70, 640, 470, "#fbfcfe", "#e3e7ee", rx=14)
     s.text(350, 102, "(a) Skema simpul dan sisi", 15, "bold", SUB)
-    node(s, "standard", 140, 300, "standard", 52, 13)
-    node(s, "mine", 350, 300, "mine", 52, 15)
-    node(s, "accident", 560, 300, "type", 46, 14)
-    edge(s, 196, 300, 298, 300, "CITED_FOR", "#c5221f", 3, ly=288)
-    edge(s, 402, 300, 514, 300, "REPORTED_ACCIDENT", "#188038", 3, ly=288)
-    s.text(247, 322, "w = jumlah pelanggaran", 11.5, color=SUB)
-    s.text(458, 322, "w = jumlah kecelakaan", 11.5, color=SUB)
-    s.text(140, 385, "standard::<PART_SECTION>", 12, color=SUB)
-    s.text(140, 402, "pasal 30 CFR (Violations)", 12, color=SUB)
-    s.text(350, 385, "mine::<MINE_ID>", 12, color=SUB)
-    s.text(350, 402, "tambang", 12, color=SUB)
-    s.text(560, 385, "accident_type::<ACCIDENT_TYPE>", 12, color=SUB)
-    s.text(560, 402, "tipe kecelakaan (Accidents)", 12, color=SUB)
+    node(s, "standard", 115, 300, "standard", 52, 13)
+    node(s, "mine", 345, 300, "mine", 52, 15)
+    node(s, "accident", 585, 300, "type", 46, 14)
+    edge(s, 171, 300, 293, 300)
+    edge(s, 397, 300, 539, 300)
+    s.add('<line x1="171" y1="300" x2="293" y2="300" stroke="#c5221f" stroke-width="3"/>')
+    s.add('<line x1="397" y1="300" x2="539" y2="300" stroke="#188038" stroke-width="3"/>')
+    s.text(232, 290, "CITED_FOR", 11.5, "bold", "#c5221f")
+    s.text(468, 290, "REPORTED_ACCIDENT", 11.5, "bold", "#188038")
+    s.text(232, 318, "w = jumlah", 11, color=SUB)
+    s.text(232, 332, "pelanggaran", 11, color=SUB)
+    s.text(468, 318, "w = jumlah", 11, color=SUB)
+    s.text(468, 332, "kecelakaan", 11, color=SUB)
+    s.text(115, 385, "standard::<PART_SECTION>", 12, color=SUB)
+    s.text(115, 402, "pasal 30 CFR (Violations)", 12, color=SUB)
+    s.text(345, 385, "mine::<MINE_ID>", 12, color=SUB)
+    s.text(345, 402, "tambang", 12, color=SUB)
+    s.text(585, 385, "accident_type::<ACCIDENT_TYPE>", 12, color=SUB)
+    s.text(585, 402, "tipe kecelakaan (Accidents)", 12, color=SUB)
     s.text(350, 455, "Graf tidak berarah, periode Accidents dan Violations sama (2020–2023).", 12.5, color=SUB)
     s.text(350, 475, "Metrik: weighted degree, PageRank, afinitas & lift, cosine similarity.", 12.5, color=SUB)
     s.text(350, 505, "Sisi = kejadian di tambang yang sama, bukan hubungan sebab-akibat.", 12.5, "bold", SUB)
@@ -420,7 +427,7 @@ def graph_schema():
     s.text(1275, 300, "Jaccard(A, B)", 13, "bold", "#1a73e8")
     s.text(1275, 320, "= |{S2, T1}| / |{S1, S2, T1, T2}|", 12, color=SUB)
     s.text(1275, 338, "= 2 / 4 = 0,50", 12, color=SUB)
-    s.text(1035, 500, "300 tambang dengan weighted degree tertinggi · sisi jika Jaccard ≥ 0,20 ·", 12.5, color=SUB)
+    s.text(1035, 500, "300 tambang dengan weighted degree tertinggi · sisi jika Jaccard >= 0,20 ·", 12.5, color=SUB)
     s.text(1035, 520, "bobot = Jaccard · komunitas: Louvain (seed 42)", 12.5, color=SUB)
 
     # legenda

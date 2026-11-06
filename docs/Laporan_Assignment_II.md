@@ -107,42 +107,9 @@ Oleh karena itu, diperlukan pemantauan untuk memahami dan mencegah kecelakaan te
 
 Assignment I mengusulkan arsitektur berbasis AWS (EventBridge, Lambda, S3, Glue, dan Redshift). Pada Assignment II, solusi direalisasikan sebagai prototipe yang berjalan di satu mesin (laptop atau Google Colab) dengan Apache Spark mode lokal. Setiap komponen prototipe memiliki padanan langsung pada rancangan cloud Assignment I (Tabel 2.1), sehingga prototipe dapat dipindahkan ke cloud tanpa mengubah logika pemrosesan.
 
-```mermaid
-flowchart LR
-    subgraph S[Data Sources]
-        A1[Accidents.txt]
-        A2[Violations.txt]
-        A3[Mines.txt]
-        A4[Inspections.txt]
-    end
-    subgraph I[Ingestion]
-        B1[Python downloader<br/>batch mingguan, full refresh]
-    end
-    subgraph ST[Storage]
-        C1[Raw zone<br/>data/*.txt]
-        C2[Curated zone<br/>Parquet Snappy<br/>partisi CAL_YR=YYYY]
-        C3[Processed zone<br/>train / val / test]
-        C4[Artifacts<br/>model, metrik, graf]
-    end
-    subgraph P[Processing]
-        D1[Spark SQL]
-        D2[Spark MLlib]
-        D3[pandas + Scikit-Learn]
-        D4[NetworkX]
-    end
-    subgraph V[Analytics & Visualization]
-        E1[Streamlit dashboard]
-    end
-    A1 & A2 & A3 & A4 --> B1 --> C1
-    C1 --> D1 --> C2
-    C1 --> D3 --> C3
-    C3 --> D2 --> C4
-    C3 --> D3 --> C4
-    C1 --> D4 --> C4
-    C4 --> E1
-```
+![Gambar 2.1 Arsitektur solusi Big Data](figures/gambar_2_1_arsitektur.png)
 
-*Gambar 2.1 Arsitektur solusi Big Data (prototipe yang diimplementasikan). Diagram dapat dirender di mermaid.live lalu diekspor sebagai gambar.*
+*Gambar 2.1 Arsitektur solusi Big Data (prototipe yang diimplementasikan).*
 
 *Tabel 2.1 Komponen prototipe dan padanannya pada rancangan cloud*
 
@@ -268,14 +235,7 @@ Data terstruktur disimpan sebagai tabel relasional. Relasi antartabel:
 - Inspections dan Violations dihubungkan melalui `EVENT_NO`.
 - Narasi kecelakaan (data tidak terstruktur) tetap terhubung ke data terstruktur melalui `DOCUMENT_NO`.
 
-```mermaid
-erDiagram
-    MINES ||--o{ ACCIDENTS : "MINE_ID"
-    MINES ||--o{ INSPECTIONS : "MINE_ID"
-    MINES ||--o{ VIOLATIONS : "MINE_ID"
-    INSPECTIONS ||--o{ VIOLATIONS : "EVENT_NO"
-    ACCIDENTS ||--|| NARRATIVE : "DOCUMENT_NO"
-```
+![Gambar 4.2 Model data relasional MSHA](figures/gambar_4_2_model_data.png)
 
 *Gambar 4.2 Model data relasional MSHA*
 
@@ -335,20 +295,7 @@ Untuk Graph Analytics (Bab 6), relasi tersebut juga dimodelkan sebagai graf: tam
 
 Gambar 5.1 menunjukkan alur pipeline yang diimplementasikan. Kode sumber berada di folder `src/` pada repository, dan seluruh tahap dapat dijalankan dengan `python src/run_all.py`.
 
-```mermaid
-flowchart TD
-    A[Accidents.txt] --> B[Pembacaan sebagai teks<br/>normalisasi null & kode]
-    B --> C[Pemetaan label<br/>eksklusi 07/08/09/kosong]
-    C --> D[Filter 2018–2023<br/>rekayasa SHIFT_PERIOD]
-    D --> E[Partisi temporal<br/>train 2018–21 / val 2022 / test 2023]
-    E --> F[Fit pada train saja:<br/>median, Top-15, encoder, scaler]
-    F --> G1[Scikit-Learn<br/>LR & RF]
-    F --> G2[Spark MLlib<br/>LR & RF]
-    G1 --> H[Tuning threshold pada validation]
-    G2 --> H
-    H --> I[Evaluasi sekali pada test<br/>fungsi metrik yang sama]
-    I --> J[Benchmark + model untuk dashboard]
-```
+![Gambar 5.1 Alur machine learning pipeline](figures/gambar_5_1_pipeline_ml.png)
 
 *Gambar 5.1 Alur machine learning pipeline*
 
@@ -552,14 +499,7 @@ Graph analytics diimplementasikan di `src/graph_analytics.py` dengan NetworkX (H
 | Sisi | `CITED_FOR` (tambang – standar) | Violations | Bobot = jumlah pelanggaran standar tersebut di tambang itu |
 | Sisi | `REPORTED_ACCIDENT` (tambang – tipe) | Accidents | Bobot = jumlah kecelakaan tipe tersebut di tambang itu |
 
-```mermaid
-flowchart LR
-    M((mine::MINE_ID))
-    S{{standard::PART_SECTION}}
-    T[accident_type::ACCIDENT_TYPE]
-    M -- "CITED_FOR (weight = jumlah pelanggaran)" --- S
-    M -- "REPORTED_ACCIDENT (weight = jumlah kecelakaan)" --- T
-```
+![Gambar 6.1 Skema graf heterogen](figures/gambar_6_1_skema_graf.png)
 
 *Gambar 6.1 Skema graf heterogen*
 
