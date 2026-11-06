@@ -1,0 +1,161 @@
+{
+  "label_mapping": {
+    "high_severity_codes": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05"
+    ],
+    "low_severity_codes": [
+      "00",
+      "06",
+      "10"
+    ]
+  },
+  "label_profile_raw": [
+    {
+      "code": "03",
+      "rows": 89202,
+      "pct": 32.36
+    },
+    {
+      "code": "06",
+      "rows": 71808,
+      "pct": 26.05
+    },
+    {
+      "code": "05",
+      "rows": 43677,
+      "pct": 15.84
+    },
+    {
+      "code": "00",
+      "rows": 30635,
+      "pct": 11.11
+    },
+    {
+      "code": "04",
+      "rows": 20872,
+      "pct": 7.57
+    },
+    {
+      "code": "07",
+      "rows": 10636,
+      "pct": 3.86
+    },
+    {
+      "code": "02",
+      "rows": 2491,
+      "pct": 0.9
+    },
+    {
+      "code": "10",
+      "rows": 2096,
+      "pct": 0.76
+    },
+    {
+      "code": "08",
+      "rows": 1553,
+      "pct": 0.56
+    },
+    {
+      "code": "01",
+      "rows": 1218,
+      "pct": 0.44
+    },
+    {
+      "code": "?",
+      "rows": 910,
+      "pct": 0.33
+    },
+    {
+      "code": "09",
+      "rows": 575,
+      "pct": 0.21
+    }
+  ],
+  "rows_raw": 275673,
+  "rows_excluded_label": 13674,
+  "split": {
+    "train_years": [
+      2018,
+      2021
+    ],
+    "val_year": 2022,
+    "test_year": 2023,
+    "train_rows": 23484,
+    "val_rows": 5682,
+    "test_rows": 5765,
+    "class1_ratio": {
+      "train": 0.6334,
+      "val": 0.6304,
+      "test": 0.6467
+    }
+  },
+  "commodity_counts": {
+    "M": 21632,
+    "C": 13299
+  },
+  "numeric_medians_train": {
+    "TOT_EXPER": 6.62,
+    "MINE_EXPER": 2.69,
+    "JOB_EXPER": 3.0
+  },
+  "top_categories_train": {
+    "MINING_EQUIP": [
+      "NO VALUE FOUND",
+      "Hand tools (not powered)",
+      "Ore haulage trucks - off highway trucks",
+      "Elevator, Skip, Cage, Buckets, Mancage, Slope car",
+      "Front-end loader, Tractor-shovel, Payloader, Highlift, Skip loader",
+      "Hand tools (powered)",
+      "Rock or roof bolting machine, Pinning machine, Truss bolter",
+      "Trucks, Service truck, Utility truck, Pickup, Water truck, Fuel truck",
+      "Shovel, Power shovel, Backhoe, Trackhoe, Dragline - Big Muskie",
+      "Conveyor, Belt feeder, Stage loader, Hopper shaker, Belt structure",
+      "Bulldozer, Dozer, Crawler tractor, Push cat",
+      "Welding machine, Torch, Cutting torch, Arc welder, Air arc",
+      "Load-haul-dump, Scoop tram, Transloader, Unitrac, S&S Battery",
+      "Mancar, Mantrip, Personnel carrier, Porta bus, Jeep, Jitney, ATV",
+      "Forklift, Plant cat, Telehandler, Hyster, Lift truck, Skid steer"
+    ],
+    "ACTIVITY": [
+      "Handling supplies or material",
+      "Machine maintenance",
+      "Hand tools (not powered)",
+      "Walking, Running",
+      "NO VALUE FOUND",
+      "Getting on or off equipment",
+      "Hand tools (powered)",
+      "Haulage or Dump truck",
+      "Roof bolter, NEC",
+      "Handling coal, Rock, Ore",
+      "Inspect equipment or mine",
+      "Hand load, Hand shoveling",
+      "Welding or cutting",
+      "Move power cable",
+      "Idle"
+    ]
+  },
+  "leakage_cols_excluded": [
+    "DAYS_LOST",
+    "DAYS_RESTRICT",
+    "SCHEDULE_CHARGE",
+    "RETURN_TO_WORK_DT",
+    "TRANS_TERM",
+    "CLOSED_DOC_NO",
+    "INVEST_BEGIN_DT",
+    "DEGREE_INJURY_CD",
+    "DEGREE_INJURY",
+    "NATURE_INJURY_CD",
+    "NATURE_INJURY",
+    "INJ_BODY_PART_CD",
+    "INJ_BODY_PART",
+    "INJURY_SOURCE_CD",
+    "INJURY_SOURCE",
+    "IMMED_NOTIFY_CD",
+    "IMMED_NOTIFY",
+    "NARRATIVE"
+  ]
+}
