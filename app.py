@@ -177,7 +177,7 @@ def style_fig(fig, height=380, legend=True):
         hoverlabel=dict(font_size=12),
         showlegend=legend,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0, title_text=""),
-        title=dict(font=dict(size=14)),
+        title_text="",  # tanpa judul; mengatur font judul saja membuat Plotly menampilkan "undefined"
     )
     return fig
 
