@@ -482,11 +482,11 @@ Sebagai pembanding minimum, digunakan **baseline kelas mayoritas** yang selalu m
 
 | Model | Threshold | Val F1 | Accuracy | Precision (C1) | Recall (C1) | F1 (C1) | F1 Macro | ROC-AUC | PR-AUC |
 |---|---|---|---|---|---|---|---|---|---|
-| Baseline kelas mayoritas | – | – | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | 0,5000 | ⟦ISI⟧ |
-| Scikit-Learn Logistic Regression | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| Scikit-Learn Random Forest | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| Spark MLlib Logistic Regression | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| Spark MLlib Random Forest | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
+| Baseline kelas mayoritas | – | – | 0,6467 | 0,6467 | 1,0000 | 0,7854 | 0,3927 | 0,5000 | 0,6467 |
+| Scikit-Learn Logistic Regression | 0,32 | 0,8317 | 0,7641 | 0,7608 | 0,9265 | 0,8355 | 0,7093 | 0,8153 | 0,8703 |
+| Scikit-Learn Random Forest | 0,39 | 0,8316 | 0,7617 | 0,7519 | 0,9423 | 0,8364 | 0,6987 | 0,8141 | 0,8718 |
+| Spark MLlib Logistic Regression | 0,32 | 0,8315 | 0,7643 | 0,7608 | 0,9268 | 0,8357 | 0,7095 | 0,8152 | 0,8702 |
+| Spark MLlib Random Forest | 0,37 | 0,8321 | 0,7613 | 0,7488 | 0,9493 | 0,8372 | 0,6950 | 0,8157 | 0,8749 |
 
 *Tabel 5.6 Waktu komputasi (detik)*
 
@@ -557,18 +557,18 @@ Graph analytics diimplementasikan di `src/graph_analytics.py` dengan NetworkX (H
 4. **Kemiripan antartambang**: *cosine similarity* antar vektor jumlah tipe kecelakaan per tambang; 5 tambang paling mirip disimpan untuk setiap tambang.
 5. **Proyeksi mine-to-mine dan deteksi komunitas**: 300 tambang dengan weighted degree tertinggi diproyeksikan menjadi graf tambang–tambang. Dua tambang dihubungkan jika indeks Jaccard himpunan tetangganya (standar dan tipe kecelakaan) ≥ 0,20, dengan bobot sisi = nilai Jaccard. Komunitas dicari dengan algoritma Louvain (Blondel et al., 2008), *seed* 42.
 
-*Tabel 6.2 Statistik graf (sumber: `graph_top_edges.json`, `graph_nodes_summary.csv`)*
+*Tabel 6.2 Statistik graf (sumber: `graph_top_edges.json`, `graph_nodes_summary.csv`, `mine_accident_closeness.json`)*
 
 | Statistik | Nilai |
 |---|---|
-| Jumlah simpul | 16.463 ⟦CEK⟧ |
-| – tambang | 13.168 ⟦CEK⟧ |
-| – standar 30 CFR | 3.253 ⟦CEK⟧ |
-| – tipe kecelakaan | 42 ⟦CEK⟧ |
-| Jumlah sisi | 165.982 ⟦CEK⟧ |
+| Jumlah simpul | 16.463 |
+| – tambang | 13.168 |
+| – standar 30 CFR | 3.253 |
+| – tipe kecelakaan | 42 |
+| Jumlah sisi | 165.982 |
 | Tambang pada proyeksi | 300 |
-| Komunitas Louvain | 4 ⟦CEK⟧ (berukuran 141, 98, 44, dan 17 tambang ⟦CEK⟧) |
-| Tambang dengan profil afinitas (≥ 3 kecelakaan) | 1.526 ⟦CEK⟧ |
+| Komunitas Louvain | 4 (berukuran 141, 98, 44, dan 17 tambang) |
+| Tambang dengan profil afinitas (≥ 3 kecelakaan) | 1.526 |
 
 **Batasan interpretasi.**
 
