@@ -39,7 +39,7 @@ BINA NUSANTARA UNIVERSITY
 
 ## DAFTAR GAMBAR
 
-- Gambar 2.1 Arsitektur solusi Big Data (prototipe yang diimplementasikan)
+- Gambar 2.1 Arsitektur solusi Big Data lokal berbasis Hadoop HDFS dan Apache Spark
 - Gambar 4.1 Tren tahunan laporan kecelakaan MSHA 2010–2023
 - Gambar 4.2 Model data relasional MSHA
 - Gambar 5.1 Alur machine learning pipeline
@@ -53,7 +53,9 @@ BINA NUSANTARA UNIVERSITY
 
 ## DAFTAR TABEL
 
-- Tabel 2.1 Komponen prototipe dan padanannya pada rancangan cloud
+- Tabel 2.1 Komponen arsitektur dan perannya
+- Tabel 2.2 Ringkasan penyimpanan HDFS
+- Tabel 2.3 Komponen pemrosesan
 - Tabel 4.1 Ringkasan berkas dataset MSHA
 - Tabel 4.2 Pemetaan kode DEGREE_INJURY_CD ke label biner
 - Tabel 4.3 Ringkasan dataset untuk machine learning
@@ -73,122 +75,129 @@ BINA NUSANTARA UNIVERSITY
 
 ## 1.1 Latar Belakang Masalah
 
-Kebutuhan energi dunia terus meningkat. Perkembangan teknologi, terutama *Artificial Intelligence* (AI), memerlukan energi yang sangat besar. Perusahaan teknologi seperti Google, Microsoft, dan Meta menggunakan *data center* untuk melatih dan menjalankan model AI. *Data center* memproses data dalam jumlah sangat besar sehingga membutuhkan pasokan listrik yang besar pula. Kebutuhan ini menambah beban permintaan energi global yang sudah tertekan oleh krisis pasokan.
+Kebutuhan energi dunia terus meningkat. Perkembangan *Artificial Intelligence* (AI) mendorong pembangunan *data center* yang membutuhkan listrik dalam jumlah besar. Di saat yang sama, konflik di Timur Tengah mengganggu rantai pasokan minyak dan gas alam, termasuk melalui blokade Selat Hormuz. Banyak negara kemudian kembali mengandalkan batu bara karena biayanya rendah dan infrastrukturnya sudah tersedia.
 
-Konflik di Timur Tengah membuat energi semakin sulit diperoleh. Rantai pasokan minyak dan gas alam terganggu karena rusaknya infrastruktur transportasi dan blokade Selat Hormuz. Negara-negara kemudian mencari sumber energi lain yang lebih mudah didapatkan.
+Peningkatan produksi batu bara dan mineral berarti lebih banyak pekerja yang terpapar risiko kecelakaan tambang. Sektor batu bara memiliki tingkat kecelakaan dan dampak kesehatan yang lebih tinggi dibandingkan sumber energi rendah emisi (Markandya & Wilkinson, 2007). Di Amerika Serikat, setiap kecelakaan, cedera, dan penyakit akibat kerja di tambang wajib dilaporkan kepada Mine Safety and Health Administration (MSHA) melalui formulir MSHA 7000-1, sedangkan hasil inspeksi MSHA dicatat sebagai pelanggaran (*violations*) terhadap standar keselamatan 30 CFR. Pada tahun 2023 saja tercatat 6.093 laporan kecelakaan, dan 61,2% di antaranya berakhir dengan hari kerja hilang, pembatasan kerja, disabilitas, atau kematian ⟦CEK: `accident_annual_trend.csv`⟧.
 
-Batu bara menjadi salah satu pilihan untuk menutup kekurangan energi tersebut karena biayanya rendah dan infrastrukturnya lebih mudah disiapkan dibandingkan energi rendah emisi seperti nuklir, angin, dan surya. Namun, sektor batu bara memiliki tingkat kecelakaan dan dampak kesehatan yang lebih tinggi dibandingkan sumber energi bersih (Markandya & Wilkinson, 2007). Kecelakaan pada kegiatan penambangan terjadi secara rutin.
+Volume laporan tersebut menimbulkan dua masalah praktis:
 
-Oleh karena itu, diperlukan pemantauan untuk memahami dan mencegah kecelakaan tersebut. Pendekatan *Big Data* diperlukan karena jumlah tambang yang dipantau banyak, laporan kecelakaan masuk setiap hari, dan laporan tersebut terdiri atas data terstruktur (kode, tanggal, angka) serta data tidak terstruktur (narasi kejadian).
+1. **Prioritas tindak lanjut.** Laporan masuk setiap hari dari ribuan tambang. Petugas keselamatan perlu mengetahui sejak awal insiden mana yang kemungkinan besar berakhir sebagai cedera *lost-time* atau berat, berdasarkan informasi yang tersedia pada laporan (jenis kecelakaan, peralatan, aktivitas, pengalaman pekerja), agar investigasi dan penanganan dapat diprioritaskan.
+2. **Pola antartambang.** Pelanggaran standar dan jenis kecelakaan tersimpan di tabel yang berbeda. Hubungan antara tambang, standar yang sering dilanggar, dan jenis kecelakaan yang sering terjadi sulit dilihat tanpa memodelkannya sebagai jaringan.
+
+Data MSHA berukuran sekitar 2 GB dengan sekitar 4,6 juta baris, diperbarui setiap minggu, dan terdiri atas data terstruktur (kode, tanggal, angka) serta teks narasi. Karena itu, penelitian ini membangun solusi *Big Data* lokal berbasis Hadoop HDFS dan Apache Spark dengan tujuan:
+
+1. Menyimpan data MSHA di HDFS dalam *raw zone* dan *curated zone* (Parquet terpartisi per tahun) yang dapat dikueri dengan Spark SQL.
+2. Membangun model klasifikasi biner untuk memperkirakan apakah insiden yang dilaporkan tergolong *Lost-Time / Severe* (kode tingkat cedera 01–05), dengan dan tanpa Spark MLlib, lalu membandingkan kinerja dan waktu komputasinya.
+3. Menganalisis graf tambang–standar pelanggaran–tipe kecelakaan untuk menemukan simpul dengan frekuensi tertinggi dan kelompok tambang dengan pola yang mirip.
+4. Menyajikan hasilnya dalam dashboard Streamlit.
+
+Model ini mengklasifikasikan insiden yang **sudah dilaporkan**. Model ini tidak memprediksi apakah kecelakaan akan terjadi.
 
 ## 1.2 Market and Business Driver
 
 **Market driver**
 
-- Peningkatan kebutuhan listrik *data center*. Goldman Sachs Research memperkirakan permintaan listrik *data center* tumbuh sekitar 160% pada 2030 dibandingkan 2023, sehingga kebutuhan pembangkit listrik, termasuk yang berbasis batu bara, ikut meningkat (Goldman Sachs, 2024).
+- **Permintaan listrik *data center*.** Goldman Sachs Research memperkirakan permintaan listrik *data center* tumbuh sekitar 160% pada 2030 dibandingkan 2023 (Goldman Sachs, 2024). Sebagian kebutuhan ini dipenuhi pembangkit berbahan bakar fosil, termasuk batu bara (International Energy Agency, 2023, 2024), sehingga aktivitas penambangan dan jumlah pekerja yang terpapar risiko ikut bertambah.
 
 **Business driver**
 
-- Manajemen risiko untuk mengurangi kecelakaan kerja dan kerugian akibat hilangnya hari kerja.
-- Kepatuhan terhadap regulasi keselamatan untuk menghindari penghentian operasi atau denda.
-
-<!-- Catatan: versi Assignment I menyebut investasi data center AS 500 miliar USD naik menjadi 1 triliun USD sebelum 2027. Angka ini tidak ditemukan pada laporan Goldman Sachs yang dirujuk, jadi diganti dengan angka 160% yang terdapat pada sumber tersebut. Jika Anda punya sumber lain untuk angka investasi, tambahkan beserta rujukannya. -->
+- **Manajemen risiko.** Cedera *lost-time* menghilangkan hari kerja dan menghambat produksi. Mengetahui lebih awal insiden mana yang berpotensi berat membantu perusahaan mengalokasikan investigasi dan penanganan medis.
+- **Kepatuhan regulasi.** MSHA mengenakan sanksi atas pelanggaran standar keselamatan berdasarkan Federal Mine Safety and Health Act. Analisis standar yang paling sering dilanggar membantu operator memfokuskan perbaikan.
+- **Biaya infrastruktur.** Hadoop dan Spark adalah perangkat lunak *open source* yang dapat dijalankan di satu komputer. Untuk data sekitar 2 GB, solusi lokal tidak memerlukan biaya layanan cloud, sementara teknologi dan kode yang sama tetap dapat dipindahkan ke klaster bila data bertambah.
 
 ## 1.3 Pemangku Kepentingan yang Terlibat
 
-- Perusahaan tambang dan pembangkit listrik berbahan bakar batu bara.
-- Perusahaan pemilik *data center* sebagai konsumen energi.
-- Regulator keselamatan tambang (di Amerika Serikat: Mine Safety and Health Administration / MSHA).
-- Dinas sosial dan instansi ketenagakerjaan yang menangani dampak kecelakaan kerja.
+| Pemangku kepentingan | Kepentingan terhadap solusi |
+|---|---|
+| Petugas keselamatan (*safety officer*) perusahaan tambang | Memprioritaskan tindak lanjut insiden berdasarkan skor keparahan |
+| Manajemen dan operator tambang | Memantau tren kecelakaan dan standar yang sering dilanggar untuk perencanaan perbaikan |
+| Regulator keselamatan tambang (MSHA) dan inspektur | Melihat tambang dan standar dengan frekuensi pelanggaran serta kecelakaan tertinggi |
+| Perusahaan pembangkit listrik dan pemilik *data center* | Menilai risiko keselamatan pada rantai pasok energi |
+| Dinas sosial dan instansi ketenagakerjaan | Mengantisipasi dampak cedera berat dan kematian terhadap pekerja dan keluarganya |
 
 ---
 
 # BAB 2. RANCANGAN SOLUSI BIG DATA
 
-Assignment I mengusulkan arsitektur berbasis AWS (EventBridge, Lambda, S3, Glue, dan Redshift). Pada Assignment II, solusi direalisasikan sebagai prototipe yang berjalan di satu mesin (laptop atau Google Colab) dengan Apache Spark mode lokal. Setiap komponen prototipe memiliki padanan langsung pada rancangan cloud Assignment I (Tabel 2.1), sehingga prototipe dapat dipindahkan ke cloud tanpa mengubah logika pemrosesan.
+Assignment I mengusulkan arsitektur berbasis layanan cloud AWS. Pada Assignment II, rancangan tersebut diganti seluruhnya dengan arsitektur lokal: Hadoop HDFS mode *pseudo-distributed* (NameNode dan DataNode berjalan di satu mesin) sebagai penyimpanan dan Apache Spark mode `local[*]` sebagai pemrosesan. Alasan perubahan:
 
-```mermaid
-flowchart LR
-    subgraph S[Data Sources]
-        A1[Accidents.txt]
-        A2[Violations.txt]
-        A3[Mines.txt]
-        A4[Inspections.txt]
-    end
-    subgraph I[Ingestion]
-        B1[Python downloader<br/>batch mingguan, full refresh]
-    end
-    subgraph ST[Storage]
-        C1[Raw zone<br/>data/*.txt]
-        C2[Curated zone<br/>Parquet Snappy<br/>partisi CAL_YR=YYYY]
-        C3[Processed zone<br/>train / val / test]
-        C4[Artifacts<br/>model, metrik, graf]
-    end
-    subgraph P[Processing]
-        D1[Spark SQL]
-        D2[Spark MLlib]
-        D3[pandas + Scikit-Learn]
-        D4[NetworkX]
-    end
-    subgraph V[Analytics & Visualization]
-        E1[Streamlit dashboard]
-    end
-    A1 & A2 & A3 & A4 --> B1 --> C1
-    C1 --> D1 --> C2
-    C1 --> D3 --> C3
-    C3 --> D2 --> C4
-    C3 --> D3 --> C4
-    C1 --> D4 --> C4
-    C4 --> E1
-```
+- Ukuran data (±2 GB) dapat diproses di satu mesin, sehingga klaster cloud belum diperlukan.
+- Tidak ada biaya layanan dan tidak memerlukan akun cloud.
+- HDFS dan Spark adalah teknologi yang sama dengan yang dipakai pada klaster Hadoop, sehingga konsep penyimpanan terdistribusi, partisi, dan pemrosesan paralel tetap diterapkan, dan kode dapat dipindahkan ke klaster dengan mengganti alamat HDFS dan *master* Spark.
 
-*Gambar 2.1 Arsitektur solusi Big Data (prototipe yang diimplementasikan). Diagram dapat dirender di mermaid.live lalu diekspor sebagai gambar.*
+<!-- ✍️ Periksa alasan di atas dan sesuaikan dengan alasan Anda sendiri memilih solusi lokal. -->
 
-*Tabel 2.1 Komponen prototipe dan padanannya pada rancangan cloud*
+![Gambar 2.1 Arsitektur solusi Big Data](figures/gambar_2_1_arsitektur.png)
 
-| Lapisan | Prototipe (Assignment II) | Rancangan cloud (Assignment I) |
-|---|---|---|
-| Penjadwalan ingestion | Skrip Python dijalankan manual/terjadwal | Amazon EventBridge + AWS Lambda |
-| Raw zone | Folder `data/` (berkas `.txt` asli) | Amazon S3 (raw zone) |
-| Curated zone | Apache Parquet + Snappy, partisi Hive-style `CAL_YR=YYYY` di filesystem lokal | Amazon S3 (Parquet) / HDFS |
-| Pemrosesan terdistribusi | Apache Spark `local[*]` (Spark SQL, MLlib) | AWS Glue Spark Job |
-| Gudang data analitik | Tabel Spark SQL di atas Parquet | Amazon Redshift |
-| Visualisasi | Streamlit | Dashboard (Final Project) |
+*Gambar 2.1 Arsitektur solusi Big Data lokal berbasis Hadoop HDFS dan Apache Spark.*
+
+*Tabel 2.1 Komponen arsitektur dan perannya*
+
+| Lapisan | Komponen | Lokasi | Peran |
+|---|---|---|---|
+| Ingestion | Skrip Python (downloader) | Mesin lokal | Mengunduh dan mengekstrak berkas MSHA setiap rilis mingguan |
+| Landing zone | Folder `data/` | Disk lokal | Tempat berkas `.txt` hasil unduhan sebelum diunggah ke HDFS |
+| Raw zone | HDFS `/user/msha/raw/` | HDFS | Salinan berkas asli MSHA (Accidents, Violations, Mines) tanpa perubahan |
+| Curated zone | HDFS `/user/msha/warehouse/msha_accidents/` | HDFS | Accidents dalam Parquet + Snappy, partisi `CAL_YR=YYYY` |
+| Processed zone | `data/processed/{train,val,test}.csv` | Disk lokal | Partisi data untuk machine learning |
+| Pemrosesan | Spark SQL, Spark MLlib, pandas, Scikit-Learn, NetworkX | Mesin lokal | Konversi, kueri, pemodelan, dan graph analytics |
+| Artifacts | Folder `artifacts/` | Disk lokal | Model, metrik, hasil graf, dan ringkasan HDFS |
+| Visualisasi | Streamlit | Mesin lokal | Dashboard yang hanya membaca artifacts |
 
 ## 2.1 Metode Pengumpulan Data
 
-Data diperoleh dari portal data terbuka U.S. Department of Labor, yaitu Mine Safety and Health Administration (MSHA) Open Government Data. Menurut dokumentasi MSHA, dataset diperbarui setiap minggu. Karena itu, strategi pengumpulan data menggunakan *weekly batch ingestion* dengan metode *full refresh*: MSHA menyediakan berkas utuh (format `.txt` dengan pemisah `|`) yang diganti seluruhnya pada setiap rilis, bukan aliran data (*data stream*).
+Data diperoleh dari MSHA Open Government Data (U.S. Department of Labor). Menurut dokumentasi MSHA, dataset diperbarui setiap minggu dan disediakan sebagai berkas utuh berformat `.txt` dengan pemisah `|`, bukan sebagai aliran data (*data stream*). Karena itu, pengumpulan data menggunakan *weekly batch ingestion* dengan metode *full refresh*: setiap rilis menggantikan seluruh isi berkas sebelumnya.
 
 Alur pengumpulan data:
 
-1. **Unduh berkas.** Skrip Python mengunduh arsip `.zip` dari server MSHA dan mengekstrak berkas `.txt` ke *raw zone* (`data/`). Berkas mentah tidak diubah agar setiap tahap dapat diulang dari sumber yang sama.
-2. **Pembacaan dengan aturan parsing yang ketat.** Seluruh kolom dibaca sebagai teks dengan *encoding* Latin-1 dan karakter kutip `"`. Pembacaan sebagai teks mencegah hilangnya angka nol di depan pada `MINE_ID` dan kode MSHA (misalnya `01`). Pada eksplorasi Assignment I ditemukan bahwa kolom teks bebas seperti `NARRATIVE` dapat mengandung karakter pemisah atau baris baru yang menggeser kolom (*column shifting*); pada notebook eksplorasi, baris yang gagal dibaca dicatat dan dihitung.
-3. **Konversi ke format kolom.** Spark membaca berkas Accidents dan menuliskannya ke *curated zone* dalam format Parquet terpartisi per tahun (Subbab 2.2).
+1. **Unduh dan ekstrak.** Skrip Python mengunduh arsip `.zip` dari server MSHA dan mengekstrak berkas `.txt` ke *landing zone* (`data/`).
+2. **Unggah ke HDFS.** Modul `src/hadoop_storage.py` menyalin Accidents.txt, Violations.txt, dan Mines.txt ke *raw zone* HDFS melalui Hadoop FileSystem API (`copyFromLocalFile` dengan opsi *overwrite*). Opsi *overwrite* menerapkan *full refresh*: berkas lama di HDFS diganti dengan rilis terbaru.
+3. **Pembacaan dengan aturan parsing yang ketat.** Spark membaca berkas dari HDFS dengan pemisah `|`, *encoding* Latin-1, karakter kutip `"`, dan seluruh kolom sebagai teks (`inferSchema=False`). Pembacaan sebagai teks mencegah hilangnya angka nol di depan pada `MINE_ID` dan kode MSHA (misalnya `01`). Kolom numerik kemudian dikonversi secara eksplisit.
+
+Eksplorasi pada Assignment I menemukan bahwa kolom teks bebas `NARRATIVE` dapat mengandung karakter pemisah atau baris baru yang menggeser kolom (*column shifting*). Kolom tersebut tidak dipakai sebagai fitur pada pipeline machine learning.
 
 ## 2.2 Teknologi Penyimpanan Data
 
-Penyimpanan dibagi menjadi beberapa zona sesuai fungsi dan beban kerjanya:
+Penyimpanan utama menggunakan **Hadoop Distributed File System (HDFS)**. HDFS menyimpan berkas sebagai blok berukuran besar (bawaan 128 MB) yang tersebar di DataNode, sedangkan NameNode menyimpan metadata, yaitu struktur direktori dan lokasi setiap blok (Shvachko et al., 2010). Pada mode *pseudo-distributed*, NameNode dan DataNode berjalan sebagai proses terpisah di satu mesin, dengan `fs.defaultFS = hdfs://localhost:9000` dan `dfs.replication = 1` karena hanya ada satu DataNode.
 
-- **Raw zone (`data/*.txt`).** Menyimpan berkas asli MSHA tanpa perubahan. Pada rancangan cloud, zona ini berada di Amazon S3, yang menjamin durabilitas data 99,999999999%.
-- **Curated zone (Parquet).** Data Accidents dikonversi oleh Spark ke Apache Parquet dengan kompresi Snappy dan dipartisi per tahun kalender (`CAL_YR=YYYY`). Parquet menyimpan data per kolom sehingga kueri analitik hanya membaca kolom yang diperlukan, dan partisi per tahun memungkinkan *partition pruning* (Spark hanya membaca direktori tahun yang difilter). Pada prototipe, data disimpan di filesystem lokal (`file:///`). Format dan tata letak direktorinya sama dengan yang digunakan di HDFS atau Amazon S3. Hasil pengukuran ukuran penyimpanan: berkas mentah ⟦ISI: raw_csv_size_mb⟧ MB menjadi ⟦ISI: hadoop_parquet_size_mb⟧ MB dalam Parquet (penghematan ⟦ISI: storage_savings_pct⟧%), dengan ⟦ISI: num_partitions⟧ partisi tahun.
-- **Processed zone (`data/processed/`).** Menyimpan partisi data *training*, *validation*, dan *test* yang sudah dibersihkan. Partisi yang sama dibaca oleh Scikit-Learn dan Spark MLlib agar perbandingan kedua framework adil.
-- **Artifacts (`artifacts/`).** Menyimpan model terlatih, preprocessor, metadata, hasil evaluasi, dan hasil graph analytics yang dibaca oleh dashboard.
+Data dibagi ke dalam zona sesuai fungsinya:
+
+- **Raw zone (`/user/msha/raw/`).** Menyimpan berkas asli MSHA tanpa perubahan, sehingga setiap tahap pemrosesan dapat diulang dari sumber yang sama.
+- **Curated zone (`/user/msha/warehouse/msha_accidents/`).** Spark mengonversi Accidents.txt ke **Apache Parquet** dengan kompresi **Snappy** dan mempartisinya per tahun kalender (`CAL_YR=YYYY`). Parquet menyimpan data per kolom, sehingga kueri hanya membaca kolom yang diperlukan. Partisi per tahun memungkinkan *partition pruning*: kueri dengan filter `CAL_YR` hanya membaca direktori tahun yang relevan.
+- **Processed zone dan artifacts (disk lokal).** Partisi *training*, *validation*, dan *test* serta artefak model berukuran kecil dan dibaca oleh pandas, Scikit-Learn, dan Streamlit, sehingga disimpan di disk lokal.
+
+Hasil pengukuran pada HDFS (sumber: `artifacts/hadoop_storage_summary.json`):
+
+*Tabel 2.2 Ringkasan penyimpanan HDFS*
+
+| Ukuran | Nilai |
+|---|---|
+| Filesystem | ⟦ISI: `filesystem_uri`, harus `hdfs://localhost:9000`⟧ |
+| Block size / replication | ⟦ISI: `block_size_mb`⟧ MB / ⟦ISI: `replication_factor`⟧ |
+| Ukuran raw zone (3 berkas) | ⟦ISI: `raw_zone_total_mb`⟧ MB |
+| Accidents.txt (raw) | ⟦ISI: `raw_csv_size_mb`⟧ MB |
+| Accidents Parquet (curated) | ⟦ISI: `hadoop_parquet_size_mb`⟧ MB (lebih kecil ⟦ISI: `storage_savings_pct`⟧%) |
+| Jumlah partisi tahun | ⟦ISI: `num_partitions`⟧ |
+| Waktu unggah / tulis Parquet / kueri | ⟦ISI⟧ s / ⟦ISI⟧ s / ⟦ISI⟧ s |
 
 ## 2.3 Processing Framework
 
-Pemrosesan menggunakan Apache Spark (PySpark) dalam mode `local[*]`, yaitu Spark memakai seluruh inti CPU pada satu mesin. Kode yang sama dapat dijalankan di klaster (misalnya AWS Glue atau Amazon EMR) dengan mengganti konfigurasi *master*.
+Pemrosesan menggunakan **Apache Spark** (PySpark) dalam mode `local[*]`, yaitu Spark memakai seluruh inti CPU pada satu mesin sebagai *executor*. Spark dikonfigurasi dengan `fs.defaultFS` yang menunjuk ke HDFS, sehingga membaca dan menulis data langsung ke HDFS.
 
-Apache Spark dipilih karena memproses data secara *in-memory* menggunakan *Resilient Distributed Dataset* (RDD) dan DataFrame (Zaharia et al., 2016). Berbeda dengan Hadoop MapReduce yang menulis hasil antara (*intermediate results*) ke disk pada setiap tahap Map dan Reduce, Spark menyimpan hasil antara di memori dan melakukan *spill to disk* bila memori tidak cukup.
+Spark dipilih karena memproses data secara *in-memory* dengan *Resilient Distributed Dataset* (RDD) dan DataFrame (Zaharia et al., 2016). Hadoop MapReduce menulis hasil antara ke disk pada setiap tahap Map dan Reduce, sedangkan Spark menyimpan hasil antara di memori dan baru menulis ke disk (*spill to disk*) bila memori tidak cukup.
 
-Komponen pemrosesan yang digunakan:
+*Tabel 2.3 Komponen pemrosesan*
 
-| Komponen | Fungsi |
-|---|---|
-| Spark SQL | Konversi ke Parquet dan kueri agregasi per tahun |
-| Spark MLlib | Model Logistic Regression dan Random Forest terdistribusi (Bab 5) |
-| pandas + Scikit-Learn | Pembersihan data, partisi temporal, dan model pembanding tanpa Spark (Bab 5) |
-| NetworkX | Pembentukan graf dan perhitungan sentralitas serta komunitas (Bab 6) |
-| Streamlit | Dashboard interaktif yang membaca artefak hasil pemrosesan |
+| Komponen | Sumber data | Fungsi |
+|---|---|---|
+| Spark SQL | HDFS raw zone → curated zone | Konversi ke Parquet dan kueri agregasi per tahun |
+| pandas | Landing zone | Pembersihan data, pemetaan label, dan partisi temporal (Bab 5) |
+| Spark MLlib | Processed zone | Logistic Regression dan Random Forest terdistribusi (Bab 5) |
+| Scikit-Learn | Processed zone | Model pembanding tanpa Spark (Bab 5) |
+| NetworkX | Landing zone (Accidents, Violations) | Pembentukan graf, sentralitas, dan komunitas (Bab 6) |
+| Streamlit | Artifacts | Dashboard interaktif |
+
+Modul pandas, Scikit-Learn, dan NetworkX membaca salinan berkas di *landing zone*, yang isinya sama dengan *raw zone* HDFS. Spark membaca dan menulis langsung ke HDFS.
 
 ---
 
@@ -196,19 +205,21 @@ Komponen pemrosesan yang digunakan:
 
 ## 3.1 Security
 
-Perubahan data oleh pihak yang tidak berwenang dapat memengaruhi hasil model. Oleh karena itu, akses ditulis dan dibaca dipisahkan:
+Perubahan data oleh pihak yang tidak berwenang dapat memengaruhi hasil model. Pengamanan yang diterapkan pada solusi lokal:
 
-- **Pemisahan hak akses.** Raw zone hanya dapat ditulis oleh proses ingestion. Analis hanya memiliki akses baca. Pada rancangan cloud, pembatasan ini diterapkan dengan kebijakan AWS IAM.
-- **Verifikasi sumber.** Hasil olahan dapat diverifikasi ulang dengan mengunduh kembali berkas dari situs MSHA karena raw zone tidak pernah diubah.
-- **Pengelolaan rahasia.** Kunci API dan kredensial tidak boleh ditulis di dalam kode sumber atau disimpan di repository. Kredensial dibaca dari variabel lingkungan atau *secret manager* (misalnya `st.secrets` pada Streamlit atau AWS Secrets Manager).
+- **Hak akses HDFS.** HDFS memakai model izin seperti POSIX (pemilik, grup, dan lainnya). Direktori `/user/msha/raw` dimiliki oleh pengguna yang menjalankan ingestion dan diberi izin `755`, sehingga hanya pemilik yang dapat menulis dan pengguna lain hanya dapat membaca (`hdfs dfs -chmod -R 755 /user/msha/raw`).
+- **Akses jaringan terbatas.** NameNode hanya mendengarkan di `localhost:9000` dan dashboard Streamlit berjalan di mesin lokal, sehingga keduanya tidak dapat diakses dari jaringan lain.
+- **Batasan autentikasi.** Mode *pseudo-distributed* memakai autentikasi sederhana (*simple authentication*) yang memercayai nama pengguna sistem operasi. Untuk klaster dengan banyak pengguna, HDFS perlu dikonfigurasi dengan Kerberos.
+- **Verifikasi sumber.** Hasil olahan dapat diverifikasi dengan mengunduh ulang berkas dari situs MSHA, karena *raw zone* tidak pernah diubah.
+- **Pengelolaan rahasia.** Kunci API dan kredensial tidak ditulis di kode sumber atau disimpan di repository; nilai tersebut dibaca dari variabel lingkungan atau `st.secrets`.
 
 ## 3.2 Compliance
 
-Dataset MSHA merupakan data pemerintah Amerika Serikat yang dipublikasikan sebagai data terbuka dan bebas digunakan untuk analisis. Pada rancangan cloud, data disimpan di region bucket yang dipilih sehingga lokasi penyimpanan dapat dikendalikan. Sumber, tanggal unduh, dan periode data dicatat dalam laporan agar hasil dapat direproduksi.
+Dataset MSHA merupakan data pemerintah Amerika Serikat yang dipublikasikan sebagai data terbuka dan bebas digunakan untuk analisis. Seluruh data disimpan dan diproses di mesin lokal dan tidak dikirim ke layanan pihak ketiga. Sumber, tanggal unduh, dan periode data dicatat dalam laporan agar hasil dapat direproduksi, karena MSHA memperbarui berkas setiap minggu.
 
 ## 3.3 Data Privacy
 
-Dataset merupakan data publik yang tidak memuat nama pekerja. Meskipun demikian, kolom narasi (`NARRATIVE`) tidak digunakan sebagai fitur dan tidak ditampilkan di dashboard, dan dashboard hanya menampilkan data agregat per tambang.
+Dataset merupakan data publik dan tidak memuat nama pekerja. Meskipun demikian, kolom narasi (`NARRATIVE`) tidak dipakai sebagai fitur dan tidak ditampilkan di dashboard, dan dashboard hanya menampilkan data agregat per tambang.
 
 ## 3.4 Data Quality
 
@@ -216,13 +227,15 @@ Data merupakan laporan kecelakaan, sehingga tidak setiap hari memiliki laporan d
 
 | Masalah | Penanganan |
 |---|---|
+| Integritas berkas di HDFS | HDFS menyimpan *checksum* untuk setiap blok dan memeriksanya saat data dibaca. Dengan *replication factor* 1, blok yang rusak tidak dapat dipulihkan dari replika, sehingga pemulihan dilakukan dengan mengunggah ulang berkas dari MSHA |
 | Sel kosong pada fitur kategorikal | Diberi label `MISSING` |
 | Penanda MSHA untuk nilai tidak diketahui (`?`, `NO VALUE FOUND`) | Pada label: dieksklusi. Pada fitur: dipertahankan sebagai kategori tersendiri. Pada graf: tipe kecelakaan dan standar dengan penanda ini dibuang |
 | Angka nol di depan pada `MINE_ID` dan kode MSHA | Seluruh kolom dibaca sebagai teks; kode cedera dinormalisasi menjadi dua digit (`1` → `01`) |
 | Nilai kosong pada fitur numerik pengalaman kerja | Diisi median yang dihitung **hanya dari data training** |
 | Kategori dengan jumlah sangat banyak (peralatan, aktivitas) | 15 kategori terbanyak pada data training dipertahankan, sisanya digabung menjadi `OTHER` |
 | Kode cedera di luar cakupan (07, 08, 09) atau kosong | Dieksklusi dan jumlahnya dicatat (Tabel 4.2) |
-| Pergeseran kolom akibat teks bebas | Dideteksi pada notebook eksplorasi (baris gagal dibaca dicatat); kolom `NARRATIVE` tidak dibaca oleh pipeline machine learning |
+| Baris tanpa `CAL_YR` valid | Tidak ditulis ke curated zone; jumlahnya dicatat di `hadoop_storage_summary.json` |
+| Pergeseran kolom akibat teks bebas | Dideteksi pada notebook eksplorasi; kolom `NARRATIVE` tidak dipakai pada pipeline machine learning |
 | Waktu shift berformat HHMM yang tidak valid | Dikategorikan sebagai `UNKNOWN` |
 
 Kode eksplorasi kualitas data: https://colab.research.google.com/drive/1IKOqwyx-5LudkYKyRNBlRFOzULQMKCMS?usp=sharing
@@ -268,14 +281,7 @@ Data terstruktur disimpan sebagai tabel relasional. Relasi antartabel:
 - Inspections dan Violations dihubungkan melalui `EVENT_NO`.
 - Narasi kecelakaan (data tidak terstruktur) tetap terhubung ke data terstruktur melalui `DOCUMENT_NO`.
 
-```mermaid
-erDiagram
-    MINES ||--o{ ACCIDENTS : "MINE_ID"
-    MINES ||--o{ INSPECTIONS : "MINE_ID"
-    MINES ||--o{ VIOLATIONS : "MINE_ID"
-    INSPECTIONS ||--o{ VIOLATIONS : "EVENT_NO"
-    ACCIDENTS ||--|| NARRATIVE : "DOCUMENT_NO"
-```
+![Gambar 4.2 Model data relasional MSHA](figures/gambar_4_2_model_data.png)
 
 *Gambar 4.2 Model data relasional MSHA*
 
@@ -335,20 +341,7 @@ Untuk Graph Analytics (Bab 6), relasi tersebut juga dimodelkan sebagai graf: tam
 
 Gambar 5.1 menunjukkan alur pipeline yang diimplementasikan. Kode sumber berada di folder `src/` pada repository, dan seluruh tahap dapat dijalankan dengan `python src/run_all.py`.
 
-```mermaid
-flowchart TD
-    A[Accidents.txt] --> B[Pembacaan sebagai teks<br/>normalisasi null & kode]
-    B --> C[Pemetaan label<br/>eksklusi 07/08/09/kosong]
-    C --> D[Filter 2018–2023<br/>rekayasa SHIFT_PERIOD]
-    D --> E[Partisi temporal<br/>train 2018–21 / val 2022 / test 2023]
-    E --> F[Fit pada train saja:<br/>median, Top-15, encoder, scaler]
-    F --> G1[Scikit-Learn<br/>LR & RF]
-    F --> G2[Spark MLlib<br/>LR & RF]
-    G1 --> H[Tuning threshold pada validation]
-    G2 --> H
-    H --> I[Evaluasi sekali pada test<br/>fungsi metrik yang sama]
-    I --> J[Benchmark + model untuk dashboard]
-```
+![Gambar 5.1 Alur machine learning pipeline](figures/gambar_5_1_pipeline_ml.png)
 
 *Gambar 5.1 Alur machine learning pipeline*
 
@@ -469,7 +462,7 @@ Dua algoritma klasifikasi biner digunakan, masing-masing diimplementasikan di Sc
 
 **Pengukuran waktu.** *Fit time* adalah waktu `fit()` model saja. Waktu inisialisasi `SparkSession` dan fit pipeline preprocessing Spark dicatat terpisah (`Spark_Init_Seconds`, `Preprocess_Fit_Seconds`). *Inference time* adalah waktu menghasilkan prediksi untuk seluruh test set.
 
-**Lingkungan eksekusi:** ⟦ISI: CPU, RAM, sistem operasi, versi Python, Java, PySpark, Scikit-Learn⟧.
+**Lingkungan eksekusi:** ⟦ISI: CPU, RAM, sistem operasi, versi Python, Java, Hadoop, PySpark, Scikit-Learn⟧.
 
 ## 5.5 Evaluasi Model
 
@@ -552,14 +545,7 @@ Graph analytics diimplementasikan di `src/graph_analytics.py` dengan NetworkX (H
 | Sisi | `CITED_FOR` (tambang – standar) | Violations | Bobot = jumlah pelanggaran standar tersebut di tambang itu |
 | Sisi | `REPORTED_ACCIDENT` (tambang – tipe) | Accidents | Bobot = jumlah kecelakaan tipe tersebut di tambang itu |
 
-```mermaid
-flowchart LR
-    M((mine::MINE_ID))
-    S{{standard::PART_SECTION}}
-    T[accident_type::ACCIDENT_TYPE]
-    M -- "CITED_FOR (weight = jumlah pelanggaran)" --- S
-    M -- "REPORTED_ACCIDENT (weight = jumlah kecelakaan)" --- T
-```
+![Gambar 6.1 Skema graf heterogen](figures/gambar_6_1_skema_graf.png)
 
 *Gambar 6.1 Skema graf heterogen*
 
@@ -640,6 +626,8 @@ flowchart LR
 
 # REFERENSI
 
+Apache Software Foundation. (n.d.). *Hadoop: Setting up a single node cluster* dan *HDFS architecture*. https://hadoop.apache.org/docs/stable/
+
 Blondel, V. D., Guillaume, J.-L., Lambiotte, R., & Lefebvre, E. (2008). Fast unfolding of communities in large networks. *Journal of Statistical Mechanics: Theory and Experiment, 2008*(10), P10008. https://doi.org/10.1088/1742-5468/2008/10/P10008
 
 Breiman, L. (2001). Random forests. *Machine Learning, 45*(1), 5–32. https://doi.org/10.1023/A:1010933404324
@@ -668,6 +656,8 @@ Saito, T., & Rehmsmeier, M. (2015). The precision-recall plot is more informativ
 
 U.S. Energy Information Administration. (2023). *World oil transit chokepoints*. https://www.eia.gov/international/analysis/specialtopics/World_Oil_Transit_Chokepoints
 
+Shvachko, K., Kuang, H., Radia, S., & Chansler, R. (2010). The Hadoop distributed file system. In *2010 IEEE 26th Symposium on Mass Storage Systems and Technologies (MSST)* (pp. 1–10). https://doi.org/10.1109/MSST.2010.5496972
+
 Zaharia, M., Xin, R. S., Wendell, P., Das, T., Armbrust, M., Meng, X., ... & Stoica, I. (2016). Apache Spark: A unified engine for big data processing. *Communications of the ACM, 59*(11), 56–65. https://doi.org/10.1145/2934664
 
 <!--
@@ -687,6 +677,8 @@ git clone https://github.com/Ngeces/big_data_mining_accident_analysis.git
 cd big_data_mining_accident_analysis
 pip install -r requirements.txt
 # letakkan Accidents.txt, Violations.txt, Mines.txt di folder data/
+start-dfs.sh                                   # HDFS pseudo-distributed (lihat README)
+export MSHA_HDFS_URI=hdfs://localhost:9000
 python src/run_all.py
 streamlit run app.py
 ```

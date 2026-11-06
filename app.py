@@ -210,7 +210,7 @@ def missing_artifact(name, script):
 PAGES = {
     "overview": "📊 Overview & Tren",
     "map": "🗺️ Peta Tambang",
-    "storage": "🗄️ Penyimpanan Parquet",
+    "storage": "🗄️ Penyimpanan HDFS",
     "predictor": "🎯 Simulasi Keparahan",
     "benchmark": "⚡ Benchmark Model",
     "graph": "🕸️ Graph Analytics",
@@ -502,13 +502,22 @@ def page_map():
 # ==============================================================================
 def page_storage():
     page_header(
-        "Penyimpanan Big Data: Apache Parquet",
-        "Spark mengonversi file teks MSHA ke format kolom Parquet (Snappy) dengan partisi Hive-style <code>CAL_YR=YYYY</code>. "
-        "Prototipe ini menyimpan data di filesystem lokal dengan format dan tata letak direktori yang sama seperti di HDFS.",
+        "Penyimpanan Big Data: HDFS + Parquet",
+        "Berkas mentah MSHA diunggah ke raw zone HDFS, lalu Spark menulis curated zone dalam Parquet (Snappy) "
+        "dengan partisi Hive-style <code>CAL_YR=YYYY</code>.",
     )
     if not storage:
         missing_artifact("hadoop_storage_summary.json", "hadoop_storage.py")
         return
+
+    fs_uri = storage.get("filesystem_uri", "file:///")
+    on_hdfs = str(fs_uri).startswith("hdfs://")
+    if on_hdfs:
+        st.success(f"Filesystem: **HDFS** `{fs_uri}` · block size {storage.get('block_size_mb', 'n/a')} MB · "
+                   f"replication {storage.get('replication_factor', 'n/a')}")
+    else:
+        st.warning("Ringkasan ini dibuat tanpa HDFS (filesystem lokal `file:///`). Jalankan ulang "
+                   "`src/hadoop_storage.py` dengan `MSHA_HDFS_URI=hdfs://localhost:9000` agar hasilnya dari HDFS.")
 
     k = st.columns(4)
     kpi(k[0], "Raw TXT", f"{storage.get('raw_csv_size_mb', 'n/a')} MB", "pipe-delimited", COLORS["other"])
@@ -535,8 +544,12 @@ def page_storage():
     with right, st.container(border=True):
         st.markdown("#### Struktur partisi")
         years = sorted(r["Tahun"] for r in storage.get("sample_query_results", [])) or ["YYYY"]
-        tree = "data/hdfs_warehouse/msha_accidents/\n"
-        tree += "├── ...\n" + "".join(f"├── CAL_YR={y}/\n│   └── part-*.snappy.parquet\n" for y in years[-3:])
+        raw_dir = storage.get("raw_zone_path", "<base>/raw")
+        curated = storage.get("curated_zone_path", "<base>/warehouse/msha_accidents")
+        tree = f"{raw_dir}/\n"
+        tree += "".join(f"├── {name}\n" for name in storage.get("raw_files", {})) or "├── Accidents.txt\n"
+        tree += f"\n{curated}/\n├── ...\n"
+        tree += "".join(f"├── CAL_YR={y}/\n│   └── part-*.snappy.parquet\n" for y in years[-3:])
         tree += "└── _SUCCESS"
         st.code(tree, language="text")
         st.caption("Partition pruning: kueri dengan filter `CAL_YR` hanya membaca direktori tahun yang relevan.")

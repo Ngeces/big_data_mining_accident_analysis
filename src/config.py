@@ -13,6 +13,11 @@ DATA_DIR = os.environ.get("MSHA_DATA_DIR", "data")
 PROCESSED_DIR = os.path.join(DATA_DIR, "processed")
 ARTIFACTS_DIR = os.environ.get("MSHA_ARTIFACTS_DIR", "artifacts")
 
+# HDFS (single-node / pseudo-distributed). Contoh: export MSHA_HDFS_URI=hdfs://localhost:9000
+# Jika kosong, lapisan storage menulis ke filesystem lokal (file:///) dengan tata letak yang sama.
+HDFS_URI = os.environ.get("MSHA_HDFS_URI", "").rstrip("/")
+HDFS_BASE_DIR = os.environ.get("MSHA_HDFS_BASE_DIR", "/user/msha")
+
 ACCIDENTS_FILE = os.path.join(DATA_DIR, "Accidents.txt")
 VIOLATIONS_FILE = os.path.join(DATA_DIR, "Violations.txt")
 MINES_FILE = os.path.join(DATA_DIR, "Mines.txt")

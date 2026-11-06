@@ -45,11 +45,37 @@ Urutan tahap (bisa juga dijalankan satu per satu dengan `python src/<file>.py`):
 | 1 | `data_pipeline.py` | `data/processed/{train,val,test}.csv`, `preprocessing_metadata.json` |
 | 2 | `models_baseline.py` | `sklearn_results.json`, `best_model.joblib`, `preprocessor.joblib`, `model_metadata.json` |
 | 3 | `models_spark.py` | `benchmark_results.json` (gabungan sklearn + Spark) |
-| 4 | `hadoop_storage.py` | `hadoop_storage_summary.json`, `data/hdfs_warehouse/` |
+| 4 | `hadoop_storage.py` | `hadoop_storage_summary.json`; HDFS `/user/msha/raw/` dan `/user/msha/warehouse/msha_accidents/` |
 | 5 | `graph_analytics.py` | `graph_nodes_summary.csv`, `graph_top_edges.json`, `mine_accident_closeness.json` |
 | 6 | `geo_and_viz_pipeline.py` | `mine_geo_accidents.csv`, `graph_network_layout.json`, `accident_annual_trend.csv` |
 
 Tanpa Java: `python src/run_all.py --skip-spark --skip-storage`.
+
+### HDFS lokal (single-node, pseudo-distributed)
+
+`hadoop_storage.py` menulis raw zone dan curated zone (Parquet) ke HDFS jika `MSHA_HDFS_URI` diatur.
+Tanpa variabel ini, tahap tersebut memakai filesystem lokal (`file:///`) dan dashboard menampilkan peringatan.
+
+1. Unduh Apache Hadoop 3.x, set `JAVA_HOME` dan `HADOOP_HOME`, lalu atur mode pseudo-distributed:
+   - `etc/hadoop/core-site.xml`: `fs.defaultFS = hdfs://localhost:9000`
+   - `etc/hadoop/hdfs-site.xml`: `dfs.replication = 1`
+2. Format dan jalankan HDFS, lalu buat direktori kerja:
+
+   ```bash
+   hdfs namenode -format          # hanya sekali
+   start-dfs.sh
+   hdfs dfs -mkdir -p /user/msha
+   jps                            # harus ada NameNode, DataNode, SecondaryNameNode
+   ```
+3. Jalankan pipeline dengan HDFS:
+
+   ```bash
+   export MSHA_HDFS_URI=hdfs://localhost:9000
+   python src/run_all.py
+   hdfs dfs -ls -R /user/msha | head      # cek raw/ dan warehouse/msha_accidents/CAL_YR=*/
+   ```
+
+Panduan resmi: [Hadoop single-node setup](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html).
 
 ### Google Colab
 
