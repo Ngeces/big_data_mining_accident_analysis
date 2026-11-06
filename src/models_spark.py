@@ -1,229 +1,179 @@
 """
 models_spark.py
 Implementasi model Apache Spark MLlib (Logistic Regression & Random Forest)
-menggunakan dataset partisi yang persis sama dengan Scikit-Learn (train.csv, val.csv, test.csv).
-Menghitung metrik klasifikasi Class 1, ROC-AUC, PR-AUC, dan waktu komputasi.
+menggunakan partisi yang persis sama dengan Scikit-Learn (train.csv, val.csv, test.csv).
+
+Aturan perbandingan adil dengan Scikit-Learn:
+- Label, fitur, partisi, class weight ("balanced"), dan hyperparameter sama (lihat config.py).
+- One-hot: StringIndexer(handleInvalid="keep") + OneHotEncoder(dropLast=True) membuang bucket
+  "unknown" saja, setara dengan sklearn OneHotEncoder(drop=None, handle_unknown="ignore").
+- Logistic Regression: hanya fitur numerik yang distandardisasi (seperti sklearn), standardization=False,
+  regParam = 1 / (C * jumlah bobot train) agar setara dengan sklearn C.
+- Threshold dipilih pada validation set, dan metrik dihitung dengan evaluation.py yang sama.
 """
 
 import os
 import time
 import json
-import numpy as np
-import pandas as pd
 
-# Pastikan JAVA_HOME mengarah ke instalasi Java 11
-if "JAVA_HOME" not in os.environ:
-    os.environ["JAVA_HOME"] = "/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home"
+from config import (
+    PROCESSED_DIR, ARTIFACTS_DIR, CAT_COLS, NUM_COLS, TARGET_COL,
+    RANDOM_SEED, LR_C, LR_MAX_ITER, RF_N_TREES, RF_MAX_DEPTH, java_home_fallback,
+)
+from evaluation import tune_threshold, classification_metrics
 
-from pyspark.sql import SparkSession
-from pyspark.sql import functions as F
-from pyspark.sql.types import DoubleType
-from pyspark.ml import Pipeline
-from pyspark.ml.feature import StringIndexer, OneHotEncoder, VectorAssembler, StandardScaler
-from pyspark.ml.classification import LogisticRegression, RandomForestClassifier
-from pyspark.ml.evaluation import BinaryClassificationEvaluator, MulticlassClassificationEvaluator
+java_home_fallback()
+
+from pyspark.sql import SparkSession  # noqa: E402
+from pyspark.sql import functions as F  # noqa: E402
+from pyspark.ml import Pipeline  # noqa: E402
+from pyspark.ml.feature import StringIndexer, OneHotEncoder, VectorAssembler, StandardScaler  # noqa: E402
+from pyspark.ml.classification import LogisticRegression, RandomForestClassifier  # noqa: E402
+from pyspark.ml.functions import vector_to_array  # noqa: E402
 
 
-def run_spark_pipeline(
-    data_dir="data/processed",
-    artifacts_dir="artifacts"
-):
+def read_partition(spark, data_dir, name):
+    """Baca semua kolom sebagai string (tanpa inferSchema), lalu cast kolom numerik secara eksplisit."""
+    sdf = spark.read.csv(os.path.join(data_dir, f"{name}.csv"), header=True, inferSchema=False)
+    for col_name in NUM_COLS + [TARGET_COL]:
+        sdf = sdf.withColumn(col_name, F.col(col_name).cast("double"))
+    return sdf
+
+
+def collect_probs(pred_sdf):
+    """Ambil label dan probabilitas Class 1 ke driver (ukuran val/test ~6 ribu baris)."""
+    pdf = pred_sdf.select(
+        F.col(TARGET_COL).alias("y"),
+        vector_to_array(F.col("probability"))[1].alias("p1"),
+    ).toPandas()
+    return pdf["y"].astype(int).values, pdf["p1"].values
+
+
+def run_spark_pipeline(data_dir=PROCESSED_DIR, artifacts_dir=ARTIFACTS_DIR):
     print("=" * 60)
     print("[*] MEMULAI TRAINING DAN EVALUASI APACHE SPARK MLLIB")
     print("=" * 60)
     os.makedirs(artifacts_dir, exist_ok=True)
 
-    # Inisialisasi Spark Session
     print("[*] Menginisialisasi SparkSession (local[*])...")
-    t_spark_init = time.time()
-    spark = SparkSession.builder \
-        .appName("MSHA Mine Safety Analytics - Spark MLlib") \
-        .master("local[*]") \
-        .config("spark.driver.memory", "4g") \
-        .config("spark.sql.shuffle.partitions", "4") \
-        .config("spark.ui.enabled", "false") \
+    t0 = time.perf_counter()
+    spark = (
+        SparkSession.builder
+        .appName("MSHA Mine Safety Analytics - Spark MLlib")
+        .master("local[*]")
+        .config("spark.driver.memory", "4g")
+        .config("spark.sql.shuffle.partitions", "8")
+        .config("spark.ui.enabled", "false")
         .getOrCreate()
+    )
     spark.sparkContext.setLogLevel("ERROR")
-    spark_init_time = time.time() - t_spark_init
+    spark_init_time = time.perf_counter() - t0
     print(f"[+] Spark Session aktif dalam {spark_init_time:.2f} detik.")
 
-    # 1. Load Data Partisi
-    print("[*] Membaca data partisi ke Spark DataFrame...")
-    train_sdf = spark.read.csv(os.path.join(data_dir, "train.csv"), header=True, inferSchema=True)
-    val_sdf = spark.read.csv(os.path.join(data_dir, "val.csv"), header=True, inferSchema=True)
-    test_sdf = spark.read.csv(os.path.join(data_dir, "test.csv"), header=True, inferSchema=True)
+    train_sdf = read_partition(spark, data_dir, "train")
+    val_sdf = read_partition(spark, data_dir, "val")
+    test_sdf = read_partition(spark, data_dir, "test")
 
-    cat_cols = ["SUBUNIT", "COAL_METAL_IND", "ACCIDENT_TYPE", "MINING_EQUIP", "ACTIVITY", "SHIFT_PERIOD"]
-    num_cols = ["TOT_EXPER", "MINE_EXPER", "JOB_EXPER"]
-    target_col = "IS_LOST_TIME_OR_SEVERE"
-
-    # Pastikan tipe kolom numerik dan target Double
-    for col_name in num_cols + [target_col]:
-        train_sdf = train_sdf.withColumn(col_name, F.col(col_name).cast(DoubleType()))
-        val_sdf = val_sdf.withColumn(col_name, F.col(col_name).cast(DoubleType()))
-        test_sdf = test_sdf.withColumn(col_name, F.col(col_name).cast(DoubleType()))
-
+    # Class weight "balanced" (rumus yang sama dengan sklearn): n / (2 * n_kelas)
     total_train = train_sdf.count()
-    pos_train = train_sdf.filter(F.col(target_col) == 1.0).count()
+    pos_train = train_sdf.filter(F.col(TARGET_COL) == 1.0).count()
     neg_train = total_train - pos_train
+    w0, w1 = total_train / (2.0 * neg_train), total_train / (2.0 * pos_train)
+    print(f"  Train: {total_train:,} baris (Pos: {pos_train:,}, Neg: {neg_train:,}) | w0={w0:.3f}, w1={w1:.3f}")
+    train_sdf = train_sdf.withColumn("classWeight", F.when(F.col(TARGET_COL) == 1.0, w1).otherwise(w0))
 
-    # Hitung bobot kelas (class weight)
-    w0 = total_train / (2.0 * neg_train)
-    w1 = total_train / (2.0 * pos_train)
-    print(f"  Train: {total_train:,} baris (Pos: {pos_train:,}, Neg: {neg_train:,})")
-    print(f"  Class Weights: w0={w0:.3f}, w1={w1:.3f}")
-
-    def add_class_weight(df):
-        return df.withColumn(
-            "classWeight",
-            F.when(F.col(target_col) == 1.0, w1).otherwise(w0)
-        )
-
-    train_sdf = add_class_weight(train_sdf)
-    val_sdf = add_class_weight(val_sdf)
-    test_sdf = add_class_weight(test_sdf)
-
-    # 2. Pipeline Preprocessing Spark (StringIndexer + OneHotEncoder dropLast=True)
-    indexers = [
-        StringIndexer(inputCol=c, outputCol=f"{c}_idx", handleInvalid="keep")
-        for c in cat_cols
-    ]
+    # Preprocessing (fit hanya pada train)
+    indexers = [StringIndexer(inputCol=c, outputCol=f"{c}_idx", handleInvalid="keep") for c in CAT_COLS]
     encoder = OneHotEncoder(
-        inputCols=[f"{c}_idx" for c in cat_cols],
-        outputCols=[f"{c}_vec" for c in cat_cols],
-        dropLast=True
+        inputCols=[f"{c}_idx" for c in CAT_COLS],
+        outputCols=[f"{c}_vec" for c in CAT_COLS],
+        dropLast=True,
     )
-    assembler = VectorAssembler(
-        inputCols=[f"{c}_vec" for c in cat_cols] + num_cols,
-        outputCol="features_unscaled"
-    )
-    scaler = StandardScaler(
-        inputCol="features_unscaled",
-        outputCol="features_scaled",
-        withStd=True,
-        withMean=False
-    )
+    num_assembler = VectorAssembler(inputCols=NUM_COLS, outputCol="num_raw")
+    num_scaler = StandardScaler(inputCol="num_raw", outputCol="num_scaled", withMean=True, withStd=True)
+    cat_vecs = [f"{c}_vec" for c in CAT_COLS]
+    assembler_lr = VectorAssembler(inputCols=cat_vecs + ["num_scaled"], outputCol="features_lr")
+    assembler_rf = VectorAssembler(inputCols=cat_vecs + ["num_raw"], outputCol="features_rf")
 
-    feature_pipeline = Pipeline(stages=indexers + [encoder, assembler, scaler])
-    print("\n[*] Menyesuaikan (fit) pipeline preprocessing Spark pada Training Data...")
+    feature_pipeline = Pipeline(stages=indexers + [encoder, num_assembler, num_scaler, assembler_lr, assembler_rf])
+    print("[*] Fit pipeline preprocessing Spark pada Training Data...")
+    t0 = time.perf_counter()
     feature_model = feature_pipeline.fit(train_sdf)
+    preprocess_fit_time = time.perf_counter() - t0
 
     train_prep = feature_model.transform(train_sdf).cache()
     val_prep = feature_model.transform(val_sdf).cache()
     test_prep = feature_model.transform(test_sdf).cache()
+    for sdf in (train_prep, val_prep, test_prep):
+        sdf.count()  # materialisasi cache
 
-    train_prep.count()  # trigger cache
-    val_prep.count()
-    test_prep.count()
-
-    eval_roc = BinaryClassificationEvaluator(labelCol=target_col, rawPredictionCol="rawPrediction", metricName="areaUnderROC")
-    eval_pr = BinaryClassificationEvaluator(labelCol=target_col, rawPredictionCol="rawPrediction", metricName="areaUnderPR")
-    eval_acc = MulticlassClassificationEvaluator(labelCol=target_col, predictionCol="prediction", metricName="accuracy")
-    eval_f1_c1 = MulticlassClassificationEvaluator(labelCol=target_col, predictionCol="prediction", metricName="fMeasureByLabel", metricLabel=1.0)
-    eval_prec_c1 = MulticlassClassificationEvaluator(labelCol=target_col, predictionCol="prediction", metricName="precisionByLabel", metricLabel=1.0)
-    eval_rec_c1 = MulticlassClassificationEvaluator(labelCol=target_col, predictionCol="prediction", metricName="recallByLabel", metricLabel=1.0)
-    eval_f1_macro = MulticlassClassificationEvaluator(labelCol=target_col, predictionCol="prediction", metricName="f1")
-
+    sum_weights = w0 * neg_train + w1 * pos_train  # = total_train untuk bobot balanced
     spark_models = {
-        "Spark MLlib Logistic Regression": {
-            "algo": LogisticRegression(
-                featuresCol="features_scaled",
-                labelCol=target_col,
-                weightCol="classWeight",
-                maxIter=100
-            )
-        },
-        "Spark MLlib Random Forest": {
-            "algo": RandomForestClassifier(
-                featuresCol="features_unscaled",
-                labelCol=target_col,
-                weightCol="classWeight",
-                numTrees=100,
-                maxDepth=10,
-                seed=42
-            )
-        }
+        "Spark MLlib Logistic Regression": LogisticRegression(
+            featuresCol="features_lr", labelCol=TARGET_COL, weightCol="classWeight",
+            maxIter=LR_MAX_ITER, regParam=1.0 / (LR_C * sum_weights),
+            elasticNetParam=0.0, standardization=False,
+        ),
+        "Spark MLlib Random Forest": RandomForestClassifier(
+            featuresCol="features_rf", labelCol=TARGET_COL, weightCol="classWeight",
+            numTrees=RF_N_TREES, maxDepth=RF_MAX_DEPTH, featureSubsetStrategy="sqrt",
+            seed=RANDOM_SEED,
+        ),
     }
 
     spark_results = {}
-
-    for name, cfg in spark_models.items():
+    for name, algo in spark_models.items():
         print(f"\n--- [TRAINING: {name}] ---")
-        algo = cfg["algo"]
-
-        # A. Ukur Training Time
-        t0 = time.time()
+        t0 = time.perf_counter()
         model = algo.fit(train_prep)
-        fit_time = time.time() - t0
+        fit_time = time.perf_counter() - t0
         print(f"  [+] Fit Time: {fit_time:.4f} detik")
 
-        # B. Prediksi Test Set (2023)
-        t_inf0 = time.time()
-        test_preds = model.transform(test_prep).cache()
-        test_preds.count()
-        inf_time = time.time() - t_inf0
+        y_val, val_probs = collect_probs(model.transform(val_prep))
+        best_thresh, best_val_f1 = tune_threshold(y_val, val_probs)
+        print(f"  [+] Threshold optimal (Val): {best_thresh:.2f} (Val F1: {best_val_f1:.4f})")
 
-        roc_auc = eval_roc.evaluate(test_preds)
-        pr_auc = eval_pr.evaluate(test_preds)
-        acc = eval_acc.evaluate(test_preds)
-        f1_c1 = eval_f1_c1.evaluate(test_preds)
-        prec_c1 = eval_prec_c1.evaluate(test_preds)
-        rec_c1 = eval_rec_c1.evaluate(test_preds)
-        f1_macro = eval_f1_macro.evaluate(test_preds)
+        t0 = time.perf_counter()
+        test_pred = model.transform(test_prep).cache()
+        test_pred.count()
+        inference_time = time.perf_counter() - t0
+        y_test, test_probs = collect_probs(test_pred)
+        test_pred.unpersist()
 
-        # Confusion matrix
-        cm_df = test_preds.groupBy(target_col, "prediction").count().toPandas()
-        cm_dict = {(int(r[target_col]), int(r["prediction"])): int(r["count"]) for _, r in cm_df.iterrows()}
-        tn = cm_dict.get((0, 0), 0)
-        fp = cm_dict.get((0, 1), 0)
-        fn = cm_dict.get((1, 0), 0)
-        tp = cm_dict.get((1, 1), 0)
-
-        print("  [+] Hasil Evaluasi Test Set (2023):")
-        print(f"      Accuracy:        {acc:.4f}")
-        print(f"      Precision (C1):  {prec_c1:.4f}")
-        print(f"      Recall (C1):     {rec_c1:.4f}")
-        print(f"      F1-Score (C1):   {f1_c1:.4f}")
-        print(f"      F1-Score (Macro):{f1_macro:.4f}")
-        print(f"      ROC-AUC:         {roc_auc:.4f}")
-        print(f"      PR-AUC:          {pr_auc:.4f}")
-        print(f"      Confusion Matrix:[TN={tn}, FP={fp}], [FN={fn}, TP={tp}]")
-        print(f"      Inference Time:  {inf_time:.4f} detik")
+        metrics = classification_metrics(y_test, test_probs, best_thresh)
+        print("  [+] Hasil Evaluasi Test Set:")
+        for k, v in metrics.items():
+            print(f"      {k:<18}: {v}")
 
         spark_results[name] = {
             "Framework": "Apache Spark MLlib",
             "Model Name": name,
-            "Accuracy": round(acc, 4),
-            "Precision_Class1": round(prec_c1, 4),
-            "Recall_Class1": round(rec_c1, 4),
-            "F1_Class1": round(f1_c1, 4),
-            "F1_Macro": round(f1_macro, 4),
-            "ROC_AUC": round(roc_auc, 4),
-            "PR_AUC": round(pr_auc, 4),
+            **metrics,
+            "Val_F1_Class1": round(best_val_f1, 4),
             "Fit_Time_Seconds": round(fit_time, 4),
-            "Inference_Time_Seconds": round(inf_time, 4),
-            "Optimal_Threshold": 0.50,
-            "Confusion_Matrix": [[tn, fp], [fn, tp]]
+            "Inference_Time_Seconds": round(inference_time, 4),
+            "Optimal_Threshold": round(best_thresh, 2),
+            "Spark_Init_Seconds": round(spark_init_time, 2),
+            "Preprocess_Fit_Seconds": round(preprocess_fit_time, 2),
         }
 
-    # Hentikan Spark Session
     spark.stop()
-    print("\n[✓] SparkSession dihentikan dengan rapi.")
+    print("\n[✓] SparkSession dihentikan.")
 
     # Gabungkan dengan hasil Scikit-Learn
     sklearn_path = os.path.join(artifacts_dir, "sklearn_results.json")
     all_results = {}
     if os.path.exists(sklearn_path):
-        with open(sklearn_path, "r") as f:
+        with open(sklearn_path) as f:
             all_results = json.load(f)
-
+    else:
+        print("[!] sklearn_results.json belum ada; jalankan models_baseline.py terlebih dahulu.")
     all_results.update(spark_results)
 
-    final_benchmark_path = os.path.join(artifacts_dir, "benchmark_results.json")
-    with open(final_benchmark_path, "w") as f:
+    final_path = os.path.join(artifacts_dir, "benchmark_results.json")
+    with open(final_path, "w") as f:
         json.dump(all_results, f, indent=2)
-
-    print(f"\n[✓] Berhasil menggabungkan hasil benchmark ke: {final_benchmark_path}")
+    print(f"[✓] Hasil benchmark digabung ke: {final_path}")
     return all_results
 
 

@@ -5,24 +5,30 @@ Implementasi Lapisan Penyimpanan Big Data Berbasis Arsitektur Hadoop HDFS:
 2. Menerapkan partisi temporal ala Hive/HDFS (partitionBy CAL_YR).
 3. Mengelola metadata SQL Warehouse menggunakan Spark SQL.
 4. Mengukur efisiensi kompresi dan kecepatan kueri analitik.
+
+Catatan: pada mode lokal, fs.defaultFS = file:/// sehingga data ditulis ke filesystem lokal
+dengan format dan tata letak partisi yang kompatibel dengan HDFS/Hive, bukan ke klaster HDFS.
+
 """
 
 import os
 import time
 import json
-import pandas as pd
 
-if "JAVA_HOME" not in os.environ:
-    os.environ["JAVA_HOME"] = "/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home"
+from config import ACCIDENTS_FILE, DATA_DIR, ARTIFACTS_DIR, java_home_fallback
 
-from pyspark.sql import SparkSession
-from pyspark.sql import functions as F
+java_home_fallback()
+
+from pyspark.sql import SparkSession  # noqa: E402
+from pyspark.sql import functions as F  # noqa: E402
+
+NUMERIC_COLS = ["TOT_EXPER", "MINE_EXPER", "JOB_EXPER", "DAYS_LOST", "DAYS_RESTRICT", "NO_INJURIES"]
 
 
 def implement_hadoop_storage(
-    raw_accidents_file="data/Accidents.txt",
-    warehouse_dir="data/hdfs_warehouse",
-    artifacts_dir="artifacts"
+    raw_accidents_file=ACCIDENTS_FILE,
+    warehouse_dir=os.path.join(DATA_DIR, "hdfs_warehouse"),
+    artifacts_dir=ARTIFACTS_DIR,
 ):
     print("=" * 60)
     print("[*] MEMULAI IMPLEMENTASI HADOOP HDFS STORAGE LAYER")
@@ -46,13 +52,19 @@ def implement_hadoop_storage(
     # 2. Baca Data Mentah MSHA
     print(f"[*] Membaca data mentah dari {raw_accidents_file}...")
     t0_read = time.time()
+    # inferSchema=False: MINE_ID / DEGREE_INJURY_CD tetap string (leading zero tidak hilang).
     raw_df = spark.read.csv(
         raw_accidents_file,
         sep="|",
         header=True,
-        inferSchema=True,
-        quote='"'
+        inferSchema=False,
+        quote='"',
+        encoding="ISO-8859-1",
     )
+    raw_df = raw_df.withColumn("CAL_YR", F.col("CAL_YR").cast("int"))
+    for c in NUMERIC_COLS:
+        if c in raw_df.columns:
+            raw_df = raw_df.withColumn(c, F.col(c).cast("double"))
     read_time = time.time() - t0_read
     raw_count = raw_df.count()
     print(f"[+] Total data terbaca: {raw_count:,} baris dalam {read_time:.2f} detik.")
@@ -67,8 +79,10 @@ def implement_hadoop_storage(
     print(f"\n[*] Menulis data ke Hadoop Columnar Storage (Parquet + Snappy) terpartisi per CAL_YR...")
     print(f"  Target Direktori HDFS Warehouse: {target_parquet_path}")
 
-    # Filter data tahun 2010 - 2023 untuk efisiensi warehouse
-    filtered_df = raw_df.filter(F.col("CAL_YR").between(2010, 2023))
+    # Semua tahun ditulis agar perbandingan ukuran dengan file mentah adil (isi data sama).
+    filtered_df = raw_df.filter(F.col("CAL_YR").isNotNull())
+    dropped_null_year = raw_count - filtered_df.count()
+    print(f"  Baris tanpa CAL_YR valid (tidak ditulis): {dropped_null_year:,}")
 
     t0_write = time.time()
     filtered_df.write \
@@ -112,7 +126,7 @@ def implement_hadoop_storage(
             CAL_YR AS Tahun,
             COUNT(*) AS Total_Insiden,
             SUM(CASE WHEN DEGREE_INJURY_CD IN ('01', '02', '03', '04', '05') THEN 1 ELSE 0 END) AS Insiden_Lost_Time_Severe,
-            ROUND(AVG(COALESCE(TOT_EXPER, 0)), 2) AS Rata_Rata_Pengalaman_Tahun
+            ROUND(AVG(TOT_EXPER), 2) AS Rata_Rata_Pengalaman_Tahun
         FROM msha_accidents
         WHERE CAL_YR BETWEEN 2018 AND 2023
         GROUP BY CAL_YR
@@ -128,7 +142,7 @@ def implement_hadoop_storage(
 
     # 6. Simpan Metadata Benchmark Hadoop Storage ke Artifacts
     summary_data = {
-        "storage_technology": "Hadoop Distributed File System (HDFS) / Parquet Warehouse",
+        "storage_technology": "Apache Parquet (format Hadoop) dengan partisi Hive-style, filesystem lokal (file:///)",
         "compression_codec": "Snappy Columnar",
         "raw_csv_size_mb": round(raw_size_mb, 2),
         "hadoop_parquet_size_mb": round(parquet_size_mb, 2),
@@ -136,6 +150,8 @@ def implement_hadoop_storage(
         "write_time_seconds": round(write_time, 2),
         "olap_query_time_seconds": round(query_time, 3),
         "num_partitions": len(partition_dirs),
+        "rows_written": int(raw_count - dropped_null_year),
+        "rows_dropped_null_year": int(dropped_null_year),
         "partition_scheme": "CAL_YR=YYYY",
         "sample_query_results": pdf_res.to_dict(orient="records")
     }

@@ -9,18 +9,28 @@ Implementasi Graph Analytics heterogen untuk Bab 6 Assignment II:
 import os
 import json
 import pandas as pd
-import numpy as np
 import networkx as nx
 from networkx.algorithms.community import louvain_communities
 from sklearn.metrics.pairwise import cosine_similarity
 
+from config import (
+    ACCIDENTS_FILE, VIOLATIONS_FILE, ARTIFACTS_DIR,
+    GRAPH_START_YR, GRAPH_END_YR, RANDOM_SEED,
+)
+
+# Parameter desain graf (dokumentasikan alasannya di Bab 6)
+MIN_ACCIDENTS_FOR_AFFINITY = 3   # tambang dengan < 3 insiden tidak dihitung afinitas/lift-nya
+TOP_MINES_FOR_PROJECTION = 300   # proyeksi mine-to-mine hanya untuk 300 tambang dengan weighted degree tertinggi
+JACCARD_THRESHOLD = 0.20         # sisi proyeksi dibuat jika Jaccard(tetangga) >= 0.20 (tanpa bobot)
+EXPLORER_EDGES_PER_TYPE = 300    # jumlah edge terberat per tipe yang diekspor untuk explorer dashboard
+
 
 def run_graph_analytics(
-    accidents_file="data/Accidents.txt",
-    violations_file="data/Violations.txt",
-    artifacts_dir="artifacts",
-    start_yr=2020,
-    end_yr=2023
+    accidents_file=ACCIDENTS_FILE,
+    violations_file=VIOLATIONS_FILE,
+    artifacts_dir=ARTIFACTS_DIR,
+    start_yr=GRAPH_START_YR,
+    end_yr=GRAPH_END_YR,
 ):
     print("=" * 60)
     print(f"[*] MEMULAI GRAPH ANALYTICS (JENDELA WAKTU {start_yr}-{end_yr})")
@@ -83,7 +93,7 @@ def run_graph_analytics(
     # 3. Analisis Hubungan Kedekatan (Closeness) Tambang terhadap Tipe Kecelakaan
     print("\n[*] Menghitung Metrik Kedekatan (Closeness & Affinity) Tambang-Kecelakaan...")
     crosstab_acc = pd.crosstab(df_acc["MINE_ID"], df_acc["ACCIDENT_TYPE"])
-    active_mines = crosstab_acc[crosstab_acc.sum(axis=1) >= 3]  # Tambang dengan >= 3 insiden
+    active_mines = crosstab_acc[crosstab_acc.sum(axis=1) >= MIN_ACCIDENTS_FOR_AFFINITY]
 
     overall_counts = active_mines.sum()
     overall_dist = overall_counts / overall_counts.sum()
@@ -135,19 +145,18 @@ def run_graph_analytics(
     print("\n[*] Membangun Graf Heterogen Multi-Modal...")
     G = nx.Graph()
 
-    for _, row in viol_agg.iterrows():
-        u = f"mine::{row['MINE_ID']}"
-        v = f"standard::{row['PART_SECTION']}"
-        G.add_node(u, node_type="mine", label=row['MINE_ID'])
-        G.add_node(v, node_type="standard", label=row['PART_SECTION'])
-        G.add_edge(u, v, weight=int(row['weight']), edge_type="CITED_FOR")
+    def add_bipartite_edges(agg, other_col, prefix, node_type, edge_type):
+        mines = agg["MINE_ID"].astype(str)
+        others = agg[other_col].astype(str)
+        G.add_nodes_from(((f"mine::{m}", {"node_type": "mine", "label": m}) for m in mines.unique()))
+        G.add_nodes_from(((f"{prefix}::{o}", {"node_type": node_type, "label": o}) for o in others.unique()))
+        G.add_edges_from(
+            (f"mine::{m}", f"{prefix}::{o}", {"weight": int(w), "edge_type": edge_type})
+            for m, o, w in zip(mines, others, agg["weight"])
+        )
 
-    for _, row in acc_agg.iterrows():
-        u = f"mine::{row['MINE_ID']}"
-        v = f"accident_type::{row['ACCIDENT_TYPE']}"
-        G.add_node(u, node_type="mine", label=row['MINE_ID'])
-        G.add_node(v, node_type="accident_type", label=row['ACCIDENT_TYPE'])
-        G.add_edge(u, v, weight=int(row['weight']), edge_type="REPORTED_ACCIDENT")
+    add_bipartite_edges(viol_agg, "PART_SECTION", "standard", "standard", "CITED_FOR")
+    add_bipartite_edges(acc_agg, "ACCIDENT_TYPE", "accident_type", "accident_type", "REPORTED_ACCIDENT")
 
     num_nodes = G.number_of_nodes()
     num_edges = G.number_of_edges()
@@ -171,14 +180,18 @@ def run_graph_analytics(
 
     # 6. Proyeksi Antar-Tambang (Mine-to-Mine Projection) & Community Detection
     print("\n[*] Menjalankan Proyeksi Graf Antar-Tambang & Louvain Community...")
-    top_active_mines = df_metrics[df_metrics["node_type"] == "mine"].sort_values("weighted_degree", ascending=False).head(300)["node_id"].tolist()
+    top_active_mines = (
+        df_metrics[df_metrics["node_type"] == "mine"]
+        .sort_values("weighted_degree", ascending=False)
+        .head(TOP_MINES_FOR_PROJECTION)["node_id"].tolist()
+    )
 
     mine_features = {mine: set(G.neighbors(mine)) for mine in top_active_mines}
     G_proj = nx.Graph()
     for mine in top_active_mines:
         G_proj.add_node(mine, label=mine.replace("mine::", ""))
 
-    jaccard_threshold = 0.20
+    jaccard_threshold = JACCARD_THRESHOLD
     for i in range(len(top_active_mines)):
         m1 = top_active_mines[i]
         feats1 = mine_features[m1]
@@ -194,7 +207,9 @@ def run_graph_analytics(
             if union > 0 and (intersection / union) >= jaccard_threshold:
                 G_proj.add_edge(m1, m2, weight=round(intersection / union, 3))
 
-    communities = louvain_communities(G_proj, weight="weight", seed=42)
+    communities = louvain_communities(G_proj, weight="weight", seed=RANDOM_SEED)
+    isolated = sum(1 for c in communities if len(c) == 1)
+    print(f"[+] Sisi proyeksi: {G_proj.number_of_edges():,} | komunitas berisi 1 tambang (terisolasi): {isolated}")
     print(f"[+] Ditemukan {len(communities)} klaster komunitas profil risiko!")
 
     mine_community_map = {}
@@ -214,6 +229,19 @@ def run_graph_analytics(
         {"source": u, "target": v, "weight": d.get("weight", 1), "edge_type": d.get("edge_type", "")}
         for u, v, d in sorted_edges
     ]
+
+    # Edge terberat PER TIPE agar explorer dashboard memuat kedua relasi
+    # (top edges global hampir seluruhnya CITED_FOR karena bobot pelanggaran jauh lebih besar).
+    explorer_rows = []
+    for etype in ("CITED_FOR", "REPORTED_ACCIDENT"):
+        typed = [(u, v, d["weight"]) for u, v, d in G.edges(data=True) if d.get("edge_type") == etype]
+        typed.sort(key=lambda x: x[2], reverse=True)
+        for u, v, w in typed[:EXPLORER_EDGES_PER_TYPE]:
+            src, dst = (u, v) if u.startswith("mine::") else (v, u)  # source selalu tambang
+            explorer_rows.append({"source": src, "target": dst, "weight": int(w), "edge_type": etype})
+    explorer_path = os.path.join(artifacts_dir, "graph_explorer_edges.csv")
+    pd.DataFrame(explorer_rows).to_csv(explorer_path, index=False)
+    print(f"[✓] Menyimpan edge explorer ({len(explorer_rows)} edge) ke: {explorer_path}")
 
     graph_viz_path = os.path.join(artifacts_dir, "graph_top_edges.json")
     with open(graph_viz_path, "w") as f:

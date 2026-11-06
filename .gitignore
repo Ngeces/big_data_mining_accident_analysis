@@ -1,2 +1,13 @@
 .venv/
 data/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS / tool caches
+.DS_Store
+.matplotlib/
+
+# Streamlit local credentials
+.streamlit/credentials.toml
