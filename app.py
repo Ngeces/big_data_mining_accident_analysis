@@ -169,16 +169,20 @@ def chips(items):
 
 
 def style_fig(fig, height=380, legend=True):
+    has_title = bool(fig.layout.title and fig.layout.title.text)
     fig.update_layout(
         template="plotly_white",
         height=height,
-        margin=dict(l=10, r=10, t=40, b=10),
+        margin=dict(l=10, r=10, t=40 if has_title else 15, b=10),
         font=dict(family="Inter, Segoe UI, sans-serif", size=12),
         hoverlabel=dict(font_size=12),
         showlegend=legend,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0, title_text=""),
-        title=dict(font=dict(size=14)),
     )
+    if has_title:
+        fig.update_layout(title=dict(font=dict(size=14)))
+    else:
+        fig.update_layout(title_text=None)
     return fig
 
 
