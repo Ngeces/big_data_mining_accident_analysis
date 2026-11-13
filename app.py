@@ -82,6 +82,97 @@ st.markdown(
     .verdict.pos {background: #fdecea; border-left: 5px solid #d93025;}
     .verdict.neg {background: #e6f4ea; border-left: 5px solid #1e8e3e;}
     div[data-testid="stSidebarNav"] {display: none;}
+
+    /* =========================================================================
+       MODERN UI: HILANGKAN RADIO CIRCLE (BULAT-BULAT) & GANTI DENGAN MODERN PILLS/MENU
+       ========================================================================= */
+    /* 1. Sembunyikan lingkaran bulat radio button */
+    div[data-testid="stRadio"] div[role="radiogroup"] label > div:first-child {
+        display: none !important;
+    }
+    div[data-testid="stRadio"] div[role="radiogroup"] label div[data-testid="stMarkdownContainer"] {
+        padding: 0 !important;
+    }
+
+    /* 2. Navigasi Sidebar Modern (Vertical Menu Cards) */
+    [data-testid="stSidebar"] div[data-testid="stRadio"] div[role="radiogroup"] {
+        gap: 6px !important;
+        padding-top: 4px !important;
+    }
+    [data-testid="stSidebar"] div[data-testid="stRadio"] div[role="radiogroup"] > label {
+        padding: 10px 14px !important;
+        border-radius: 8px !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease-in-out !important;
+        border: 1px solid transparent !important;
+        width: 100% !important;
+        margin: 0 !important;
+        color: #475569 !important;
+        font-weight: 500 !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+    [data-testid="stSidebar"] div[data-testid="stRadio"] div[role="radiogroup"] > label:hover {
+        background-color: #f1f5f9 !important;
+        color: #0b57d0 !important;
+        transform: translateX(2px);
+    }
+    [data-testid="stSidebar"] div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked),
+    [data-testid="stSidebar"] div[data-testid="stRadio"] div[role="radiogroup"] > label[data-checked="true"] {
+        background-color: #e8f0fe !important;
+        color: #0b57d0 !important;
+        font-weight: 600 !important;
+        border: 1px solid #c2e7ff !important;
+        box-shadow: 0 1px 3px rgba(11, 87, 208, 0.08) !important;
+    }
+    [data-testid="stSidebar"] div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) p,
+    [data-testid="stSidebar"] div[data-testid="stRadio"] div[role="radiogroup"] > label[data-checked="true"] p {
+        color: #0b57d0 !important;
+        font-weight: 600 !important;
+    }
+
+    /* 3. Segmented Control / Pill Buttons untuk Radio Horizontal (Warna, Ukuran, Tampilan) */
+    div[data-testid="stRadio"] div[role="radiogroup"][aria-orientation="horizontal"] {
+        background: #f1f5f9 !important;
+        padding: 4px !important;
+        border-radius: 10px !important;
+        gap: 4px !important;
+        border: 1px solid #e2e8f0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        width: auto !important;
+    }
+    div[data-testid="stRadio"] div[role="radiogroup"][aria-orientation="horizontal"] > label {
+        padding: 6px 14px !important;
+        border-radius: 7px !important;
+        margin: 0 !important;
+        cursor: pointer !important;
+        transition: all 0.15s ease-in-out !important;
+        font-size: 0.88rem !important;
+        color: #64748b !important;
+        border: 1px solid transparent !important;
+        background: transparent !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    div[data-testid="stRadio"] div[role="radiogroup"][aria-orientation="horizontal"] > label:hover {
+        color: #0f172a !important;
+        background: rgba(255, 255, 255, 0.6) !important;
+    }
+    div[data-testid="stRadio"] div[role="radiogroup"][aria-orientation="horizontal"] > label:has(input:checked),
+    div[data-testid="stRadio"] div[role="radiogroup"][aria-orientation="horizontal"] > label[data-checked="true"] {
+        background: #ffffff !important;
+        color: #0b57d0 !important;
+        font-weight: 600 !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+    }
+    div[data-testid="stRadio"] div[role="radiogroup"][aria-orientation="horizontal"] > label:has(input:checked) p,
+    div[data-testid="stRadio"] div[role="radiogroup"][aria-orientation="horizontal"] > label[data-checked="true"] p {
+        color: #0b57d0 !important;
+        font-weight: 600 !important;
+    }
 </style>
 """,
     unsafe_allow_html=True,
