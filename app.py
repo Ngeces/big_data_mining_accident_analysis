@@ -732,32 +732,40 @@ def page_predictor():
     left, right = st.columns([1.25, 1])
     with left, st.container(border=True):
         st.markdown("#### 📝 Skenario insiden")
-        with st.form("scenario"):
+        with st.form("scenario_form"):
             values = {}
             fc = st.columns(2)
             for i, col in enumerate(CAT_COLS):
                 options = cats.get(col, [])
-                prev = st.session_state.get("scenario", {}).get(col)
+                prev = st.session_state.get("scenario_data", {}).get(col)
                 idx = options.index(prev) if prev in options else (options.index("DAY") if "DAY" in options else 0)
                 values[col] = fc[i % 2].selectbox(labels.get(col, col), options, index=idx)
             nc = st.columns(3)
             for i, col in enumerate(NUM_COLS):
                 median = medians.get(col)
                 median = 5.0 if median is None or pd.isna(median) else round(float(median), 1)
-                default = float(np.clip(st.session_state.get("scenario", {}).get(col, median), 0.0, 60.0))
+                default = float(np.clip(st.session_state.get("scenario_data", {}).get(col, median), 0.0, 60.0))
                 values[col] = nc[i].number_input(num_labels[col], 0.0, 60.0, default, 0.5)
             submitted = st.form_submit_button("🔍 Hitung skor", type="primary", width='stretch')
 
     if submitted:
-        st.session_state["scenario"] = values
+        st.session_state["scenario_data"] = values
+
         s = float(score(pd.DataFrame([values]))[0])
         st.session_state["score"] = s
-        st.session_state.setdefault("history", []).insert(0, {
-            "Waktu": datetime.now().strftime("%H:%M:%S"), **values, "Skor": round(s, 3),
-            "Klasifikasi": "Lost-Time / Severe" if s >= threshold else "No Lost-Time",
-        })
-        st.session_state["history"] = st.session_state["history"][:15]
 
+        st.session_state.setdefault("history", []).insert(0, {
+            "Waktu": datetime.now().strftime("%H:%M:%S"),
+            **values,
+            "Skor": round(s, 3),
+            "Klasifikasi": (
+                "Lost-Time / Severe"
+                if s >= threshold
+                else "No Lost-Time"
+            ),
+        })
+
+        st.session_state["history"] = st.session_state["history"][:15]
     with right, st.container(border=True):
         st.markdown("#### 📍 Hasil")
         st.caption(f"Model: **{model_meta.get('model_name', 'n/a')}** · ambang (dipilih di validation): **{threshold:.2f}**")
@@ -777,14 +785,14 @@ def page_predictor():
             )
             st.caption("Skor belum dikalibrasi; gunakan sebagai peringkat relatif, bukan peluang pasti.")
 
-    if "scenario" not in st.session_state:
+    if "scenario_data" not in st.session_state:
         return
 
     st.write("")
     with st.container(border=True):
         st.markdown("#### 🔬 Analisis what-if")
         st.caption("Ubah satu variabel, variabel lain tetap seperti skenario di atas.")
-        base = st.session_state["scenario"]
+        base = st.session_state["scenario_data"]
         w1, w2 = st.columns([1, 1.4])
         with w1:
             num_var = st.radio("Variabel numerik", NUM_COLS, format_func=num_labels.get)
