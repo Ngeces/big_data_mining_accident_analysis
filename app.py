@@ -57,7 +57,7 @@ NODE_TYPE_LABEL = {"mine": "Tambang", "standard": "Standar 30 CFR", "accident_ty
 EDGE_TYPE_LABEL = {"CITED_FOR": "Tambang → Standar dilanggar", "REPORTED_ACCIDENT": "Tambang → Tipe kecelakaan"}
 
 DISCLAIMER = (
-    "Dashboard ini merupakan prototipe akademik untuk analisis data historis MSHA "
+    # "Dashboard ini merupakan prototipe akademik untuk analisis data historis MSHA "
     "(COMP8035041 Big Data Analytics). Estimasi skenario didasarkan pada data laporan retrospektif "
     "dan tidak boleh digunakan sebagai satu-satunya dasar pengambilan keputusan keselamatan operasional tambang."
 )
