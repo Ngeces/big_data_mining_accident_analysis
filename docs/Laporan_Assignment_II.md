@@ -482,11 +482,11 @@ Sebagai pembanding minimum, digunakan **baseline kelas mayoritas** yang selalu m
 
 | Model | Threshold | Val F1 | Accuracy | Precision (C1) | Recall (C1) | F1 (C1) | F1 Macro | ROC-AUC | PR-AUC |
 |---|---|---|---|---|---|---|---|---|---|
-| Baseline kelas mayoritas | – | – | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | 0,5000 | ⟦ISI⟧ |
-| Scikit-Learn Logistic Regression | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| Scikit-Learn Random Forest | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| Spark MLlib Logistic Regression | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| Spark MLlib Random Forest | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
+| Baseline kelas mayoritas | – | – | 0,6467 | 0,6467 | 1,0000 | 0,7854 | 0,3927 | 0,5000 | 0,6467 |
+| Scikit-Learn Logistic Regression | 0,32 | 0,8317 | 0,7641 | 0,7608 | 0,9265 | 0,8355 | 0,7093 | 0,8153 | 0,8703 |
+| Scikit-Learn Random Forest | 0,39 | 0,8316 | 0,7617 | 0,7519 | 0,9423 | 0,8364 | 0,6987 | 0,8141 | 0,8718 |
+| Spark MLlib Logistic Regression | 0,32 | 0,8315 | 0,7643 | 0,7608 | 0,9268 | 0,8357 | 0,7095 | 0,8152 | 0,8702 |
+| Spark MLlib Random Forest | 0,37 | 0,8321 | 0,7613 | 0,7488 | 0,9493 | 0,8372 | 0,6950 | 0,8157 | 0,8749 |
 
 *Tabel 5.6 Waktu komputasi (detik)*
 
@@ -557,18 +557,18 @@ Graph analytics diimplementasikan di `src/graph_analytics.py` dengan NetworkX (H
 4. **Kemiripan antartambang**: *cosine similarity* antar vektor jumlah tipe kecelakaan per tambang; 5 tambang paling mirip disimpan untuk setiap tambang.
 5. **Proyeksi mine-to-mine dan deteksi komunitas**: 300 tambang dengan weighted degree tertinggi diproyeksikan menjadi graf tambang–tambang. Dua tambang dihubungkan jika indeks Jaccard himpunan tetangganya (standar dan tipe kecelakaan) ≥ 0,20, dengan bobot sisi = nilai Jaccard. Komunitas dicari dengan algoritma Louvain (Blondel et al., 2008), *seed* 42.
 
-*Tabel 6.2 Statistik graf (sumber: `graph_top_edges.json`, `graph_nodes_summary.csv`)*
+*Tabel 6.2 Statistik graf (sumber: `graph_top_edges.json`, `graph_nodes_summary.csv`, `mine_accident_closeness.json`)*
 
 | Statistik | Nilai |
 |---|---|
-| Jumlah simpul | 16.463 ⟦CEK⟧ |
-| – tambang | 13.168 ⟦CEK⟧ |
-| – standar 30 CFR | 3.253 ⟦CEK⟧ |
-| – tipe kecelakaan | 42 ⟦CEK⟧ |
-| Jumlah sisi | 165.982 ⟦CEK⟧ |
+| Jumlah simpul | 16.463 |
+| – tambang | 13.168 |
+| – standar 30 CFR | 3.253 |
+| – tipe kecelakaan | 42 |
+| Jumlah sisi | 165.982 |
 | Tambang pada proyeksi | 300 |
-| Komunitas Louvain | 4 ⟦CEK⟧ (berukuran 141, 98, 44, dan 17 tambang ⟦CEK⟧) |
-| Tambang dengan profil afinitas (≥ 3 kecelakaan) | 1.526 ⟦CEK⟧ |
+| Komunitas Louvain | 4 (berukuran 141, 98, 44, dan 17 tambang) |
+| Tambang dengan profil afinitas (≥ 3 kecelakaan) | 1.526 |
 
 **Batasan interpretasi.**
 
@@ -583,15 +583,15 @@ Graph analytics diimplementasikan di `src/graph_analytics.py` dengan NetworkX (H
 
 ## 6.2 Analisis dan Insight yang Diperoleh
 
-*Tabel 6.3 Simpul dengan weighted degree tertinggi (sumber: halaman Graph Analytics, tab Sentralitas)*
+*Tabel 6.3 Simpul dengan weighted degree tertinggi, 2020–2023 (sumber: `graph_nodes_summary.csv`; nama dan negara bagian tambang dari `mine_geo_accidents.csv`)*
 
 | Peringkat | Tambang | Weighted degree | Standar 30 CFR | Weighted degree | Tipe kecelakaan | Weighted degree |
 |---|---|---|---|---|---|---|
-| 1 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| 2 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| 3 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| 4 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
-| 5 | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ | ⟦ISI⟧ |
+| 1 | 1519374 (RIVER VIEW MINE, KY) | 3.212 | 75.400 | 11.202 | Over-exertion NEC | 2.414 |
+| 2 | 0101401 (No 7 Mine, AL) | 2.770 | 56.14107(a) | 10.786 | Caught in, under or between a moving and a stationary object | 2.399 |
+| 3 | 4601437 (MARSHALL COUNTY MINE, WV) | 2.593 | 56.12004 | 10.153 | Struck by... NEC | 2.142 |
+| 4 | 4601433 (Marion County Mine, WV) | 2.578 | 56.20003(a) | 9.790 | Accident type, without injuries | 2.054 |
+| 5 | 3607230 (Bailey Mine, PA) | 2.399 | 50.30(a) | 8.796 | Struck by falling object | 1.980 |
 
 ⟦ISI: tangkapan layar tab Jaringan⟧
 
